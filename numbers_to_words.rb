@@ -110,6 +110,7 @@ module NumbersToWords
       number.group_words 3 do |power, name, digits|
         if digits > 0
           prefix = " "
+          prefix << "and " if power==0 and digits < 100
           output << prefix + digits.in_english
           output << " " + name  unless power==0
         end
