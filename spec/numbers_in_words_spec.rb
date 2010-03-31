@@ -69,16 +69,19 @@ describe Fixnum do
     112.in_words.should == "one hundred and twelve"
 
   end
-  
+
   it "should handle edge cases" do
     1000001.in_words.should == "one million and one"
-  end 
-  it "should handle edge cases" do
+    (10*10**12 + 10**6 +1).in_words.should == "ten trillion one million and one"
+    (10**75).in_words.should == "one quattuorvigintillion"
     10001001.in_words.should == "ten million one thousand and one"
   end
-  it "should handle edge cases" do
-    (10*10**12 + 10**6 +1).in_words.should == "ten trillion one million and one"
-
+  it "should handle a googol and larger" do
+    n=10**100
+    puts n.in_words
+    (10**100 + 1).in_words.should == "one googol and one"
+    (42*10**100 + 16777216).in_words.should == "forty two googol sixteen million seven hundred and seventy seven thousand two hundred and sixteen"
+    (42* 10**100 * 10**100).in_words.should == "forty two googol googol"
   end
 
 end

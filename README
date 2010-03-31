@@ -1,8 +1,20 @@
+Installation
+============
+
+
+gem install numbers_in_words
+
+or 
+
+sudo gem install numbers_in_words
+
+
+
 The file numbers_to_words defines a module NumbersToWords which is included in Fixnum and Bignum.
 The in_words method can then be used on any Fixnum or Bignum object.
 
 E.g.
-
+	>require 'numbers_in_words'
 	>112.in_words
 	#=> one hundred and twelve
 
