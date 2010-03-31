@@ -11,7 +11,7 @@ range. It then prints out all numbers in words included in this range.
 
 e.g.
 
-	>ruby numbers_to_words 1 11
+	>ruby display_numbers_to_words.rb 1 11
 	one
 	two
 	three
