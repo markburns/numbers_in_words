@@ -1,4 +1,4 @@
-require 'fixnum_in_words'
+require 'numbers_to_words'
 describe Fixnum do
   it "should print the digits 0-9 correctly" do
     numbers = %w[zero one two three four five six seven eight nine ten]
@@ -59,10 +59,13 @@ describe Fixnum do
     99999.in_words.should == "ninety nine thousand nine hundred and ninety nine"
     999999.in_words.should == "nine hundred and ninety nine thousand nine hundred and ninety nine"
     123456.in_words.should == "one hundred and twenty three thousand four hundred and fifty six"
+    17054.in_words.should == "seventeen thousand and fifty four"
+    11004.in_words.should == "eleven thousand and four"
     470154.in_words.should == "four hundred and seventy thousand one hundred and fifty four"
     417155.in_words.should == "four hundred and seventeen thousand one hundred and fifty five"
     999999.in_words.should == "nine hundred and ninety nine thousand nine hundred and ninety nine"
     1000000.in_words.should == "one million"
+    1000001.in_words.should == "one million and one"
     112.in_words.should == "one hundred and twelve"
 
   end
