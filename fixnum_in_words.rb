@@ -16,7 +16,9 @@ class Fixnum
       i = self.to_i # make a copy
       #handle 0-10
       return DIGITS[i] if i < 10
+      return EXCEPTIONS[i] if EXCEPTIONS[i]
     end
+
   end
 
 end
