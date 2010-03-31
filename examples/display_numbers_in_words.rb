@@ -1,4 +1,5 @@
-require 'numbers_to_words'
+require 'rubygems'
+require 'numbers_in_words'
 def usage code=-1
   puts "\nUsage:\n\nruby #{__FILE__} <start> <end>"
   exit code
