@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = %q{numbers_in_words}
   s.rubyforge_project = "numbers_in_words"
-  s.version = "0.0.3"
+  s.version = "0.0.4"
   s.date = %q{2010-03-31}
   s.authors = ["Mark Burns"]
   s.email = %q{markthedeveloper@googlemail.com}
