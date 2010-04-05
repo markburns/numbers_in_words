@@ -28,6 +28,16 @@ describe Fixnum do
     123456.powers_of_ten.should == {0=>6,1=>5,2=>4,3=>3,4=>2,5=>1}
   end
 
+  it "should handle negative numbers" do
+    -1.in_words.should == "minus one"
+    -9.in_words.should == "minus nine"
+    -10.in_words.should == "minus ten"
+    -15.in_words.should == "minus fifteen"
+    -100.in_words.should == "minus one hundred"
+    (-1*(10**100)).in_words.should == "minus one googol"
+    -123456789.in_words.should == "minus one hundred and twenty three million four hundred and fifty six thousand seven hundred and eighty nine"
+  end
+
   it "should split into group of three digit numbers" do
     1.groups_of(3).should == {0=>1}
     12.groups_of(3).should == {0=>12}

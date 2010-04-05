@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'active_support'
-module NumbersToWords
+module NumbersInWords
 
   #handle exceptions to normal numbers
   EXCEPTIONS = {10=> "ten", 11=>"eleven", 12 => "twelve", 13 => "thirteen", 
@@ -159,6 +159,10 @@ module NumbersToWords
 
   def in_english
     number = self.to_i # make a copy
+    #handle negative numbers
+    if number < 0
+      return "minus " + (-number).in_english
+    end
     #handle 0-10
     return DIGITS[number] if number < 10
     return EXCEPTIONS[number] if EXCEPTIONS[number]
@@ -195,6 +199,6 @@ module NumbersToWords
 end
 
 class Numeric
-  include NumbersToWords
+  include NumbersInWords
 end
 
