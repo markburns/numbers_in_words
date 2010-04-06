@@ -9,6 +9,7 @@ module NumbersInWords
     20 => "twenty", 30=>"thirty", 
     40=>"forty", 50=>"fifty", 60 => "sixty", 70=> "seventy", 80=>"eighty", 
     90 => "ninety"}
+
   DIGITS= %w[zero one two three four five six seven eight nine]
   POWERS_OF_TEN ={0=>"one", 1 => "ten", 2=> "hundred", 
     3 => "thousand", 6=>"million",
@@ -198,7 +199,10 @@ module NumbersInWords
   end
 end
 
-class Numeric
+class Fixnum
   include NumbersInWords
 end
 
+class Bignum
+  include NumbersInWords
+end

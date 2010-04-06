@@ -37,7 +37,12 @@ describe Fixnum do
     (-1*(10**100)).in_words.should == "minus one googol"
     -123456789.in_words.should == "minus one hundred and twenty three million four hundred and fifty six thousand seven hundred and eighty nine"
   end
-
+  it "should handle decimals" do
+    1.1.in_words.should == "one point one"
+    1.2345678.in_words.should == "one point two three four five six seven eight"
+    1000.2345678.in_words.should == "one thousand point two three four five six seven eight"
+    12345.2345678.in_words.should == "twelve thousand three hundred and forty five point two three four five six seven eight"
+  end
   it "should split into group of three digit numbers" do
     1.groups_of(3).should == {0=>1}
     12.groups_of(3).should == {0=>12}
