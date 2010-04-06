@@ -1,11 +1,14 @@
 Manifest
+README
 Rakefile
 examples/display_numbers_in_words.rb
 index_cyclo.html
+init.rb
+lib/numbers.rb
 lib/numbers_in_words.rb
 lib/numbers_in_words.rb_cyclo.html
-lib/words_in_numbers.rb
+lib/words.rb
 lib/words_in_numbers.rb_cyclo.html
-numbers_in_words.rb
+numbers_in_words.gemspec
 spec/numbers_in_words_spec.rb
 spec/words_in_numbers_spec.rb
