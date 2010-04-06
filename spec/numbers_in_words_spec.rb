@@ -38,6 +38,7 @@ describe Fixnum do
     -123456789.in_words.should == "minus one hundred and twenty three million four hundred and fifty six thousand seven hundred and eighty nine"
   end
   it "should handle decimals" do
+    pending
     1.1.in_words.should == "one point one"
     1.2345678.in_words.should == "one point two three four five six seven eight"
     1000.2345678.in_words.should == "one thousand point two three four five six seven eight"

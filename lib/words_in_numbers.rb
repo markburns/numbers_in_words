@@ -77,7 +77,6 @@ module WordsInNumbers
     if text =~ /^minus /
       return -1 * (text.gsub(/^minus /, "")).in_numbers
     end
-    puts text
     word = word_to_integer(text)
     return word unless word.nil?
     words = text.split " "
