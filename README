@@ -1,12 +1,12 @@
 Installation
 ============
 
-
 gem install numbers_in_words
 
 or 
 
 sudo gem install numbers_in_words
+
 
 
 
@@ -16,7 +16,14 @@ The in_words method can then be used on any Fixnum or Bignum object.
 E.g.
 	>require 'numbers_in_words'
 	>112.in_words
-	#=> one hundred and twelve
+	 => one hundred and twelve
+	>"one googol".in_numbers
+	 =>10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 
+        >"Seventy million, five-hundred and fifty six thousand point eight nine three".in_numbers
+         => 70556000.893
+
+---------------
+Example program
 
 To try it out the program display_numbers_to_words.rb expects two integer parameters to define a
 range. It then prints out all numbers in words included in this range.
@@ -68,3 +75,10 @@ Example of usage:
 	2*10^2= 2 hundreds
 	45*10^0 = 45 ones
 
+Future plans
+============
+
+* Handle complex numbers
+* Option for outputting punctuation
+* Reject invalid numbers
+* Support for other languages

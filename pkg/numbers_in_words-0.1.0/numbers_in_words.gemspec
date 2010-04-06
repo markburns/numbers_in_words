@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.description = %q{#in_words method for integers and #in_numbers for strings}
   s.email = %q{markthedeveloper@googlemail.com}
   s.extra_rdoc_files = ["CHANGELOG", "README", "lib/numbers.rb", "lib/numbers_in_words.rb", "lib/words.rb"]
-  s.files = ["CHANGELOG", "Manifest", "README", "Rakefile", "examples/display_numbers_in_words.rb", "init.rb", "lib/numbers.rb", "lib/numbers_in_words.rb", "lib/words.rb", "numbers_in_words.gemspec", "spec/numbers_in_words_spec.rb", "spec/words_in_numbers_spec.rb"]
+  s.files = ["CHANGELOG", "Manifest", "README", "Rakefile", "examples/display_numbers_in_words.rb", "init.rb", "lib/numbers.rb", "lib/numbers_in_words.rb", "lib/words.rb", "spec/numbers_in_words_spec.rb", "spec/words_in_numbers_spec.rb", "numbers_in_words.gemspec"]
   s.homepage = %q{http://rubygems.org/gems/numbers_in_words}
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Numbers_in_words", "--main", "README"]
   s.require_paths = ["lib"]

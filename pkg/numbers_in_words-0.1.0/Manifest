@@ -7,6 +7,5 @@ init.rb
 lib/numbers.rb
 lib/numbers_in_words.rb
 lib/words.rb
-numbers_in_words.gemspec
 spec/numbers_in_words_spec.rb
 spec/words_in_numbers_spec.rb
