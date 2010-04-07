@@ -109,8 +109,8 @@ module WordsInNumbers
     words = text.split " "
     integers = word_array_to_integers words
 
-    i= parse_numbers(integers)
-    return i unless i.nil?
+    integer= parse_numbers(integers)
+    return integer unless integer.nil?
     return nil
   end
 
@@ -159,15 +159,15 @@ module WordsInNumbers
     memory = 0
     answer = 0
     reset = true #reset each time memory is reset
-    integers.each_with_index do |i, index|
+    integers.each_with_index do |integer, index|
       if reset
         reset = false
-        memory += i
+        memory += integer
       else
         #x4. multiply memory by 10^9 because memory < power of ten  
-        if is_power_of_ten?(i)
-          if power_of_ten(i)> 2
-            memory *= i
+        if is_power_of_ten?(integer)
+          if power_of_ten(integer)> 2
+            memory *= integer
             #17. add memory to answer  (and reset) (memory pow of ten > 2) 
             answer += memory
             memory = 0
@@ -175,10 +175,10 @@ module WordsInNumbers
           end
         end
 
-        if memory < i 
-          memory *= i
+        if memory < integer 
+          memory *= integer
         else 
-          memory += i
+          memory += integer
         end
       end
     end

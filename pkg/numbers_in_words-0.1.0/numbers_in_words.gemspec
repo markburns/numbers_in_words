@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Mark Burns"]
-  s.date = %q{2010-04-06}
+  s.date = %q{2010-04-07}
   s.description = %q{#in_words method for integers and #in_numbers for strings}
   s.email = %q{markthedeveloper@googlemail.com}
   s.extra_rdoc_files = ["CHANGELOG", "README", "lib/numbers.rb", "lib/numbers_in_words.rb", "lib/words.rb"]
