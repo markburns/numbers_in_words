@@ -1,4 +1,5 @@
 require 'lib/numbers_in_words'
+
 describe Numeric::NumberGroup do
   it "should split into group of three digit numbers" do
     Numeric::NumberGroup.groups_of(1,3).should == {0=>1}
@@ -12,7 +13,8 @@ describe Numeric::NumberGroup do
 
   it "should display numbers grouped" do
     count = 0
-    Numeric::LanguageWriter.group_words(2111, 3) do |power, name, digits|
+    writer = Numeric::LanguageWriter.new
+    writer.group_words(2111, 3) do |power, name, digits|
       case count
       when 0:
         power.should == 3
@@ -46,7 +48,6 @@ describe Numeric do
 
     end
   end
-
   it "should handle negative numbers" do
     -1.in_words.should == "minus one"
     -9.in_words.should == "minus nine"
@@ -67,23 +68,6 @@ describe Numeric do
     12345.2345678.in_words.should match "twelve thousand three hundred and forty five point two three four five six seven eight"
     (10**9 + 0.1).in_words.should match "one billion point one"
   end
-
-  it "should split into group of three digit numbers" do
-    1.groups_of(3).should == {0=>1}
-    12.groups_of(3).should == {0=>12}
-    123.groups_of(3).should == {0=>123}
-    1111.groups_of(3).should == {3=>1,0=>111}
-    87654.groups_of(3).should == {3=>87,0=>654}
-    1234567.groups_of(3).should == {6=>1,3=>234,0=>567}
-    123456789101112.groups_of(3).should == {12=>123,9=>456,6=>789,3=>101,0=>112}
-  end
-
-  it "should display numbers grouped" do
-    2111.group_words 3 do |power, name, digits|
-      puts "10^#{power} #{name} #{ digits }" 
-    end
-  end
-
   it "should handle two digit numbers" do
     21.in_words.should == "twenty one"
   end
@@ -124,6 +108,5 @@ describe Numeric do
     (42*10**100 + 16777216).in_words.should == "forty two googol sixteen million seven hundred and seventy seven thousand two hundred and sixteen"
     (42* 10**100 * 10**100).in_words.should == "forty two googol googol"
   end
-
 end
 

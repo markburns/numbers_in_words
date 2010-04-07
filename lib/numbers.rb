@@ -47,12 +47,12 @@ module NumbersInWords
     100 => "googol"
   }
   LENGTH_OF_GOOGOL = 101 #length of the string i.e. one with 100 zeros
+
   def in_english
     #decimals
     d= handle_decimal(self)
     return d unless d.nil?
-
-
+    writer = LanguageWriter.new
     number = self.to_i # make a copy
     #negative numbers
     return "minus " + (-number).in_english if number < 0
@@ -73,9 +73,9 @@ module NumbersInWords
       output << " " + digit.in_english unless digit==0
     elsif length == 3
       #e.g. 113 splits into "one hundred" and "thirteen"
-      output << number.english_group(2)
+      output << writer.write_english(number, 2)
     elsif length < LENGTH_OF_GOOGOL #more than one hundred less than one googol
-      output << number.english_group(3)
+      output << writer.write_english(number, 3)
     elsif length == LENGTH_OF_GOOGOL 
       output << number.in_googols
     elsif length > LENGTH_OF_GOOGOL #one googol and larger
@@ -90,63 +90,6 @@ module NumbersInWords
     when "English" #allow for I18n
       in_english
     end
-  end
-
-  def groups_of size
-    i=self.to_i
-    #split into groups this gives us 1234567 => 123 456 7
-    #so we need to reverse first
-    #in stages
-    #i.e. 1234567 => 7654321     
-    groups = i.to_s.reverse
-    #7654321 => 765 432 1
-    groups = groups.split("").in_groups_of(size)
-    #765 432 1 => 1 432 765
-    groups.reverse!
-    #1 432 765 => 1 234 567
-    groups.map! {|group| group.reverse}
-
-    #turn back into integers
-    groups.map! {|group|  group.join("").to_i }
-    groups.reverse! # put in ascending order of power of ten
-
-    #output hash where key is the power of ten
-    #and value if the multiplier
-    power = 0
-    return groups.inject({}) do |output, digits|
-      output[power]=digits
-      power+=size
-      output
-    end
-
-  end
-
-  def group_words size, language="English"
-    #1000 and over Numbers are split into groups of three
-    number = self.to_i
-    groups = number.groups_of(size)
-    powers = groups.keys.sort.reverse #put in descending order
-    powers.each do |power|
-      name = POWERS_OF_TEN[power] if language=="English"
-      digits = groups[power]
-      yield power, name, digits
-    end
-
-  end
-
-  def english_group group_size
-    number = self.to_i
-    output = ""
-    number.group_words(group_size) do |power, name, digits|
-      if digits > 0
-        prefix = " "
-        #no 'and' between thousands and hundreds
-        prefix << "and " if power == 0 and digits < 100
-        output << prefix + digits.in_english
-        output << prefix + name unless power == 0
-      end
-    end
-    return output
   end
 
   def split_googols
@@ -193,16 +136,15 @@ module NumbersInWords
       out
     }
     out.join " "
-
   end
   protected
 
   class LanguageWriter
 
-    def LanguageWriter.write_english  number, group
+    def write_english  number, group
       output = ""
       #e.g. 113 splits into "one hundred" and "thirteen"
-      LanguageWriter.group_words(number, group) do |power, name, digits|
+      group_words(number, group) do |power, name, digits|
         if digits > 0
           prefix = " "
           #no and between thousands and hundreds
@@ -213,8 +155,7 @@ module NumbersInWords
       end
       return output.strip
     end
-
-    def LanguageWriter.group_words number, size
+    def group_words number, size
       #1000 and over Numbers are split into groups of three
       groups = NumberGroup.groups_of number, size
       powers = groups.keys.sort.reverse #put in descending order
@@ -223,7 +164,6 @@ module NumbersInWords
         digits = groups[power]
         yield power, name, digits
       end
-
     end
 
   end

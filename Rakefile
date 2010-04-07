@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'echoe'
 require 'metric_fu'
+
 Echoe.new('numbers_in_words','0.1.0') do |e|
   e.description = "#in_words method for integers and #in_numbers for strings"
   e.summary = "Example: 123.in_words #=> \"one hundred and twenty three\", \"seventy-five point eight\".in_numbers #=> 75.8"
@@ -17,8 +18,7 @@ MetricFu::Configuration.run do |config|
   #define which metrics you want to use
   config.metrics  = [:churn, :saikuro, :stats, :flog, :flay, :reek, :roodi, :rcov]
   config.graphs   = [:flog, :flay, :reek, :roodi, :rcov]
-  config.flay     = { :dirs_to_flay => ['lib'],
-    :minimum_score => 100  } 
+  config.flay     = { :dirs_to_flay => ['lib'],    :minimum_score => 100  } 
   config.flog     = { :dirs_to_flog => [ 'lib']  }
   config.reek     = { :dirs_to_reek => ['lib']  }
   config.roodi    = { :dirs_to_roodi => ['lib'] }
