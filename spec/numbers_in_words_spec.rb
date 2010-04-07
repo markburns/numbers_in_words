@@ -1,5 +1,34 @@
 require 'lib/numbers_in_words'
-describe Fixnum do
+describe Numeric::NumberGroup do
+  it "should split into group of three digit numbers" do
+    Numeric::NumberGroup.groups_of(1,3).should == {0=>1}
+    Numeric::NumberGroup.groups_of(12,3).should == {0=>12}
+    Numeric::NumberGroup.groups_of(123,3).should == {0=>123}
+    Numeric::NumberGroup.groups_of(1111,3).should == {3=>1,0=>111}
+    Numeric::NumberGroup.groups_of(87654,3).should == {3=>87,0=>654}
+    Numeric::NumberGroup.groups_of(1234567,3).should == {6=>1,3=>234,0=>567}
+    Numeric::NumberGroup.groups_of(123456789101112,3).should == {12=>123,9=>456,6=>789,3=>101,0=>112}
+  end
+
+  it "should display numbers grouped" do
+    count = 0
+    Numeric::LanguageWriter.group_words(2111, 3) do |power, name, digits|
+      case count
+      when 0:
+        power.should == 3
+        name.should == "thousand"
+        digits.should == 2
+      when 1:
+        power.should == 0
+        name.should == "one"
+        digits.should == 111
+      end
+      count += 1
+    end
+  end
+end
+
+describe Numeric do
   it "should print the digits 0-9 correctly" do
     numbers = %w[zero one two three four five six seven eight nine ten]
     10.times do |i|

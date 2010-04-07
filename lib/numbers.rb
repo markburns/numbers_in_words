@@ -188,28 +188,92 @@ module NumbersInWords
   def decimal_portion decimal
     decimal = decimal.to_s.split(".")[1]
     digits = decimal.to_s.split //
-    out= digits.inject([]) {|out, digit|
+      out= digits.inject([]) {|out, digit|
       out<< digit.to_i.in_english
       out
     }
     out.join " "
 
   end
+  protected
+
+  class LanguageWriter
+
+    def LanguageWriter.write_english  number, group
+      output = ""
+      #e.g. 113 splits into "one hundred" and "thirteen"
+      LanguageWriter.group_words(number, group) do |power, name, digits|
+        if digits > 0
+          prefix = " "
+          #no and between thousands and hundreds
+          prefix << "and " if power == 0  and digits < 100
+          output << prefix + digits.in_english
+          output << prefix + name unless power == 0
+        end
+      end
+      return output.strip
+    end
+
+    def LanguageWriter.group_words number, size
+      #1000 and over Numbers are split into groups of three
+      groups = NumberGroup.groups_of number, size
+      powers = groups.keys.sort.reverse #put in descending order
+      powers.each do |power|
+        name = POWERS_OF_TEN[power]
+        digits = groups[power]
+        yield power, name, digits
+      end
+
+    end
+
+  end
+
+  class NumberGroup
+
+    include Enumerable
+
+    def each
+      @array.each { |item|  yield item}
+    end
+
+    #split into groups this gives us 1234567 => 123 456 7
+    #so we need to reverse first
+    #in stages
+    def initialize number, size
+      @number, @size = number, size
+      #i.e. 1234567 => 7654321     
+      groups = number.to_s.reverse
+      #7654321 => 765 432 1
+      @array = groups.split("").in_groups_of(size)
+    end
+
+    def groups
+      #765 432 1 => 1 432 765
+      @array.reverse!
+      #1 432 765 => 1 234 567 
+      #and turn back into integers
+      @array.map! {|group| group.reverse.join("").to_i}
+      @array.reverse! # put in ascending order of power of ten
+      power = 0
+      output =  @array.inject({}) do |output, digits|
+        output[power]=digits
+        power+=@size
+        output
+      end
+      return output
+    end
+
+    def NumberGroup.groups_of number, size
+      return NumberGroup.new(number, size).groups
+    end
 
 
+  end
 end
 
-#Extending the Fixnum class to support converting to words
-class Fixnum
+
+#Extending the Numeric class to support converting to words
+class Numeric
   include NumbersInWords
 end
 
-#Extending the Bignum class to support converting to words
-class Bignum
-  include NumbersInWords
-end
-
-#Extending the Float class to support converting to words
-class Float
-  include NumbersInWords
-end
