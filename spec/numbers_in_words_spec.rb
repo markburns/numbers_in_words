@@ -18,16 +18,6 @@ describe Fixnum do
     end
   end
 
-  it "should return a hash of powers of ten" do
-    117.powers_of_ten.should == {0=>7,1=>1,2=>1}
-    0.powers_of_ten.should == {}
-    1.powers_of_ten.should == {0=>1}
-    9.powers_of_ten.should == {0=>9}
-    10.powers_of_ten.should == {1=>1}
-    18.powers_of_ten.should == {1=>1,0=>8}
-    123456.powers_of_ten.should == {0=>6,1=>5,2=>4,3=>3,4=>2,5=>1}
-  end
-
   it "should handle negative numbers" do
     -1.in_words.should == "minus one"
     -9.in_words.should == "minus nine"
@@ -97,6 +87,7 @@ describe Fixnum do
     (10**75).in_words.should == "one quattuorvigintillion"
     10001001.in_words.should == "ten million one thousand and one"
   end
+
   it "should handle a googol and larger" do
     n=10**100
     puts n.in_words

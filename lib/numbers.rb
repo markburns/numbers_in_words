@@ -47,30 +47,48 @@ module NumbersInWords
     100 => "googol"
   }
   LENGTH_OF_GOOGOL = 101 #length of the string i.e. one with 100 zeros
+  def in_english
+    #decimals
+    d= handle_decimal(self)
+    return d unless d.nil?
 
-  def initialize
-    power = 9
-    POWERS_OF_TEN_NAMES.each do |name|
-      POWERS_OF_TEN[power]=name
-      power += 3
+
+    number = self.to_i # make a copy
+    #negative numbers
+    return "minus " + (-number).in_english if number < 0
+
+    #handle 0-10
+    return DIGITS[number] if number < 10
+    return EXCEPTIONS[number] if EXCEPTIONS[number]
+
+    #longer numbers
+    output = ""
+    length = number.to_s.length
+    if length == 2 #20-99
+      tens = (number/10).round*10 #write the tens
+      # e.g. eighty
+      output << EXCEPTIONS[tens]
+      #write the digits
+      digit= number - tens
+      output << " " + digit.in_english unless digit==0
+    elsif length == 3
+      #e.g. 113 splits into "one hundred" and "thirteen"
+      output << number.english_group(2)
+    elsif length < LENGTH_OF_GOOGOL #more than one hundred less than one googol
+      output << number.english_group(3)
+    elsif length == LENGTH_OF_GOOGOL 
+      output << number.in_googols
+    elsif length > LENGTH_OF_GOOGOL #one googol and larger
+      output << number.split_googols
     end
+
+    return output.strip
   end
 
-  #returns a hash with powers of ten and their multipliers
-  def powers_of_ten 
-    i = self.to_i
-    digits=i.to_s.split ""
-    #turn back into integers
-    digits.map! { |x| x.to_i} 
-
-    digits.reverse!
-    #create a hash where the key is the
-    #power of ten and the value is the multipler
-    power = 0
-    return digits.inject({}) do |result,digit|
-      result[power]=digit unless digit==0
-      power+=1
-      result
+  def in_words language="English"
+    case language
+    when "English" #allow for I18n
+      in_english
     end
   end
 
@@ -178,60 +196,20 @@ module NumbersInWords
 
   end
 
-  def in_english
-    #decimals
-    d= handle_decimal(self)
-    return d unless d.nil?
 
-
-    number = self.to_i # make a copy
-    #negative numbers
-    return "minus " + (-number).in_english if number < 0
-
-    #handle 0-10
-    return DIGITS[number] if number < 10
-    return EXCEPTIONS[number] if EXCEPTIONS[number]
-
-    #longer numbers
-    output = ""
-    length = number.to_s.length
-    if length == 2 #20-99
-      tens = (number/10).round*10 #write the tens
-      # e.g. eighty
-      output << EXCEPTIONS[tens]
-      #write the digits
-      digit= number - tens
-      output << " " + digit.in_english unless digit==0
-    elsif length == 3
-      #e.g. 113 splits into "one hundred" and "thirteen"
-      output << number.english_group(2)
-    elsif length < LENGTH_OF_GOOGOL #more than one hundred less than one googol
-      output << number.english_group(3)
-    elsif length == LENGTH_OF_GOOGOL 
-      output << number.in_googols
-    elsif length > LENGTH_OF_GOOGOL #one googol and larger
-      output << number.split_googols
-    end
-
-    return output.strip
-  end
-
-  def in_words language="English"
-    case language
-    when "English" #allow for I18n
-      in_english
-    end
-  end
 end
 
+#Extending the Fixnum class to support converting to words
 class Fixnum
   include NumbersInWords
 end
 
+#Extending the Bignum class to support converting to words
 class Bignum
   include NumbersInWords
 end
 
+#Extending the Float class to support converting to words
 class Float
   include NumbersInWords
 end
