@@ -46,44 +46,8 @@ module NumbersInWords
     99=>"duotrigintillion",
     100 => "googol"
   }
+
   LENGTH_OF_GOOGOL = 101 #length of the string i.e. one with 100 zeros
-
-  def in_english
-    #decimals
-    d= handle_decimal(self)
-    return d unless d.nil?
-    writer = LanguageWriter.new
-    number = self.to_i # make a copy
-    #negative numbers
-    return "minus " + (-number).in_english if number < 0
-
-    #handle 0-10
-    return DIGITS[number] if number < 10
-    return EXCEPTIONS[number] if EXCEPTIONS[number]
-
-    #longer numbers
-    output = ""
-    length = number.to_s.length
-    if length == 2 #20-99
-      tens = (number/10).round*10 #write the tens
-      # e.g. eighty
-      output << EXCEPTIONS[tens]
-      #write the digits
-      digit= number - tens
-      output << " " + digit.in_english unless digit==0
-    elsif length == 3
-      #e.g. 113 splits into "one hundred" and "thirteen"
-      output << writer.write_english(number, 2)
-    elsif length < LENGTH_OF_GOOGOL #more than one hundred less than one googol
-      output << writer.write_english(number, 3)
-    elsif length == LENGTH_OF_GOOGOL 
-      output << number.in_googols
-    elsif length > LENGTH_OF_GOOGOL #one googol and larger
-      output << number.split_googols
-    end
-
-    return output.strip
-  end
 
   def in_words language="English"
     case language
@@ -92,59 +56,110 @@ module NumbersInWords
     end
   end
 
-  def split_googols
-    number = self.to_i
-    output = ""
-    googols = number.to_s[0..(-LENGTH_OF_GOOGOL)].to_i
-    remainder = number.to_s[1-LENGTH_OF_GOOGOL .. -1].to_i
-    output << " " + googols.in_words + " googol" 
-    if remainder > 0
-      prefix = " "
-      prefix << "and " if remainder < 100
-      output << prefix + remainder.in_english
+  def in_english
+    #handle 0-9
+    puts "entered in_english method : #{self}"
+    return DIGITS[self] if self.is_a?(Integer) and (0..9).to_a.include? self
+    #teens etc
+    return EXCEPTIONS[self] if self.is_a?(Integer) and EXCEPTIONS[self]
+
+    writer = LanguageWriterEnglish.new(self)
+    #decimals
+    in_decimals = writer.decimals()
+    return in_decimals unless in_decimals.nil?
+
+    number = self.to_i # make a copy
+
+    #negative numbers
+    if number < 0
+    puts "before negative call: #{number}"
+    return writer.negative()
     end
-    return output
-  end
-
-  def in_googols
-
-    number = self.to_i
+    length = number.to_s.length
     output = ""
-    output << " " + number.to_s[0..0].to_i.in_english + " googol"
-    remainder = number.to_s[1..-1].to_i
-    prefix = " "
-    prefix << "and " if remainder < 100
-    output << prefix + remainder.in_english if remainder > 0
-
-    return output
-  end
-
-  def handle_decimal value
-    if value.is_a? Float
-      int = value.to_i
-      decimal = value - int
-      return int.in_english + " point " + decimal_portion(decimal)
+    if length == 2 #20-99
+      tens = (number/10).round*10 #write the tens
+      # e.g. eighty
+      output << EXCEPTIONS[tens]
+      #write the digits
+      digit= number - tens
+      output << " " + digit.in_english unless digit==0
+    else
+      #longer numbers
+      output << writer.write()
     end
-    return nil
+
+    return output.strip
   end
 
-  def decimal_portion decimal
-    decimal = decimal.to_s.split(".")[1]
-    digits = decimal.to_s.split //
-      out= digits.inject([]) {|out, digit|
-      out<< digit.to_i.in_english
-      out
-    }
-    out.join " "
-  end
   protected
 
   class LanguageWriter
+    attr_accessor :number
+    def initialize number
+      @number = number
+    end
 
-    def write_english  number, group
+    def group_words size
+      #1000 and over Numbers are split into groups of three
+      groups = NumberGroup.groups_of @number, size
+      powers = groups.keys.sort.reverse #put in descending order
+      powers.each do |power|
+        name = POWERS_OF_TEN[power]
+        digits = groups[power]
+        yield power, name, digits
+      end
+    end
+  end
+
+  class LanguageWriterEnglish < LanguageWriter
+    def negative 
+      puts "negative number: #{@number}"
+      return "minus " + (-@number).in_english
+    end
+
+    def write 
       output = ""
+      length = @number.to_s.length
+      if length == 3
+        #e.g. 113 splits into "one hundred" and "thirteen"
+        output << write_groups(2)
+      elsif length < LENGTH_OF_GOOGOL #more than one hundred less than one googol
+        output << write_groups(3)
+      elsif length >= LENGTH_OF_GOOGOL 
+        output << write_googols
+      end
+      return output.strip
+    end
+
+    def decimals
+      int, decimals = NumberGroup.new(@number).split_decimals
+      unless int.nil?
+        out = int.in_english + " point" 
+        decimals.each do |decimal|
+          out << decimal.in_english + " "
+        end
+        return out.strip
+      end
+      return nil
+    end
+
+    private
+    def write_googols
+      googols, remainder= NumberGroup.new(@number).split_googols
+      output = "" 
+      output << " " + googols.in_words + " googol" 
+      if remainder > 0
+        prefix = " "
+        prefix << "and " if remainder < 100
+        output << prefix + remainder.in_english
+      end
+      return output
+    end
+    def write_groups group
       #e.g. 113 splits into "one hundred" and "thirteen"
-      group_words(number, group) do |power, name, digits|
+      output = ""
+      group_words(group) do |power, name, digits|
         if digits > 0
           prefix = " "
           #no and between thousands and hundreds
@@ -153,24 +168,14 @@ module NumbersInWords
           output << prefix + name unless power == 0
         end
       end
-      return output.strip
+      return output
     end
-    def group_words number, size
-      #1000 and over Numbers are split into groups of three
-      groups = NumberGroup.groups_of number, size
-      powers = groups.keys.sort.reverse #put in descending order
-      powers.each do |power|
-        name = POWERS_OF_TEN[power]
-        digits = groups[power]
-        yield power, name, digits
-      end
-    end
-
   end
 
   class NumberGroup
 
     include Enumerable
+    attr_accessor :number
 
     def each
       @array.each { |item|  yield item}
@@ -179,15 +184,15 @@ module NumbersInWords
     #split into groups this gives us 1234567 => 123 456 7
     #so we need to reverse first
     #in stages
-    def initialize number, size
-      @number, @size = number, size
-      #i.e. 1234567 => 7654321     
-      groups = number.to_s.reverse
-      #7654321 => 765 432 1
-      @array = groups.split("").in_groups_of(size)
+    def initialize number
+      @number = number
     end
 
-    def groups
+    def groups size
+      #i.e. 1234567 => 7654321     
+      groups = @number.to_s.reverse
+      #7654321 => 765 432 1
+      @array = groups.split("").in_groups_of(size)
       #765 432 1 => 1 432 765
       @array.reverse!
       #1 432 765 => 1 234 567 
@@ -195,16 +200,41 @@ module NumbersInWords
       @array.map! {|group| group.reverse.join("").to_i}
       @array.reverse! # put in ascending order of power of ten
       power = 0
-      output =  @array.inject({}) do |output, digits|
+      output = @array.inject({}) do |output, digits|
         output[power]=digits
-        power+=@size
+        power+=size
         output
       end
       return output
     end
 
+    def split_decimals 
+
+      if @number.is_a? Float
+        int = @number.to_i
+        decimal = @number - int
+        decimal = decimal.to_s.split(".")[1]
+        digits = decimal.split //
+          #convert to integers array
+          digits.inject!([]) {|out, digit|
+          out<< digit.to_i
+        }
+        return int, digits
+
+      end
+      return nil
+    end
+
+
     def NumberGroup.groups_of number, size
-      return NumberGroup.new(number, size).groups
+      return NumberGroup.new(number).groups(size)
+    end
+
+    def split_googols
+      output = ""
+      googols = @number.to_s[0..(-LENGTH_OF_GOOGOL)].to_i
+      remainder = @number.to_s[1-LENGTH_OF_GOOGOL .. -1].to_i
+      return googols, remainder
     end
 
 
@@ -216,4 +246,3 @@ end
 class Numeric
   include NumbersInWords
 end
-
