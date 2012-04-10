@@ -8,8 +8,8 @@ module WordsInNumbers
       return -1 * (text.gsub(/^minus /, "")).in_numbers if text =~ /^minus /
 
       #easy single word case
-      word = word_to_integer(text)
-      return word unless word.nil?
+      word = word_to_integer text
+      return word if word
 
       #decimals
       match = text.match(/\spoint\s/)
@@ -25,8 +25,8 @@ module WordsInNumbers
       words = text.split " "
       integers = word_array_to_integers words
 
-      integer= parse_numbers(integers)
-      return integer unless integer.nil?
+      integer = parse_numbers integers
+      return integer if integer
       return nil
     end
   end
@@ -106,14 +106,13 @@ module WordsInNumbers
     end
 
     def decimal_portion text
-      words = text.split " "
+      words    = text.split " "
       integers = word_array_to_integers words
-      decimal = "0." + integers.join()
+      decimal  = "0." + integers.join()
       decimal.to_f
     end
 
 
-    private
 
     # Example: 364,895,457,898
     #three hundred and sixty four billion eight hundred and ninety five million
@@ -149,12 +148,12 @@ module WordsInNumbers
     #2001
     #two thousand and one
     #2 1000 1
-    #                                                                memory answer
-    #1. add 2 to memory because first                                  2       0
-    #2. multiply memory by 1000 because memory < 1000                2000      0
-    #3. add memory to answer,reset,  because power of ten>2            0      2000
-    #4. add 1 to memory                                                1      2000
-    #5. finish - add memory to answer                                  0      2001
+    #                                                        memory answer
+    #1. add 2 to memory because first                          2       0
+    #2. multiply memory by 1000 because memory < 1000        2000      0
+    #3. add memory to answer,reset,  because power of ten>2    0      2000
+    #4. add 1 to memory                                        1      2000
+    #5. finish - add memory to answer                          0      2001
     def parse_numbers(integers)
       memory = 0
       answer = 0
@@ -165,7 +164,7 @@ module WordsInNumbers
           memory += integer
         else
           #x4. multiply memory by 10^9 because memory < power of ten
-          if is_power_of_ten?(integer)
+          if power_of_ten?(integer)
             if power_of_ten(integer)> 2
               memory *= integer
               #17. add memory to answer  (and reset) (memory pow of ten > 2)
@@ -189,8 +188,8 @@ module WordsInNumbers
       Math.log10(integer)
     end
 
-    def is_power_of_ten? integer
-      power_of_ten(integer)==power_of_ten(integer).to_i
+    def power_of_ten? integer
+      power_of_ten(integer) == power_of_ten(integer).to_i
     end
 
     #handles simple single word numbers
@@ -199,14 +198,14 @@ module WordsInNumbers
       text = word.to_s.chomp.strip
       #digits 0-9
       digit = DIGITS.index(text)
-      return digit unless digit.nil?
+      return digit if digit
 
       #digits which are exceptions
       exception = EXCEPTIONS[text]
-      return exception unless exception.nil?
+      return exception if exception
 
       power = POWERS_OF_TEN[text]
-      return 10**power unless power.nil?
+      return 10 ** power if power
     end
 
     def word_array_to_integers words
