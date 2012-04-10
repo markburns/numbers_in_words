@@ -98,14 +98,14 @@ module NumbersInWords
 
       output << EXCEPTIONS[tens] # e.g. eighty
 
-      digit= number - tens       #write the digits
+      digit = number - tens       #write the digits
 
       output << " " + digit.in_english unless digit==0
     else
       output << writer.write() #longer numbers
     end
 
-    return output.strip
+    output.strip
   end
 
   protected
@@ -159,7 +159,7 @@ module NumbersInWords
         decimals.each do |decimal|
           out << decimal.to_i.in_english + " "
         end
-        return out.strip
+        out.strip
       end
     end
 
