@@ -208,17 +208,16 @@ module NumbersInWords
     end
 
     def groups size
-      #i.e. 1234567 => 7654321
-      groups = @number.to_s.reverse
-      #7654321 => 765 432 1
-      @array = groups.split("").in_groups_of(size)
-      #765 432 1 => 1 432 765
-      @array.reverse!
+      #1234567   => 765 432 1
+      @array = @number.to_s.reverse.split("").in_groups_of(size)
+      @array.reverse!    #765 432 1 => 1 432 765
+
       #1 432 765 => 1 234 567
-      #and turn back into integers
       @array.map! {|group| group.reverse.join("").to_i}
       @array.reverse! # put in ascending order of power of ten
+
       power = 0
+
       output = @array.inject({}) do |output, digits|
         output[power] = digits
         power += size
