@@ -1,10 +1,19 @@
 class NumbersInWords::ToNumber
-  include NumbersInWords::Constants
   delegate :to_s, to: :that
-  attr_reader :that
+  delegate :powers_of_ten_to_i, :exceptions_to_i, to: :language
+  attr_reader :that, :language
 
-  def initialize that
+  def initialize that, language=NumbersInWords.language
     @that = that
+    @language = language
+  end
+
+  def language
+    if @language.is_a? Module
+      @language
+    else
+      @language = NumbersInWords.const_get(@language)
+    end
   end
 
   def handle_negative text
@@ -59,10 +68,10 @@ class NumbersInWords::ToNumber
   def word_to_integer word
     text = word.to_s.chomp.strip
 
-    exception = EXCEPTIONS_TO_I[text]
+    exception = exceptions_to_i[text]
     return exception if exception
 
-    power = POWERS_OF_TEN_TO_I[text]
+    power = powers_of_ten_to_i[text]
     return 10 ** power if power
   end
 

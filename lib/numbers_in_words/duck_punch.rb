@@ -1,12 +1,12 @@
 module NumbersInWords
-  def in_words
-    NumbersInWords::ToWord.new(self).in_words
+  def in_words language=NumbersInWords.language
+    NumbersInWords::ToWord.new(self, language).in_words
   end
 end
 
 module WordsInNumbers
-  def in_numbers
-    NumbersInWords::ToNumber.new(self).in_numbers
+  def in_numbers language=NumbersInWords.language
+    NumbersInWords::ToNumber.new(self, language).in_numbers
   end
 end
 

@@ -1,9 +1,9 @@
 require './spec/spec_helper'
 
-describe NumbersInWords::LanguageWriterEnglish do
+describe NumbersInWords::English::LanguageWriterEnglish do
   it "should display numbers grouped" do
     count = 0
-    @writer = NumbersInWords::LanguageWriterEnglish.new(2111)
+    @writer = NumbersInWords::English::LanguageWriterEnglish.new(2111)
     @writer.group_words(3) do |power, name, digits|
       case count
       when 0

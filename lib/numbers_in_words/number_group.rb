@@ -1,7 +1,7 @@
 module NumbersInWords
   class NumberGroup
     include Enumerable
-    include NumbersInWords::Constants
+    LENGTH_OF_GOOGOL = 101 #length of the string i.e. one with 100 zeros
     attr_accessor :number
 
     def each
