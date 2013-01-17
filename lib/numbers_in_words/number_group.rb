@@ -1,20 +1,19 @@
 module NumbersInWords
   class NumberGroup
     include Enumerable
-    LENGTH_OF_GOOGOL = 101 #length of the string i.e. one with 100 zeros
     attr_accessor :number
 
     def each
       @array.each { |item|  yield item}
     end
 
-    #split into groups this gives us 1234567 => 123 456 7
-    #so we need to reverse first
-    #in stages
     def initialize number
       @number = number
     end
 
+    #split into groups this gives us 1234567 => 123 456 7
+    #so we need to reverse first
+    #in stages
     def groups size
       #1234567   => 765 432 1
       @array = @number.to_s.reverse.split("").in_groups_of(size)
@@ -35,15 +34,9 @@ module NumbersInWords
 
     def split_decimals
       if @number.is_a? Float
-        int     = @number.to_i
-        decimal = @number - int
-        decimal = decimal.to_s.split(".")[1]
-        digits  = decimal.split(//)
-        #convert to integers array
-        digits.inject([]) {|out, digit|
-          out<< digit.to_i
-        }
-        return int, digits
+        int, decimal     = @number.to_s.split "."
+
+        return int.to_i, decimal.split(//).map(&:to_i)
       end
     end
 
