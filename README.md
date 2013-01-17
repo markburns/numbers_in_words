@@ -82,10 +82,11 @@ Example of usage:
   puts "#{digits}*10^#{power} #{digits} #{name}s"
 end
 
- ```
 
- * 2  * 10^2 =  2 hundreds
- * 45 * 10^0 = 45 ones
+2  * 10^2 =  2 hundreds
+45 * 10^0 = 45 ones
+
+ ```
 
 Future plans
 ============
