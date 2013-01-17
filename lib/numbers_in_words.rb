@@ -5,6 +5,9 @@ require 'numbers_in_words/language_writer'
 
 require 'numbers_in_words/english/constants'
 require 'numbers_in_words/english/language_writer_english'
+require 'numbers_in_words/japanese/constants'
+require 'numbers_in_words/japanese/language_writer_japanese'
+
 
 require 'numbers_in_words/number_group'
 require 'numbers_in_words/number_parser'
