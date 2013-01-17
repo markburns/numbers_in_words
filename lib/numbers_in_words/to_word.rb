@@ -1,7 +1,4 @@
 class NumbersInWords::ToWord
-  delegate :to_i, to: :that
-  attr_reader :that
-
   def initialize that
     @that = that
   end
