@@ -16,12 +16,12 @@ module NumbersInWords
         v = handle_exception
         return v if v
 
-        in_decimals = self.decimals
+        in_decimals = decimals
         return in_decimals if in_decimals
 
         number = to_i
 
-        return self.negative() if number < 0
+        return negative() if number < 0
 
         length = number.to_s.length
         output = ""
@@ -35,7 +35,7 @@ module NumbersInWords
 
           output << " " + digit.in_words unless digit==0
         else
-          output << self.write() #longer numbers
+          output << write() #longer numbers
         end
 
         output.strip

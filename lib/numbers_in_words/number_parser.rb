@@ -78,5 +78,4 @@ module NumbersInWords::NumberParser
   end
 
   extend self
-
 end
