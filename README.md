@@ -2,25 +2,45 @@ Installation
 ============
 
 ```
-gem install numbers_in_words
-
-#or in Gemfile
-
 gem 'numbers_in_words'
+
+require 'numbers_in_words'
+require 'numbers_in_words/duck_punch' #see why later
 ```
 
+This project was created for a test for a job interview. I haven't really used
+it myself, but I saw it mentioned somewhere so I thought I'd tidy it up a bit.
 
+I'm going to hopefully preempt some support queries by predicting this will happen:
 
+You've got one of:
 
+```
+NoMethodError: undefined method `in_words' for 123:Fixnum
+NoMethodError: undefined method `in_numbers' for "123":String
+```
 
-The file numbers_to_words defines a module NumbersToWords which is included in
-Fixnum and Bignum.  The in_words method can then be used on any Fixnum or
-Bignum object.
+Here's why
+==========
 
-E.g.
+Previous versions of this gem duckpunched Fixnum and String with a whole bunch
+of methods. This gem will now only add methods if you specifically tell it to
+with:
+
+```
+require 'numbers_in_words'
+require 'numbers_in_words/duck_punch'
+```
+
+Plus it now only adds a single `#in_words` method to `Numeric` and an `#in_numbers`
+method to `String` instead of a whole bunch of them.
+
+Usage
+=========
 
 ```ruby
 require 'numbers_in_words'
+require 'numbers_in_words/duck_punch'
 112.in_words
 #=> one hundred and twelve
 
@@ -61,10 +81,9 @@ Example of usage:
 245.group_words(2,"English") do |power, name, digits|
   puts "#{digits}*10^#{power} #{digits} #{name}s"
 end
-```
 
-	2*10^2= 2 hundreds
-	45*10^0 = 45 ones
+ * 2  * 10^2 =  2 hundreds
+ * 45 * 10^0 = 45 ones
 
 Future plans
 ============

@@ -1,4 +1,4 @@
-require 'numbers_in_words'
+require './spec/spec_helper'
 
 describe WordsInNumbers do
   it "should do the digits 0-10" do

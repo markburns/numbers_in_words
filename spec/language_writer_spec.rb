@@ -1,4 +1,4 @@
-require 'numbers_in_words'
+require './spec/spec_helper'
 
 describe NumbersInWords::LanguageWriterEnglish do
   it "should display numbers grouped" do

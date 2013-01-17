@@ -9,4 +9,3 @@ require 'numbers_in_words/number_parser'
 require 'numbers_in_words/to_number'
 require 'numbers_in_words/to_word'
 
-require 'numbers_in_words/duck_punch'

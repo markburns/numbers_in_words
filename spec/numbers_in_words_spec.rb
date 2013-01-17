@@ -1,4 +1,4 @@
-require 'numbers_in_words'
+require './spec/spec_helper'
 
 describe NumbersInWords do
   it "should print the digits 0-9 correctly" do

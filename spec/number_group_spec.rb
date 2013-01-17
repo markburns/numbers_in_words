@@ -1,4 +1,4 @@
-require 'numbers_in_words'
+require './spec/spec_helper'
 
 describe NumbersInWords::NumberGroup do
   it "should split into group of three digit numbers" do
