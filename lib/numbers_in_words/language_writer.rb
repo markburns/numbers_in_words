@@ -2,15 +2,15 @@ module NumbersInWords
   class LanguageWriter
     include NumbersInWords::Constants
 
-    attr_accessor :number
+    attr_accessor :that
 
-    def initialize number
-      @number = number
+    def initialize that
+      @that = that
     end
 
     def group_words size
       #1000 and over Numbers are split into groups of three
-      groups = NumberGroup.groups_of @number, size
+      groups = NumberGroup.groups_of @that, size
       powers = groups.keys.sort.reverse #put in descending order
 
       powers.each do |power|

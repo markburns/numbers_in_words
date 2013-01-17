@@ -1,29 +1,68 @@
 module NumbersInWords
   class LanguageWriterEnglish < LanguageWriter
+    include NumbersInWords::Constants
+    delegate :to_i, to: :that
+    attr_reader :that
+
+
     def negative
-      "minus " + (-@number).in_words
+      "minus " + (-@that).in_words
     end
 
-    def write
-      length = @number.to_s.length
-      output =
-      if length == 3
-        #e.g. 113 splits into "one hundred" and "thirteen"
-        write_groups(2)
+    def in_english
+      v = handle_exception
+      return v if v
 
-        #more than one hundred less than one googol
-          elsif length < LENGTH_OF_GOOGOL
-      write_groups(3)
+      in_decimals = self.decimals
+      return in_decimals if in_decimals
 
-          elsif length >= LENGTH_OF_GOOGOL
-      write_googols
+      number = to_i
 
+      return self.negative() if number < 0
+
+      length = number.to_s.length
+      output = ""
+
+      if length == 2 #20-99
+        tens = (number/10).round*10 #write the tens
+
+        output << EXCEPTIONS[tens] # e.g. eighty
+
+        digit = number - tens       #write the digits
+
+        output << " " + digit.in_words unless digit==0
+      else
+        output << self.write() #longer numbers
       end
+
+      output.strip
+
+    end
+
+    def handle_exception
+      EXCEPTIONS[@that] if @that.is_a?(Integer) and EXCEPTIONS[@that]
+    end
+
+
+    def write
+      length = @that.to_s.length
+      output =
+        if length == 3
+          #e.g. 113 splits into "one hundred" and "thirteen"
+          write_groups(2)
+
+          #more than one hundred less than one googol
+        elsif length < LENGTH_OF_GOOGOL
+          write_groups(3)
+
+        elsif length >= LENGTH_OF_GOOGOL
+          write_googols
+        end
       output.strip
     end
 
     def decimals
-      int, decimals = NumberGroup.new(@number).split_decimals
+      int, decimals = NumberGroup.new(@that).split_decimals
       if int
         out = int.in_words + " point "
         decimals.each do |decimal|
@@ -35,7 +74,7 @@ module NumbersInWords
 
     private
     def write_googols
-      googols, remainder = NumberGroup.new(@number).split_googols
+      googols, remainder = NumberGroup.new(@that).split_googols
       output = ""
       output << " " + googols.in_words + " googol"
       if remainder > 0
