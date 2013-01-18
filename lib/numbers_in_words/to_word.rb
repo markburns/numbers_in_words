@@ -1,4 +1,11 @@
 class NumbersInWords::ToWord
+  dir = './lib/numbers_in_words'
+
+  SUPPORTED_LANGUAGES =
+    Dir[dir + "/*"].
+      select{|e| File.directory?(e) }.
+      map{|x| x.gsub(/\A.*\//, '')}
+
   def initialize that, language=NumbersInWords.language
     @that = that
     @language = language
@@ -10,12 +17,11 @@ class NumbersInWords::ToWord
     send "in_#{language.downcase}"
   end
 
-  def in_english
-    NumbersInWords::English::LanguageWriterEnglish.new(@that).in_words
+  SUPPORTED_LANGUAGES.each do |lang|
+    define_method "in_#{lang}" do
+      lang = lang.capitalize
+      klass = NumbersInWords.const_get(lang).const_get"LanguageWriter#{lang}"
+      klass.new(@that).in_words
+    end
   end
-
-  def in_japanese
-    NumbersInWords::Japanese::LanguageWriterJapanese.new(@that).in_words
-  end
-
 end
