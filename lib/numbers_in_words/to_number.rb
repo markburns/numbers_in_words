@@ -30,6 +30,8 @@ class NumbersInWords::ToNumber
     h = handle_decimals text
     return h if h
 
+    f = handle_fractions text
+    return f if f
     integers = word_array_to_integers text.split(" ")
 
     NumbersInWords::NumberParser.parse integers
@@ -55,12 +57,31 @@ class NumbersInWords::ToNumber
     end
   end
 
-
   def decimal_portion text
     words    = text.split " "
     integers = word_array_to_integers words
     decimal  = "0." + integers.join()
     decimal.to_f
+  end
+
+  def handle_fractions text
+    if text.match(/(half|quarter|third)/) # we have a fraction
+      match = text.match(/\sand\s/)
+      if match # there's a whole number prefix
+        integer = match.pre_match.in_numbers
+        fraction = fraction_portion match.post_match
+        integer + fraction
+      else # the fraction stands alone
+        fraction_portion text
+      end
+    end
+  end
+
+  def fraction_portion text
+    words    = text.split " "
+    words    = words.collect(&:singularize)
+    integers = word_array_to_integers words
+    integers.inject(:*) # multiply them all together
   end
 
   #handles simple single word numbers
