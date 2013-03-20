@@ -1,10 +1,17 @@
 require './spec/spec_helper'
 
 describe WordsInNumbers do
-  it "should handle fractions" do
+  it "should handle lone fractions" do
     "half"   .in_numbers.should == 0.5
     "quarter".in_numbers.should == 0.25
     "third"  .in_numbers.should == 0.33
+  end
+
+  it "should handle whole numbers with fractions" do
+    "one half"          .in_numbers.should == 0.5
+    "one and a half"    .in_numbers.should == 1.5
+    "one and one half"  .in_numbers.should == 1.5
+    "two and two thirds".in_numbers.should == 2.66
   end
 
   it "should do the digits 0-10" do
