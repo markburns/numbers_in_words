@@ -1,6 +1,12 @@
 require './spec/spec_helper'
 
 describe WordsInNumbers do
+  it "should consider non-number words to be nil not zero" do
+    "dog"   .in_numbers.should == nil
+    "3x"    .in_numbers.should == nil
+    "3,5"   .in_numbers.should == nil
+  end
+
   it "should handle lone fractions" do
     "half"   .in_numbers.should == 0.5
     "quarter".in_numbers.should == 0.25

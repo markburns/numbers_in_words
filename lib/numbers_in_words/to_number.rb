@@ -34,6 +34,8 @@ class NumbersInWords::ToNumber
     return f if f
     integers = word_array_to_integers text.split(" ")
 
+    return nil if integers.empty?
+
     NumbersInWords::NumberParser.parse integers
   end
 
