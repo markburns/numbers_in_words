@@ -131,4 +131,14 @@ describe WordsInNumbers do
       in_numbers.should == 75.84327694518
   end
 
+  it "should handle years notation" do
+    "fifteen sixteen".in_numbers .should == 1516
+    "eighty five sixteen".in_numbers .should == 8516
+    "nineteen ninety six".in_numbers .should == 1996
+    "forty nine ninety eight forty seven seventy nine".in_numbers .should == 49984779
+    "fifteen sixteen".in_numbers .should == 1516
+    "fifteen sixteen seven".in_numbers .should == 15167
+    "fifteen sixteen seventeen".in_numbers .should == 151617
+  end
+
 end
