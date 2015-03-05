@@ -40,6 +40,10 @@ module NumbersInWords::NumberParser
   #4. add 1 to memory                                        1      2000
   #5. finish - add memory to answer                          0      2001
   def parse(integers)
+    scales_n = [100, 1000, 1000000, 1000000000, 1000000000000, 10**100] 
+    if [] == scales_n & integers && integers.length > 1
+      return pair_parse integers
+    end
     memory = 0
     answer = 0
     reset = true #reset each time memory is reset
@@ -58,8 +62,7 @@ module NumbersInWords::NumberParser
             reset = true
           end
         end
-
-        if memory < integer
+        if memory < integer 
           memory *= integer
         else
           memory += integer
@@ -75,6 +78,37 @@ module NumbersInWords::NumberParser
 
   def power_of_ten? integer
     power_of_ten(integer) == power_of_ten(integer).to_i
+  end
+
+  # 15,16
+  # 85,16
+  def pair_parse(ints)
+    ints = compress(ints)
+    return ints[0] if ints.length == 1
+    sum = 0
+    ints.each do |n|
+      sum *= n > 10 ? 100 : 10
+      sum += n
+    end
+    sum
+  end
+
+  # [40, 2] => [42]
+  def compress(ints)
+    res = []
+    is_compressed = false
+    ints.each.with_index do |n,i|
+      next if i == 0
+      if !is_compressed && n < 10 && ints[i - 1] % 10 == 0
+        res << ints[i - 1] + n
+        is_compressed = true
+      else
+        res << ints[i - 1] if i == 1
+        res << n unless n % 10 == 0
+        is_compressed = false
+      end
+    end
+    res
   end
 
   extend self
