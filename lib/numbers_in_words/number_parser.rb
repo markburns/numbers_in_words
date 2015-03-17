@@ -95,20 +95,17 @@ module NumbersInWords::NumberParser
 
   # [40, 2] => [42]
   def compress(ints)
-    res = []
-    is_compressed = false
-    ints.each.with_index do |n,i|
-      next if i == 0
-      if !is_compressed && n < 10 && ints[i - 1] % 10 == 0
-        res << ints[i - 1] + n
-        is_compressed = true
+    res = []; i = 0
+    while i < ints.length - 1
+      if ints[i] % 10 == 0 && ints[i + 1] < 10
+        res << ints[i] + ints[i + 1]
+        i += 2
       else
-        res << ints[i - 1] if i == 1
-        res << n unless n % 10 == 0
-        is_compressed = false
+        res << ints[i]
+        i += 1
       end
     end
-    res
+    i < ints.length ? res << ints[-1] : res
   end
 
   extend self
