@@ -48,19 +48,8 @@ class NumbersInWords::ToNumber
     match = text.match(/\spoint\s/)
     if match
       integer = match.pre_match.in_numbers
-
-      decimal = decimal_portion match.post_match
-
-      integer + decimal
+      integer +=  ("0." + match.post_match.in_numbers.to_s).to_f
     end
-  end
-
-
-  def decimal_portion text
-    words    = text.split " "
-    integers = word_array_to_integers words
-    decimal  = "0." + integers.join()
-    decimal.to_f
   end
 
   #handles simple single word numbers
