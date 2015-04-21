@@ -41,7 +41,10 @@ module NumbersInWords::NumberParser
   #5. finish - add memory to answer                          0      2001
   def parse(integers, only_compress = false)
     scales_n = [100, 1000, 1000000, 1000000000, 1000000000000, 10**100] 
-    if [] == scales_n & integers && integers.length > 1
+    if integers.length < 2
+      return only_compress ? integers : integers.empty? ? 0 : integers[0]
+    end
+    if [] == scales_n & integers
       return pair_parse(integers, only_compress)
     end
     memory = 0
