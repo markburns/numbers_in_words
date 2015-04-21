@@ -8,6 +8,10 @@ module WordsInNumbers
   def in_numbers language=NumbersInWords.language
     NumbersInWords::ToNumber.new(self, language).in_numbers
   end
+
+  def num_compress language=NumbersInWords.language
+    NumbersInWords::ToNumber.new(self, language).in_numbers true
+  end
 end
 
 class String

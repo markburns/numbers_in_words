@@ -20,7 +20,7 @@ class NumbersInWords::ToNumber
     -1 * (text.gsub(/^minus /, "")).in_numbers if text =~ /^minus /
   end
 
-  def in_numbers
+  def in_numbers(only_compress = false)
     text = to_s
 
     text = strip_punctuation text
@@ -32,7 +32,7 @@ class NumbersInWords::ToNumber
 
     integers = word_array_to_integers text.split(" ")
 
-    NumbersInWords::NumberParser.parse integers
+    NumbersInWords::NumberParser.parse integers, only_compress
   end
 
   def strip_punctuation text

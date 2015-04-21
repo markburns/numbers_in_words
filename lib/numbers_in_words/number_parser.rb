@@ -39,10 +39,10 @@ module NumbersInWords::NumberParser
   #3. add memory to answer,reset,  because power of ten>2    0      2000
   #4. add 1 to memory                                        1      2000
   #5. finish - add memory to answer                          0      2001
-  def parse(integers)
+  def parse(integers, only_compress = false)
     scales_n = [100, 1000, 1000000, 1000000000, 1000000000000, 10**100] 
     if [] == scales_n & integers && integers.length > 1
-      return pair_parse integers
+      return pair_parse(integers, only_compress)
     end
     memory = 0
     answer = 0
@@ -82,8 +82,9 @@ module NumbersInWords::NumberParser
 
   # 15,16
   # 85,16
-  def pair_parse(ints)
+  def pair_parse(ints, only_compress = false)
     ints = compress(ints)
+    return ints if only_compress
     return ints[0] if ints.length == 1
     sum = 0
     ints.each do |n|
@@ -96,6 +97,7 @@ module NumbersInWords::NumberParser
   # [40, 2] => [42]
   def compress(ints)
     res = []; i = 0
+    return [] if ints.empty?
     while i < ints.length - 1
       if ints[i] % 10 == 0 && ints[i + 1] < 10
         res << ints[i] + ints[i + 1]
