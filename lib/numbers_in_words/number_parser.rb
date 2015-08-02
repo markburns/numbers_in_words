@@ -91,7 +91,7 @@ module NumbersInWords::NumberParser
     return ints[0] if ints.length == 1
     sum = 0
     ints.each do |n|
-      sum *= n > 10 ? 100 : 10
+      sum *= n >= 10 ? 100 : 10
       sum += n
     end
     sum

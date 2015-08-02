@@ -9,7 +9,8 @@ describe WordsInNumbers do
      "two fifty".in_numbers.should == 250
      "one point fifty six fifty seven".in_numbers.should == 1.5657 
      "one three forty seven".in_numbers.should == 1347 
-     "one three five point forty seven".in_numbers.should == 135.47 
+     "one three five point forty seven".in_numbers.should == 135.47
+		 "one ten sixty three".in_numbers.should == 11063
   end
 
 end
