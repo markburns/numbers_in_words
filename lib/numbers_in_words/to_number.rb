@@ -22,6 +22,7 @@ class NumbersInWords::ToNumber
 
   def in_numbers(only_compress = false)
     text = to_s
+    return text.to_f if text =~ /^-?\d+(.\d+)?$/
 
     text = strip_punctuation text
     i = handle_negative text
