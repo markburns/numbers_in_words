@@ -25,6 +25,9 @@ class NumbersInWords::ToNumber
     return text.to_f if text =~ /^-?\d+(.\d+)?$/
 
     text = strip_punctuation text
+    mixed = text.match /^(-?\d+(.\d+)?) (hundred|thousand|million|billion|trillion)$/
+    return mixed[1].in_numbers * mixed[3].in_numbers if mixed && mixed[1] && mixed[3]
+
     i = handle_negative text
     return i if i
 
@@ -37,7 +40,7 @@ class NumbersInWords::ToNumber
   end
 
   def strip_punctuation text
-    text = text.downcase.gsub(/[^a-z ]/, " ")
+    text = text.downcase.gsub(/[^a-z 0-9]/, " ")
     to_remove = true
 
     to_remove = text.gsub! "  ", " " while to_remove
