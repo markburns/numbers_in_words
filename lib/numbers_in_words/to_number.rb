@@ -28,6 +28,9 @@ class NumbersInWords::ToNumber
     mixed = text.match /^(-?\d+(.\d+)?) (hundred|thousand|million|billion|trillion)$/
     return mixed[1].in_numbers * mixed[3].in_numbers if mixed && mixed[1] && mixed[3]
 
+    one = text.match /^one (hundred|thousand|million|billion|trillion)$/
+    return only_compress ? [one[1].in_numbers] : one[1].in_numbers if one
+
     i = handle_negative text
     return i if i
 
