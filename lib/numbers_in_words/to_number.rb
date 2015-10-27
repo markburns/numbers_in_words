@@ -24,7 +24,7 @@ class NumbersInWords::ToNumber
   end
 
   def in_numbers(only_compress = false)
-    text = to_s
+    text = to_s.strip
     return text.to_f if text =~ /^-?\d+(.\d+)?$/
 
     text = strip_punctuation text
