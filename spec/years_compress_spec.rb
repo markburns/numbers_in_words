@@ -9,6 +9,7 @@ describe WordsInNumbers do
     expect("two fifty".num_compress).to eq([2, 50])
     expect("one three forty seven".num_compress).to eq([1, 3, 47])
     expect("one hundred".num_compress).to eq([100])
+    expect("minus one hundred".num_compress).to eq([-100])
   end
 
 end

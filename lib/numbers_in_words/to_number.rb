@@ -16,8 +16,11 @@ class NumbersInWords::ToNumber
     end
   end
 
-  def handle_negative text
-    -1 * (text.gsub(/^minus /, "")).in_numbers if text =~ /^minus /
+  def handle_negative(text, only_compress)
+    if text =~ /^minus/
+      stripped = text.gsub(/^minus /, "").in_numbers(only_compress)
+      only_compress ? stripped.map{ |k| k * -1 } : -1 * stripped
+    end
   end
 
   def in_numbers(only_compress = false)
@@ -25,14 +28,15 @@ class NumbersInWords::ToNumber
     return text.to_f if text =~ /^-?\d+(.\d+)?$/
 
     text = strip_punctuation text
+
+    i = handle_negative(text, only_compress)
+    return i if i
+
     mixed = text.match /^(-?\d+(.\d+)?) (hundred|thousand|million|billion|trillion)$/
     return mixed[1].in_numbers * mixed[3].in_numbers if mixed && mixed[1] && mixed[3]
 
     one = text.match /^one (hundred|thousand|million|billion|trillion)$/
     return only_compress ? [one[1].in_numbers] : one[1].in_numbers if one
-
-    i = handle_negative text
-    return i if i
 
     h = handle_decimals text
     return h if h
