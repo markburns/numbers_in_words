@@ -18,8 +18,9 @@ class NumbersInWords::ToNumber
 
   def handle_negative(text, only_compress)
     if text =~ /^minus/
-      stripped = text.gsub(/^minus /, "").in_numbers(only_compress)
-      only_compress ? stripped.map{ |k| k * -1 } : -1 * stripped
+      stripped = text.gsub(/^minus/, "")
+      stripped_n = stripped.in_numbers(only_compress)
+      only_compress ? stripped_n.map{ |k| k * -1 } : -1 * stripped_n
     end
   end
 
