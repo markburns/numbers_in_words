@@ -2,6 +2,10 @@ require './spec/spec_helper'
 
 describe NumbersInWords do
   describe ".language" do
+    after do
+      NumbersInWords.instance_variable_set(:"@language", nil)
+    end
+
     it "has a default value" do
       expect(NumbersInWords.language).to eq "English"
     end
