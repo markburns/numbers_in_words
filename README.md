@@ -8,7 +8,7 @@
 Installation
 ============
 
-```
+```ruby
 gem 'numbers_in_words'
 
 require 'numbers_in_words'
@@ -34,7 +34,7 @@ Previous versions of this gem duckpunched Fixnum and String with a whole bunch
 of methods. This gem will now only add methods if you specifically tell it to
 with:
 
-```
+```ruby
 require 'numbers_in_words'
 require 'numbers_in_words/duck_punch'
 ```
