@@ -15,7 +15,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency      "activesupport"
   gem.add_development_dependency      "rspec"
-  gem.add_development_dependency      "debugger"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
