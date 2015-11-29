@@ -1,6 +1,6 @@
 class NumbersInWords::ToNumber
   delegate :to_s, to: :that
-  delegate :powers_of_ten_to_i, :exceptions_to_i, to: :language
+  delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, to: :language
   attr_reader :that, :language
 
   def initialize that, language=NumbersInWords.language
@@ -67,7 +67,7 @@ class NumbersInWords::ToNumber
   #handles simple single word numbers
   #e.g. one, seven, twenty, eight, thousand etc
   def word_to_integer word
-    text = word.to_s.chomp.strip
+    text = canonize(word.to_s.chomp.strip)
 
     exception = exceptions_to_i[text]
     return exception if exception

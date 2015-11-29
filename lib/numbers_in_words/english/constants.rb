@@ -1,5 +1,14 @@
 module NumbersInWords
   module English
+
+    def self.canonize(w)
+      aliases = {
+        "oh" => "zero"
+      }
+      canon = aliases[w]
+      return canon ? canon : w
+    end
+
     def self.exceptions
       {
         0 => "zero",
