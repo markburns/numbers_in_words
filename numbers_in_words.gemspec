@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "http://github.com/markburns/numbers_in_words"
 
   gem.add_dependency      "activesupport"
-  gem.add_development_dependency      "rspec"
+  gem.add_development_dependency      "rspec", "~> 3.4.0"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
