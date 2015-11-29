@@ -16,6 +16,7 @@ module NumbersInWords
 
   class << self
     attr_writer :language
+
     def language
       @language ||= "English"
     end

@@ -1,6 +1,17 @@
 require './spec/spec_helper'
 
 describe NumbersInWords do
+  describe ".language" do
+    it "has a default value" do
+      expect(NumbersInWords.language).to eq "English"
+    end
+
+    it "can be set" do
+      NumbersInWords.language = "some language"
+      expect(NumbersInWords.language).to eq "some language"
+    end
+  end
+
   it "should print the digits 0-9 correctly" do
     numbers = %w[zero one two three four five six seven eight nine]
 

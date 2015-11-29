@@ -39,7 +39,6 @@ module NumbersInWords
         end
 
         output.strip
-
       end
 
       def handle_exception
