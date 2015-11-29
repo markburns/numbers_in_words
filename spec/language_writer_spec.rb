@@ -7,13 +7,13 @@ describe NumbersInWords::English::LanguageWriterEnglish do
     @writer.group_words(3) do |power, name, digits|
       case count
       when 0
-        power.should == 3
-        name.should == "thousand"
-        digits.should == 2
+        expect(power).to eq(3)
+        expect(name).to eq("thousand")
+        expect(digits).to eq(2)
       when 1
-        power.should == 0
-        name.should == "one"
-        digits.should == 111
+        expect(power).to eq(0)
+        expect(name).to eq("one")
+        expect(digits).to eq(111)
       end
       count += 1
     end
