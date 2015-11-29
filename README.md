@@ -1,3 +1,10 @@
+[![Build Status](http://img.shields.io/travis/markburns/numbers_in_words.svg)](https://travis-ci.org/markburns/numbers_in_words)
+[![Dependency Status](http://img.shields.io/gemnasium/markburns/numbers_in_words.svg)](https://gemnasium.com/markburns/numbers_in_words)
+[![Code Climate](http://img.shields.io/codeclimate/github/markburns/numbers_in_words.svg)](https://codeclimate.com/github/markburns/numbers_in_words)
+[![Gem Version](http://img.shields.io/gem/v/numbers_in_words.svg)](https://rubygems.org/gems/numbers_in_words)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://markburns.mit-license.org)
+[![Badges](http://img.shields.io/:badges-6/6-ff6799.svg)](https://github.com/badges/badgerbadgerbadger)
+
 Installation
 ============
 
