@@ -9,7 +9,7 @@ module NumbersInWords
       end
 
       def negative
-        "minus " + (-@that).in_words
+        "minus " + NumbersInWords.in_words(-@that)
       end
 
       def in_words
@@ -33,7 +33,7 @@ module NumbersInWords
 
           digit = number - tens       #write the digits
 
-          output << " " + digit.in_words unless digit==0
+          output << " " + NumbersInWords.in_words(digit) unless digit==0
         else
           output << write() #longer numbers
         end
@@ -66,24 +66,27 @@ module NumbersInWords
       def decimals
         int, decimals = NumberGroup.new(@that).split_decimals
         if int
-          out = int.in_words + " point "
+          out = NumbersInWords.in_words(int) + " point "
           decimals.each do |decimal|
-            out << decimal.to_i.in_words + " "
+            out << NumbersInWords.in_words(decimal.to_i) + " "
           end
           out.strip
         end
       end
 
       private
+
       def write_googols
         googols, remainder = NumberGroup.new(@that).split_googols
         output = ""
-        output << " " + googols.in_words + " googol"
+
+        output << " " + NumbersInWords.in_words(googols) + " googol"
         if remainder > 0
           prefix = " "
           prefix << "and " if remainder < 100
-          output << prefix + remainder.in_words
+          output << prefix + NumbersInWords.in_words(remainder)
         end
+
         output
       end
 
@@ -95,7 +98,7 @@ module NumbersInWords
             prefix = " "
             #no and between thousands and hundreds
             prefix << "and " if power == 0  and digits < 100
-            output << prefix + digits.in_words
+            output << prefix + NumbersInWords.in_words(digits)
             output << prefix + name unless power == 0
           end
         end
