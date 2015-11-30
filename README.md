@@ -27,7 +27,7 @@ require 'numbers_in_words'
 NumbersInWords.in_words(112)
 #=> one hundred and twelve
 
-NumbersInWords.in_numbers(112)
+NumbersInWords.in_numbers("one googol")
 #=>10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 
 NumbersInWords.in_numbers("Seventy million, five-hundred and fifty six thousand point eight nine three")
