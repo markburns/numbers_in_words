@@ -4,4 +4,4 @@ rvm:
  - "2.1.7"
  - "2.2.3"
  - rbx
-script: bundle exec rspec spec
+script: ./bin/spec

@@ -1,0 +1,2 @@
+bundle exec rspec spec/non_monkey_patch_spec.rb
+bundle exec rspec spec
