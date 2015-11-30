@@ -58,7 +58,7 @@ NumbersInWords.in_numbers("Seventy million, five-hundred and fifty six thousand 
 ```
 
 
-Monkey punch version
+Monkey patch version
 
 ```ruby
 require 'numbers_in_words'
