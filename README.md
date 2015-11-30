@@ -1,42 +1,41 @@
+[![Build Status](http://img.shields.io/travis/markburns/numbers_in_words.svg)](https://travis-ci.org/markburns/numbers_in_words)
+[![Dependency Status](http://img.shields.io/gemnasium/markburns/numbers_in_words.svg)](https://gemnasium.com/markburns/numbers_in_words)
+[![Code Climate](http://img.shields.io/codeclimate/github/markburns/numbers_in_words.svg)](https://codeclimate.com/github/markburns/numbers_in_words)
+[![Gem Version](http://img.shields.io/gem/v/numbers_in_words.svg)](https://rubygems.org/gems/numbers_in_words)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://markburns.mit-license.org)
+[![Badges](http://img.shields.io/:badges-6/6-ff6799.svg)](https://github.com/badges/badgerbadgerbadger)
+
 Installation
 ============
 
-```
+```ruby
 gem 'numbers_in_words'
 
 require 'numbers_in_words'
-require 'numbers_in_words/duck_punch' #see why later
+require 'numbers_in_words/duck_punch' #optional see why later
 ```
 
 This project was created for a test for a job interview. I haven't really used
 it myself, but I saw it mentioned somewhere so I thought I'd tidy it up a bit.
 
-I'm going to hopefully preempt some support queries by predicting this will happen:
-
-You've got one of:
-
-```
-NoMethodError: undefined method `in_words' for 123:Fixnum
-NoMethodError: undefined method `in_numbers' for "123":String
-```
-
-Here's why
-==========
-
-Previous versions of this gem duckpunched Fixnum and String with a whole bunch
-of methods. This gem will now only add methods if you specifically tell it to
-with:
-
-```
-require 'numbers_in_words'
-require 'numbers_in_words/duck_punch'
-```
-
-Plus it now only adds a single `#in_words` method to `Numeric` and an `#in_numbers`
-method to `String` instead of a whole bunch of them.
-
 Usage
 =========
+
+```ruby
+require 'numbers_in_words'
+
+NumbersInWords.in_words(112)
+#=> one hundred and twelve
+
+NumbersInWords.in_numbers("one googol")
+#=>10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+NumbersInWords.in_numbers("Seventy million, five-hundred and fifty six thousand point eight nine three")
+#=> 70556000.893
+```
+
+
+Monkey patch version
 
 ```ruby
 require 'numbers_in_words'
@@ -51,42 +50,30 @@ require 'numbers_in_words/duck_punch'
 #=> 70556000.893
 ```
 
----------------
 
-Whilst creating this project I realized that in English:
+NoMethodError `in_words` or `in_numbers`
+----------
+I'm going to hopefully preempt some support queries by predicting this will happen:
 
-* Numbers are grouped in groups of threes
-* Numbers less than 1,000 are grouped by hundreds and then by tens
-* There are specific rules for when we put an "and" in between numbers
+You've got one of:
 
-It makes sense to manage the numbers by these groups, so
-I created a method groups_of which will split any integer into
-groups of a certain size. It returns a hash with the power of ten
-as the key and the multiplier as the value. E.g:
-
-```ruby
-31245.groups_of(3)
-#=> {0=>245,3=>31} #i.e. 31 thousands, and 245 ones
-
-245.group_of(2)
-#=> {0=>45,2=>2}    #i.e. 2 hundreds, and 45 ones
+```
+NoMethodError: undefined method `in_words' for 123:Fixnum
+NoMethodError: undefined method `in_numbers' for "123":String
 ```
 
-(In Japanese numbers are grouped in groups of 4, so it makes sense to try and
-separate the language related stuff from the number grouping related stuff)
-
-Example of usage:
+Previous versions of this gem duckpunched Fixnum and String with a whole bunch
+of methods. This gem will now only add methods if you specifically tell it to
+with:
 
 ```ruby
-245.group_words(2,"English") do |power, name, digits|
-  puts "#{digits}*10^#{power} #{digits} #{name}s"
-end
+require 'numbers_in_words'
+require 'numbers_in_words/duck_punch'
+```
 
+Plus it now only adds a single `#in_words` method to `Numeric` and an `#in_numbers`
+method to `String` instead of a whole bunch of them.
 
-2  * 10^2 =  2 hundreds
-45 * 10^0 = 45 ones
-
- ```
 
 Future plans
 ============

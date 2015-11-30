@@ -3,12 +3,16 @@ module NumbersInWords
     include Enumerable
     attr_accessor :number
 
-    def each
-      @array.each { |item|  yield item}
+    def self.groups_of number, size
+      new(number).groups(size)
     end
 
     def initialize number
       @number = number
+    end
+
+    def each
+      @array.each { |item|  yield item}
     end
 
     #split into groups this gives us 1234567 => 123 456 7
@@ -40,10 +44,6 @@ module NumbersInWords
 
         return int.to_i, decimal.split(//).map(&:to_i)
       end
-    end
-
-    def self.groups_of number, size
-      new(number).groups(size)
     end
 
     def split_googols

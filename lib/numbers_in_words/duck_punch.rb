@@ -1,16 +1,12 @@
 module NumbersInWords
   def in_words language=NumbersInWords.language
-    NumbersInWords::ToWord.new(self, language).in_words
+    NumbersInWords.in_words(self, language)
   end
 end
 
 module WordsInNumbers
   def in_numbers(only_compress = false, language=NumbersInWords.language)
     NumbersInWords::ToNumber.new(self, language).in_numbers(only_compress)
-  end
-
-  def num_compress language=NumbersInWords.language
-    NumbersInWords::ToNumber.new(self, language).in_numbers true
   end
 end
 

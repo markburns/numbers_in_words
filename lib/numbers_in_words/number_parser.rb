@@ -50,7 +50,7 @@ module NumbersInWords::NumberParser
     memory = 0
     answer = 0
     reset = true #reset each time memory is reset
-    integers.each_with_index do |integer, index|
+    integers.each do |integer|
       if reset
         reset = false
         memory += integer

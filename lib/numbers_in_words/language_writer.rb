@@ -15,7 +15,6 @@ module NumbersInWords
       end
     end
 
-
     def group_words size
       #1000 and over Numbers are split into groups of three
       groups = NumberGroup.groups_of @that, size
