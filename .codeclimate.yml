@@ -10,3 +10,5 @@ ratings:
   - "**.rb"
 exclude_paths:
 - spec/**/*
+- .codeclimate.yml
+- .rubocop.yml
