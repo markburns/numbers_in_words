@@ -23,22 +23,29 @@ module NumbersInWords
 
         return negative() if number < 0
 
-        length = number.to_s.length
-        output = ""
-
-        if length == 2 #20-99
-          tens = (number/10).round*10 #write the tens
-
-          output << exceptions[tens] # e.g. eighty
-
-          digit = number - tens       #write the digits
-
-          output << " " + NumbersInWords.in_words(digit) unless digit==0
-        else
-          output << write() #longer numbers
-        end
+        output = if number.to_s.length == 2 #20-99
+                   handle_tens(number)
+                 else
+                   write() #longer numbers
+                 end
 
         output.strip
+      end
+
+      def handle_tens(number)
+        output = ""
+
+        tens = (number/10).round*10 #write the tens
+
+        output << exceptions[tens] # e.g. eighty
+
+        digit = number - tens       #write the digits
+
+        unless digit == 0
+          output << " " + NumbersInWords.in_words(digit)
+        end
+
+        output
       end
 
       def handle_exception
