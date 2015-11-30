@@ -20,6 +20,14 @@ module NumbersInWords
     def language
       @language ||= "English"
     end
+
+    def in_words(i, language=NumbersInWords.language)
+      NumbersInWords::ToWord.new(i, language).in_words
+    end
+
+    def in_numbers(s, language=NumbersInWords.language)
+      NumbersInWords::ToNumber.new(s, language).in_numbers
+    end
   end
 end
 

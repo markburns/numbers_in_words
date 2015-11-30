@@ -16,6 +16,18 @@ describe NumbersInWords do
     end
   end
 
+  describe ".in_words" do
+    it do
+      expect(NumbersInWords.in_words(100)).to eq "one hundred"
+    end
+  end
+
+  describe ".in_numbers" do
+    it do
+      expect(NumbersInWords.in_numbers("one hundred")).to eq 100
+    end
+  end
+
   it "should print the digits 0-9 correctly" do
     numbers = %w[zero one two three four five six seven eight nine]
 
