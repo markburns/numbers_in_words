@@ -19,7 +19,7 @@ class NumbersInWords::ToNumber
   def handle_negative(text, only_compress)
     if text =~ /^minus/
       stripped = text.gsub(/^minus/, "")
-      stripped_n = stripped.in_numbers(only_compress)
+      stripped_n = NumbersInWords.in_numbers(stripped, language, only_compress)
       only_compress ? stripped_n.map{ |k| k * -1 } : -1 * stripped_n
     end
   end
@@ -34,10 +34,19 @@ class NumbersInWords::ToNumber
     return i if i
 
     mixed = text.match /^(-?\d+(.\d+)?) (hundred|thousand|million|billion|trillion)$/
-    return mixed[1].in_numbers * mixed[3].in_numbers if mixed && mixed[1] && mixed[3]
+
+    if mixed && mixed[1] && mixed[3]
+      third_match = NumbersInWords.in_numbers(mixed[3])
+      first_match = NumbersInWords.in_numbers(mixed[1])
+      return first_match * third_match
+    end
 
     one = text.match /^one (hundred|thousand|million|billion|trillion)$/
-    return only_compress ? [one[1].in_numbers] : one[1].in_numbers if one
+
+    if one
+      first_match = NumbersInWords.in_numbers(one[1])
+      return only_compress ? [first_match] : first_match
+    end
 
     h = handle_decimals text
     return h if h
@@ -59,8 +68,9 @@ class NumbersInWords::ToNumber
   def handle_decimals text
     match = text.match(/\spoint\s/)
     if match
-      integer = match.pre_match.in_numbers
-      integer +=  ("0." + match.post_match.in_numbers.to_s).to_f
+      integer = NumbersInWords.in_numbers(match.pre_match)
+      decimal = NumbersInWords.in_numbers(match.post_match)
+      integer +=  "0.#{decimal}".to_f
     end
   end
 
