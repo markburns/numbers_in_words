@@ -20,7 +20,7 @@ class NumbersInWords::ToNumber
   def handle_negative(text, only_compress)
     stripped = strip_minus text
     if stripped
-      stripped_n = stripped.in_numbers(only_compress)
+      stripped_n = NumbersInWords.in_numbers(stripped, language, only_compress)
       only_compress ? stripped_n.map{ |k| k * -1 } : -1 * stripped_n
     end
   end
@@ -38,7 +38,10 @@ class NumbersInWords::ToNumber
     return mixed if mixed
 
     one = check_one text
-    return only_compress ? [one[1].in_numbers] : one[1].in_numbers if one
+    if one
+      res = NumbersInWords.in_numbers(one[1], language)
+      return only_compress ? [res] : res
+    end
 
     h = handle_decimals text
     return h if h

@@ -103,7 +103,10 @@ module NumbersInWords
 
     def self.check_mixed(txt)
       mixed = txt.match /^(-?\d+(.\d+)?) (#{POWERS_RX}s?)$/
-      return mixed[1].in_numbers * mixed[3].in_numbers if mixed && mixed[1] && mixed[3]
+      if mixed && mixed[1] && mixed[3]
+        matches = [mixed[1], mixed[3]].map{ |m| NumbersInWords.in_numbers m }
+        return matches.reduce(&:*)
+      end
     end
 
     def self.check_one(txt)
