@@ -113,5 +113,9 @@ module NumbersInWords
     def self.strip_minus(txt)
       stripped = txt.gsub(/^minus/, "") if txt =~ /^minus/
     end
+
+    def self.check_decimal(txt)
+      txt.match(/\spoint\s/)
+    end
   end
 end

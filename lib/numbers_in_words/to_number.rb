@@ -1,7 +1,7 @@
 class NumbersInWords::ToNumber
   delegate :to_s, to: :that
   delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, \
-    :check_mixed, :check_one, :strip_minus, to: :language
+    :check_mixed, :check_one, :strip_minus, :check_decimal, to: :language
   attr_reader :that, :language
 
   def initialize that, language=NumbersInWords.language
@@ -58,7 +58,7 @@ class NumbersInWords::ToNumber
   end
 
   def handle_decimals text
-    match = text.match(/\spoint\s/)
+    match = check_decimal text
     if match
       integer = match.pre_match.in_numbers
       integer +=  ("0." + match.post_match.in_numbers.to_s).to_f
