@@ -11,10 +11,6 @@ module NumbersInWords
       @number = number
     end
 
-    def each
-      @array.each { |item|  yield item}
-    end
-
     #split into groups this gives us 1234567 => 123 456 7
     #so we need to reverse first
     #in stages
