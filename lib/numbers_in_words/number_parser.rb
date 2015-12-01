@@ -71,7 +71,8 @@ module NumbersInWords::NumberParser
 
   def parse(integers, only_compress = false)
     if integers.length < 2
-      return only_compress ? integers : integers.empty? ? 0 : integers[0]
+      return integers if only_compress
+      return integers.empty? ? 0 : integers[0]
     end
     if [] == (SCALES_N & integers)
       return pair_parse(integers, only_compress)
