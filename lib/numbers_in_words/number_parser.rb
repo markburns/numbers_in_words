@@ -40,13 +40,7 @@ module NumbersInWords::NumberParser
   #3. add memory to answer,reset,  because power of ten>2    0      2000
   #4. add 1 to memory                                        1      2000
   #5. finish - add memory to answer                          0      2001
-  def parse(integers, only_compress = false)
-    if integers.length < 2
-      return only_compress ? integers : integers.empty? ? 0 : integers[0]
-    end
-    if [] == (SCALES_N & integers)
-      return pair_parse(integers, only_compress)
-    end
+  def parse_ints(integers)
     memory = 0
     answer = 0
     reset = true #reset each time memory is reset
@@ -73,6 +67,17 @@ module NumbersInWords::NumberParser
       end
     end
     answer += memory
+  end
+
+  def parse(integers, only_compress = false)
+    if integers.length < 2
+      return only_compress ? integers : integers.empty? ? 0 : integers[0]
+    end
+    if [] == (SCALES_N & integers)
+      return pair_parse(integers, only_compress)
+    end
+
+    parse_ints(integers)
   end
 
   def power_of_ten integer
