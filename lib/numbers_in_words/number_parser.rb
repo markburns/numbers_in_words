@@ -102,7 +102,8 @@ module NumbersInWords::NumberParser
     res = []; i = 0
     return [] if ints.empty?
     while i < ints.length - 1
-      if ints[i] > 0 && ints[i] % 10 == 0 && ints[i + 1] < 10 && ints[i] > 10
+      tens = ints[i] % 10 == 0 && ints[i] > 10
+      if tens && ints[i + 1] < 10
         res << ints[i] + ints[i + 1]
         i += 2
       else
