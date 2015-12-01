@@ -109,20 +109,26 @@ module NumbersInWords::NumberParser
     i = 0
     return [] if ints.empty?
     while i < ints.length - 1
-      tens = ints[i] % 10 == 0 && ints[i] > 10
-      if tens && ints[i + 1] < 10
-        res << ints[i] + ints[i + 1]
-        i += 2
-      else
-        res << ints[i]
-        i += 1
-      end
+      int, jump = compress_int(ints[i], ints[i + 1])
+      res << int
+      i += jump
     end
     if i < ints.length
       res << ints[-1]
     else
       res
     end
+  end
+
+  def compress_int(int, sequel)
+    tens = int % 10 == 0 && int > 10
+    if tens && sequel < 10
+      return [int + sequel, 2]
+    else
+      return [int, 1]
+    end
+
+    [res, jump]
   end
 
   extend self
