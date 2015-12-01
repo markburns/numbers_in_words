@@ -105,7 +105,8 @@ module NumbersInWords::NumberParser
 
   # [40, 2] => [42]
   def compress(ints)
-    res = []; i = 0
+    res = []
+    i = 0
     return [] if ints.empty?
     while i < ints.length - 1
       tens = ints[i] % 10 == 0 && ints[i] > 10
@@ -117,7 +118,11 @@ module NumbersInWords::NumberParser
         i += 1
       end
     end
-    i < ints.length ? res << ints[-1] : res
+    if i < ints.length
+      res << ints[-1]
+    else
+      res
+    end
   end
 
   extend self
