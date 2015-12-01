@@ -10,8 +10,8 @@ Gem::Specification.new do |gem|
 
   gem.version       = NumbersInWords::VERSION
   gem.authors       = ["Mark Burns", "Dimid Duchovny"]
-  gem.email         = ["dimidd@gmail.com"]
-  gem.homepage      = "http://github.com/dimidd/numbers_in_words"
+  gem.email         = ["markthedeveloper@gmail.com", "dimidd@gmail.com"]
+  gem.homepage      = "http://github.com/markburns/numbers_in_words"
 
   gem.add_dependency      "activesupport"
   gem.add_development_dependency      "rspec", "~> 3.4.0"
