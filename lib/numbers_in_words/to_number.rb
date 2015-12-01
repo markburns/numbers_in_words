@@ -1,6 +1,6 @@
 class NumbersInWords::ToNumber
   delegate :to_s, to: :that
-  delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, :check_mixed, to: :language
+  delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, :check_mixed, :check_one, to: :language
   attr_reader :that, :language
 
   def initialize that, language=NumbersInWords.language
@@ -36,7 +36,7 @@ class NumbersInWords::ToNumber
     mixed = check_mixed text
     return mixed if mixed
 
-    one = text.match /^one (hundred|thousand|million|billion|trillion)$/
+    one = check_one text
     return only_compress ? [one[1].in_numbers] : one[1].in_numbers if one
 
     h = handle_decimals text

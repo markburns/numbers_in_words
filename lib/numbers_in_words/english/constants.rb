@@ -106,5 +106,9 @@ module NumbersInWords
       return mixed[1].in_numbers * mixed[3].in_numbers if mixed && mixed[1] && mixed[3]
     end
 
+    def self.check_one(txt)
+      one = txt.match /^one (#{POWERS_RX})$/
+    end
+
   end
 end
