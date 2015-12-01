@@ -110,5 +110,8 @@ module NumbersInWords
       one = txt.match /^one (#{POWERS_RX})$/
     end
 
+    def self.strip_minus(txt)
+      stripped = txt.gsub(/^minus/, "") if txt =~ /^minus/
+    end
   end
 end

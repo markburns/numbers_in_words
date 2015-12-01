@@ -1,6 +1,7 @@
 class NumbersInWords::ToNumber
   delegate :to_s, to: :that
-  delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, :check_mixed, :check_one, to: :language
+  delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, \
+    :check_mixed, :check_one, :strip_minus, to: :language
   attr_reader :that, :language
 
   def initialize that, language=NumbersInWords.language
@@ -17,8 +18,8 @@ class NumbersInWords::ToNumber
   end
 
   def handle_negative(text, only_compress)
-    if text =~ /^minus/
-      stripped = text.gsub(/^minus/, "")
+    stripped = strip_minus text
+    if stripped
       stripped_n = stripped.in_numbers(only_compress)
       only_compress ? stripped_n.map{ |k| k * -1 } : -1 * stripped_n
     end
