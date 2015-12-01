@@ -60,8 +60,9 @@ class NumbersInWords::ToNumber
   def handle_decimals text
     match = check_decimal text
     if match
-      integer = match.pre_match.in_numbers
-      integer +=  ("0." + match.post_match.in_numbers.to_s).to_f
+      integer = NumbersInWords.in_numbers(match.pre_match)
+      decimal = NumbersInWords.in_numbers(match.post_match)
+      integer +=  "0.#{decimal}".to_f
     end
   end
 

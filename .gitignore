@@ -3,3 +3,4 @@
 *.html
 tmp
 pkg/
+Gemfile.lock

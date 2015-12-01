@@ -14,9 +14,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "http://github.com/dimidd/numbers_in_words"
 
   gem.add_dependency      "activesupport"
-  gem.add_development_dependency      "rspec", ">= 2.14"
-  gem.add_development_dependency      "pry"
-  gem.add_development_dependency      "pry-nav"
+  gem.add_development_dependency      "rspec", "~> 3.4.0"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

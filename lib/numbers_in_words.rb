@@ -16,8 +16,17 @@ module NumbersInWords
 
   class << self
     attr_writer :language
+
     def language
       @language ||= "English"
+    end
+
+    def in_words(i, language=NumbersInWords.language, only_compress=false)
+      NumbersInWords::ToWord.new(i, language).in_words(only_compress)
+    end
+
+    def in_numbers(s, language=NumbersInWords.language, only_compress=false)
+      NumbersInWords::ToNumber.new(s, language).in_numbers(only_compress)
     end
   end
 end
