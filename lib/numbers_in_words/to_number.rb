@@ -1,6 +1,6 @@
 class NumbersInWords::ToNumber
   delegate :to_s, to: :that
-  delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, to: :language
+  delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, :check_mixed, to: :language
   attr_reader :that, :language
 
   def initialize that, language=NumbersInWords.language
@@ -33,8 +33,8 @@ class NumbersInWords::ToNumber
     i = handle_negative(text, only_compress)
     return i if i
 
-    mixed = text.match /^(-?\d+(.\d+)?) (hundred|thousand|million|billion|trillion)$/
-    return mixed[1].in_numbers * mixed[3].in_numbers if mixed && mixed[1] && mixed[3]
+    mixed = check_mixed text
+    return mixed if mixed
 
     one = text.match /^one (hundred|thousand|million|billion|trillion)$/
     return only_compress ? [one[1].in_numbers] : one[1].in_numbers if one

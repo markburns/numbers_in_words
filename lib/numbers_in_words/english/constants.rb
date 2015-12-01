@@ -98,5 +98,12 @@ module NumbersInWords
     def self.powers_of_ten_to_i
       swap_keys powers_of_ten
     end
+
+    def self.check_mixed(txt)
+      powers_rx = Regexp.union(powers_of_ten.values[1..-1])
+      mixed = txt.match /^(-?\d+(.\d+)?) (#{powers_rx}s?)/
+      return mixed[1].in_numbers * mixed[3].in_numbers if mixed && mixed[1] && mixed[3]
+    end
+
   end
 end
