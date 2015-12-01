@@ -16,27 +16,48 @@ class NumbersInWords::ToNumber
     end
   end
 
-  def handle_negative text
-    -1 * (text.gsub(/^minus /, "")).in_numbers if text =~ /^minus /
+  def handle_negative(text, only_compress)
+    if text =~ /^minus/
+      stripped = text.gsub(/^minus/, "")
+      stripped_n = NumbersInWords.in_numbers(stripped, language, only_compress)
+      only_compress ? stripped_n.map{ |k| k * -1 } : -1 * stripped_n
+    end
   end
 
-  def in_numbers
-    text = to_s
+  def in_numbers(only_compress = false)
+    text = to_s.strip
+    return text.to_f if text =~ /^-?\d+(.\d+)?$/
 
     text = strip_punctuation text
-    i = handle_negative text
+
+    i = handle_negative(text, only_compress)
     return i if i
+
+    mixed = text.match /^(-?\d+(.\d+)?) (hundred|thousand|million|billion|trillion)$/
+
+    if mixed && mixed[1] && mixed[3]
+      third_match = NumbersInWords.in_numbers(mixed[3])
+      first_match = NumbersInWords.in_numbers(mixed[1])
+      return first_match * third_match
+    end
+
+    one = text.match /^one (hundred|thousand|million|billion|trillion)$/
+
+    if one
+      first_match = NumbersInWords.in_numbers(one[1])
+      return only_compress ? [first_match] : first_match
+    end
 
     h = handle_decimals text
     return h if h
 
     integers = word_array_to_integers text.split(" ")
 
-    NumbersInWords::NumberParser.parse integers
+    NumbersInWords::NumberParser.parse integers, only_compress
   end
 
   def strip_punctuation text
-    text = text.downcase.gsub(/[^a-z ]/, " ")
+    text = text.downcase.gsub(/[^a-z 0-9]/, " ")
     to_remove = true
 
     to_remove = text.gsub! "  ", " " while to_remove
@@ -47,20 +68,10 @@ class NumbersInWords::ToNumber
   def handle_decimals text
     match = text.match(/\spoint\s/)
     if match
-      integer = match.pre_match.in_numbers
-
-      decimal = decimal_portion match.post_match
-
-      integer + decimal
+      integer = NumbersInWords.in_numbers(match.pre_match)
+      decimal = NumbersInWords.in_numbers(match.post_match)
+      integer +=  "0.#{decimal}".to_f
     end
-  end
-
-
-  def decimal_portion text
-    words    = text.split " "
-    integers = word_array_to_integers words
-    decimal  = "0." + integers.join()
-    decimal.to_f
   end
 
   #handles simple single word numbers
