@@ -11,9 +11,6 @@ Installation
 
 ```ruby
 gem 'numbers_in_words'
-
-require 'numbers_in_words'
-require 'numbers_in_words/duck_punch' #optional see why later
 ```
 
 This project was created for a test for a job interview. I haven't really used
