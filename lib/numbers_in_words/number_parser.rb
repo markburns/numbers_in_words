@@ -1,4 +1,5 @@
 module NumbersInWords::NumberParser
+  SCALES_N = [100, 1000, 1000000, 1000000000, 1000000000000, 10**100]
   # Example: 364,895,457,898
   #three hundred and sixty four billion eight hundred and ninety five million
   #four hundred and fifty seven thousand eight hundred and ninety eight
@@ -39,7 +40,7 @@ module NumbersInWords::NumberParser
   #3. add memory to answer,reset,  because power of ten>2    0      2000
   #4. add 1 to memory                                        1      2000
   #5. finish - add memory to answer                          0      2001
-  def parse(integers)
+  def parse_ints(integers)
     memory = 0
     answer = 0
     reset = true #reset each time memory is reset
@@ -58,8 +59,7 @@ module NumbersInWords::NumberParser
             reset = true
           end
         end
-
-        if memory < integer
+        if memory < integer 
           memory *= integer
         else
           memory += integer
@@ -69,12 +69,66 @@ module NumbersInWords::NumberParser
     answer += memory
   end
 
+  def parse(integers, only_compress = false)
+    if integers.length < 2
+      return integers if only_compress
+      return integers.empty? ? 0 : integers[0]
+    end
+    if [] == (SCALES_N & integers)
+      return pair_parse(integers, only_compress)
+    end
+
+    parse_ints(integers)
+  end
+
   def power_of_ten integer
     Math.log10(integer)
   end
 
   def power_of_ten? integer
     power_of_ten(integer) == power_of_ten(integer).to_i
+  end
+
+  # 15,16
+  # 85,16
+  def pair_parse(ints, only_compress = false)
+    ints = compress(ints)
+    return ints if only_compress
+    return ints[0] if ints.length == 1
+    sum = 0
+    ints.each do |n|
+      sum *= n >= 10 ? 100 : 10
+      sum += n
+    end
+    sum
+  end
+
+  # [40, 2] => [42]
+  def compress(ints)
+    res = []
+    i = 0
+    return [] if ints.empty?
+    while i < ints.length - 1
+      int, jump = compress_int(ints[i], ints[i + 1])
+      res << int
+      i += jump
+    end
+    if i < ints.length
+      res << ints[-1]
+    else
+      res
+    end
+  end
+
+  def compress_int(int, sequel)
+    tens = int % 10 == 0 && int > 10
+    if tens && sequel < 10
+      return [int + sequel, 2]
+    else
+      return [int, 1]
+    end
+
+    [res, jump]
   end
 
   extend self

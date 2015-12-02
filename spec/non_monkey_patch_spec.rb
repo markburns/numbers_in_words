@@ -19,6 +19,12 @@ describe "NumbersInWords" do
   describe ".in_numbers" do
     it do
       expect(NumbersInWords.in_numbers("one hundred")).to eq 100
+
+      expect(NumbersInWords.in_numbers("minus one hundred")).to eq -100
+      expect(NumbersInWords.in_numbers("twenty four" )).to eq 24
+      expect(NumbersInWords.in_numbers("one point two")).to eq 1.2
+      expect(NumbersInWords.in_numbers("one hundred googol")).to eq  100*10**100
+      expect(NumbersInWords.in_numbers("one hundred googol and thirty")).to eq 30 + 100*10**100
     end
   end
 

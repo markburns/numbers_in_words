@@ -1,5 +1,14 @@
 module NumbersInWords
   module English
+
+    def self.canonize(w)
+      aliases = {
+        "oh" => "zero"
+      }
+      canon = aliases[w]
+      return canon ? canon : w
+    end
+
     def self.exceptions
       {
         0 => "zero",
@@ -88,6 +97,28 @@ module NumbersInWords
 
     def self.powers_of_ten_to_i
       swap_keys powers_of_ten
+    end
+
+    POWERS_RX = Regexp.union(powers_of_ten.values[1..-1])
+
+    def self.check_mixed(txt)
+      mixed = txt.match /^(-?\d+(.\d+)?) (#{POWERS_RX}s?)$/
+      if mixed && mixed[1] && mixed[3]
+        matches = [mixed[1], mixed[3]].map{ |m| NumbersInWords.in_numbers m }
+        return matches.reduce(&:*)
+      end
+    end
+
+    def self.check_one(txt)
+      one = txt.match /^one (#{POWERS_RX})$/
+    end
+
+    def self.strip_minus(txt)
+      stripped = txt.gsub(/^minus/, "") if txt =~ /^minus/
+    end
+
+    def self.check_decimal(txt)
+      txt.match(/\spoint\s/)
     end
   end
 end

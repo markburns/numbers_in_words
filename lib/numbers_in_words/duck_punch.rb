@@ -5,8 +5,8 @@ module NumbersInWords
 end
 
 module WordsInNumbers
-  def in_numbers language=NumbersInWords.language
-    NumbersInWords.in_numbers(self, language)
+  def in_numbers(only_compress = false, language=NumbersInWords.language)
+    NumbersInWords::ToNumber.new(self, language).in_numbers(only_compress)
   end
 end
 

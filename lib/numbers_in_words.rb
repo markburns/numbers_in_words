@@ -21,12 +21,12 @@ module NumbersInWords
       @language ||= "English"
     end
 
-    def in_words(i, language=NumbersInWords.language)
-      NumbersInWords::ToWord.new(i, language).in_words
+    def in_words(i, language=NumbersInWords.language, only_compress=false)
+      NumbersInWords::ToWord.new(i, language).in_words(only_compress)
     end
 
-    def in_numbers(s, language=NumbersInWords.language)
-      NumbersInWords::ToNumber.new(s, language).in_numbers
+    def in_numbers(s, language=NumbersInWords.language, only_compress=false)
+      NumbersInWords::ToNumber.new(s, language).in_numbers(only_compress)
     end
   end
 end

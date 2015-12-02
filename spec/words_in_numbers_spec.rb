@@ -132,4 +132,14 @@ describe WordsInNumbers do
       in_numbers).to eq(75.84327694518)
   end
 
+  it "should handle years notation" do
+    expect("fifteen sixteen".in_numbers) .to eq(1516)
+    expect("eighty five sixteen".in_numbers) .to eq(8516)
+    expect("nineteen ninety six".in_numbers) .to eq(1996)
+    expect("forty nine ninety eight forty seven seventy nine".in_numbers) .to eq(49984779)
+    expect("fifteen sixteen".in_numbers) .to eq(1516)
+    expect("fifteen sixteen seven".in_numbers) .to eq(15167)
+    expect("fifteen sixteen seventeen".in_numbers) .to eq(151617)
+  end
+
 end

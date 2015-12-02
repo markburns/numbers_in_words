@@ -1,6 +1,7 @@
 class NumbersInWords::ToNumber
   delegate :to_s, to: :that
-  delegate :powers_of_ten_to_i, :exceptions_to_i, to: :language
+  delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, \
+    :check_mixed, :check_one, :strip_minus, :check_decimal, to: :language
   attr_reader :that, :language
 
   def initialize that, language=NumbersInWords.language
@@ -16,27 +17,42 @@ class NumbersInWords::ToNumber
     end
   end
 
-  def handle_negative text
-    -1 * (text.gsub(/^minus /, "")).in_numbers if text =~ /^minus /
+  def handle_negative(text, only_compress)
+    stripped = strip_minus text
+    if stripped
+      stripped_n = NumbersInWords.in_numbers(stripped, language, only_compress)
+      only_compress ? stripped_n.map{ |k| k * -1 } : -1 * stripped_n
+    end
   end
 
-  def in_numbers
-    text = to_s
+  def in_numbers(only_compress = false)
+    text = to_s.strip
+    return text.to_f if text =~ /^-?\d+(.\d+)?$/
 
     text = strip_punctuation text
-    i = handle_negative text
+
+    i = handle_negative(text, only_compress)
     return i if i
+
+    mixed = check_mixed text
+    return mixed if mixed
+
+    one = check_one text
+    if one
+      res = NumbersInWords.in_numbers(one[1], language)
+      return only_compress ? [res] : res
+    end
 
     h = handle_decimals text
     return h if h
 
     integers = word_array_to_integers text.split(" ")
 
-    NumbersInWords::NumberParser.parse integers
+    NumbersInWords::NumberParser.parse integers, only_compress
   end
 
   def strip_punctuation text
-    text = text.downcase.gsub(/[^a-z ]/, " ")
+    text = text.downcase.gsub(/[^a-z 0-9]/, " ")
     to_remove = true
 
     to_remove = text.gsub! "  ", " " while to_remove
@@ -45,28 +61,18 @@ class NumbersInWords::ToNumber
   end
 
   def handle_decimals text
-    match = text.match(/\spoint\s/)
+    match = check_decimal text
     if match
-      integer = match.pre_match.in_numbers
-
-      decimal = decimal_portion match.post_match
-
-      integer + decimal
+      integer = NumbersInWords.in_numbers(match.pre_match)
+      decimal = NumbersInWords.in_numbers(match.post_match)
+      integer +=  "0.#{decimal}".to_f
     end
-  end
-
-
-  def decimal_portion text
-    words    = text.split " "
-    integers = word_array_to_integers words
-    decimal  = "0." + integers.join()
-    decimal.to_f
   end
 
   #handles simple single word numbers
   #e.g. one, seven, twenty, eight, thousand etc
   def word_to_integer word
-    text = word.to_s.chomp.strip
+    text = canonize(word.to_s.chomp.strip)
 
     exception = exceptions_to_i[text]
     return exception if exception
