@@ -13,9 +13,6 @@ Installation
 gem 'numbers_in_words'
 ```
 
-This project was created for a test for a job interview. I haven't really used
-it myself, but I saw it mentioned somewhere so I thought I'd tidy it up a bit.
-
 Usage
 =========
 
