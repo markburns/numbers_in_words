@@ -50,36 +50,3 @@ require 'numbers_in_words/duck_punch'
 "Seventy million, five-hundred and fifty six thousand point eight nine three".in_numbers
 #=> 70556000.893
 ```
-
-
-NoMethodError `in_words` or `in_numbers`
-----------
-I'm going to hopefully preempt some support queries by predicting this will happen:
-
-You've got one of:
-
-```
-NoMethodError: undefined method `in_words' for 123:Fixnum
-NoMethodError: undefined method `in_numbers' for "123":String
-```
-
-Previous versions of this gem duckpunched Fixnum and String with a whole bunch
-of methods. This gem will now only add methods if you specifically tell it to
-with:
-
-```ruby
-require 'numbers_in_words'
-require 'numbers_in_words/duck_punch'
-```
-
-Plus it now only adds a single `#in_words` method to `Numeric` and an `#in_numbers`
-method to `String` instead of a whole bunch of them.
-
-
-Future plans
-============
-
-* Handle complex numbers
-* Option for outputting punctuation
-* Reject invalid numbers
-* Support for other languages
