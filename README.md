@@ -27,6 +27,9 @@ NumbersInWords.in_numbers("one googol")
 
 NumbersInWords.in_numbers("Seventy million, five-hundred and fifty six thousand point eight nine three")
 #=> 70556000.893
+
+NumbersInWords.in_numbers("nineteen sixty five")
+#=> 1965
 ```
 
 
