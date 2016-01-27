@@ -11,6 +11,10 @@ module NumbersInWords
 
     def self.exceptions
       {
+        0.50 => "half",
+        0.25 => "quarter",
+        0.33 => "third",
+
         0 => "zero",
         1 => "one",
         2 => "two",
