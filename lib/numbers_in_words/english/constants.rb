@@ -3,7 +3,8 @@ module NumbersInWords
 
     def self.canonize(w)
       aliases = {
-        "oh" => "zero"
+        "oh" => "zero",
+        "fourth" => "quarter"
       }
       canon = aliases[w]
       return canon ? canon : w
@@ -12,8 +13,9 @@ module NumbersInWords
     def self.exceptions
       {
         0.50 => "half",
-        0.25 => "quarter",
         0.33 => "third",
+        0.25 => "quarter",
+        0.20 => "fifth",
 
         0 => "zero",
         1 => "one",
