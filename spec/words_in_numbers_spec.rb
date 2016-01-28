@@ -2,22 +2,22 @@ require './spec/spec_helper'
 
 describe WordsInNumbers do
   it "should consider non-number words to be zero" do
-    "dog"   .in_numbers.should == 0
-    "3x"    .in_numbers.should == 0
+    expect("dog"   .in_numbers).to eq(0)
+    expect("3x"    .in_numbers).to eq(0)
   end
 
   it "should handle lone fractions" do
-    "half"   .in_numbers.should == 0.5
-    "third"  .in_numbers.should == 0.33
-    "quarter".in_numbers.should == 0.25
-    "fifth".in_numbers.should == 0.20
+    expect("half"   .in_numbers).to eq(0.5)
+    expect("third"  .in_numbers).to eq(0.33)
+    expect("quarter".in_numbers).to eq(0.25)
+    expect("fifth".in_numbers).to eq(0.20)
   end
 
   it "should handle whole numbers with fractions" do
-    "one half"          .in_numbers.should == 0.5
-    "one and a half"    .in_numbers.should == 1.5
-    "one and one half"  .in_numbers.should == 1.5
-    "two and two thirds".in_numbers.should == 2.66
+    expect("one half"          .in_numbers).to eq(0.5)
+    expect("one and a half"    .in_numbers).to eq(1.5)
+    expect("one and one half"  .in_numbers).to eq(1.5)
+    expect("two and two thirds".in_numbers).to eq(2.66)
   end
 
   it "should do the digits 0-10" do
