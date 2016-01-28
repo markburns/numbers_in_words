@@ -10,6 +10,10 @@ module NumbersInWords
       return canon ? canon : w
     end
 
+    def self.get_fraction_names
+      return %w(half third quarter fourth fifth)
+    end
+
     def self.exceptions
       {
         0.50 => "half",

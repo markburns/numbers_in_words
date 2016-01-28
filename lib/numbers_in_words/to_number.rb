@@ -1,7 +1,8 @@
 class NumbersInWords::ToNumber
   delegate :to_s, to: :that
   delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, \
-    :check_mixed, :check_one, :strip_minus, :check_decimal, to: :language
+      :check_mixed, :check_one, :strip_minus, :check_decimal, :get_fraction_names,
+    to: :language
   attr_reader :that, :language
 
   def initialize that, language=NumbersInWords.language
@@ -80,7 +81,8 @@ class NumbersInWords::ToNumber
   end
 
   def handle_fractions text
-    if text.match(/(half|quarter|third)/) # we have a fraction
+    fracs = get_fraction_names
+    if text.match(/(#{fracs.join('|')})/) # we have a fraction
       match = text.match(/\sand\s/)
       if match # there's a whole number prefix
         integer = match.pre_match.in_numbers
