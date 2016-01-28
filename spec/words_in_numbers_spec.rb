@@ -8,8 +8,9 @@ describe WordsInNumbers do
 
   it "should handle lone fractions" do
     "half"   .in_numbers.should == 0.5
-    "quarter".in_numbers.should == 0.25
     "third"  .in_numbers.should == 0.33
+    "quarter".in_numbers.should == 0.25
+    "fifth".in_numbers.should == 0.20
   end
 
   it "should handle whole numbers with fractions" do
@@ -153,9 +154,11 @@ describe WordsInNumbers do
   it "should handle years notation" do
     expect("fifteen sixteen".in_numbers) .to eq(1516)
     expect("eighty five sixteen".in_numbers) .to eq(8516)
+    expect("eighty five sixteen and a half".in_numbers) .to eq(8516.5)
     expect("nineteen ninety six".in_numbers) .to eq(1996)
     expect("forty nine ninety eight forty seven seventy nine".in_numbers) .to eq(49984779)
     expect("fifteen sixteen".in_numbers) .to eq(1516)
+    expect("fifteen sixteen and three quarters".in_numbers) .to eq(1516.75)
     expect("fifteen sixteen seven".in_numbers) .to eq(15167)
     expect("fifteen sixteen seventeen".in_numbers) .to eq(151617)
   end
