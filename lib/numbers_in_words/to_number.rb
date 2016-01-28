@@ -1,7 +1,8 @@
 class NumbersInWords::ToNumber
   delegate :to_s, to: :that
   delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, \
-    :check_mixed, :check_one, :strip_minus, :check_decimal, to: :language
+      :check_mixed, :check_one, :strip_minus, :check_decimal, :get_fraction_names,
+    to: :language
   attr_reader :that, :language
 
   def initialize that, language=NumbersInWords.language
@@ -46,6 +47,8 @@ class NumbersInWords::ToNumber
     h = handle_decimals text
     return h if h
 
+    f = handle_fractions text
+    return f if f
     integers = word_array_to_integers text.split(" ")
 
     NumbersInWords::NumberParser.parse integers, only_compress
@@ -67,6 +70,35 @@ class NumbersInWords::ToNumber
       decimal = NumbersInWords.in_numbers(match.post_match)
       integer +=  "0.#{decimal}".to_f
     end
+  end
+
+
+  def decimal_portion text
+    words    = text.split " "
+    integers = word_array_to_integers words
+    decimal  = "0." + integers.join()
+    decimal.to_f
+  end
+
+  def handle_fractions text
+    fracs = get_fraction_names
+    if text.match(/(#{fracs.join('|')})/) # we have a fraction
+      match = text.match(/\sand\s/)
+      if match # there's a whole number prefix
+        integer = match.pre_match.in_numbers
+        fraction = fraction_portion match.post_match
+        integer + fraction
+      else # the fraction stands alone
+        fraction_portion text
+      end
+    end
+  end
+
+  def fraction_portion text
+    words    = text.split " "
+    words    = words.collect(&:singularize)
+    integers = word_array_to_integers words
+    integers.inject(:*) # multiply them all together
   end
 
   #handles simple single word numbers

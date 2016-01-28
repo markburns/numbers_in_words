@@ -1,6 +1,25 @@
 require './spec/spec_helper'
 
 describe WordsInNumbers do
+  it "should consider non-number words to be zero" do
+    expect("dog"   .in_numbers).to eq(0)
+    expect("3x"    .in_numbers).to eq(0)
+  end
+
+  it "should handle lone fractions" do
+    expect("half"   .in_numbers).to eq(0.5)
+    expect("third"  .in_numbers).to eq(0.33)
+    expect("quarter".in_numbers).to eq(0.25)
+    expect("fifth".in_numbers).to eq(0.20)
+  end
+
+  it "should handle whole numbers with fractions" do
+    expect("one half"          .in_numbers).to eq(0.5)
+    expect("one and a half"    .in_numbers).to eq(1.5)
+    expect("one and one half"  .in_numbers).to eq(1.5)
+    expect("two and two thirds".in_numbers).to eq(2.66)
+  end
+
   it "should do the digits 0-10" do
     expect("zero"  .in_numbers).to eq(0)
     expect("one"   .in_numbers).to eq(1)
@@ -135,9 +154,11 @@ describe WordsInNumbers do
   it "should handle years notation" do
     expect("fifteen sixteen".in_numbers) .to eq(1516)
     expect("eighty five sixteen".in_numbers) .to eq(8516)
+    expect("eighty five sixteen and a half".in_numbers) .to eq(8516.5)
     expect("nineteen ninety six".in_numbers) .to eq(1996)
     expect("forty nine ninety eight forty seven seventy nine".in_numbers) .to eq(49984779)
     expect("fifteen sixteen".in_numbers) .to eq(1516)
+    expect("fifteen sixteen and three quarters".in_numbers) .to eq(1516.75)
     expect("fifteen sixteen seven".in_numbers) .to eq(15167)
     expect("fifteen sixteen seventeen".in_numbers) .to eq(151617)
   end

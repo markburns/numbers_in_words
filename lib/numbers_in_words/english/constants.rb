@@ -3,14 +3,24 @@ module NumbersInWords
 
     def self.canonize(w)
       aliases = {
-        "oh" => "zero"
+        "oh" => "zero",
+        "fourth" => "quarter"
       }
       canon = aliases[w]
       return canon ? canon : w
     end
 
+    def self.get_fraction_names
+      return %w(half third quarter fourth fifth)
+    end
+
     def self.exceptions
       {
+        0.50 => "half",
+        0.33 => "third",
+        0.25 => "quarter",
+        0.20 => "fifth",
+
         0 => "zero",
         1 => "one",
         2 => "two",

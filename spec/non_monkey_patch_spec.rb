@@ -10,10 +10,6 @@ describe "NumbersInWords" do
       expect(NumbersInWords.in_words(100*10**100)).to eq "one hundred googol"
       expect(NumbersInWords.in_words(30 + 100*10**100)).to eq "one hundred googol and thirty"
     end
-
-    pending "This should be implemented" do
-      expect(NumbersInWords.in_words(100*10**100)).to eq "one hundred googols"
-    end
   end
 
   describe ".in_numbers" do
