@@ -1,7 +1,11 @@
+require "forwardable"
 module NumbersInWords
   class LanguageWriter
+    extend Forwardable
+
     attr_reader :that
-    delegate :exceptions, :powers_of_ten, to: :language
+
+    def_delegators :language, :exceptions, :powers_of_ten
 
     def initialize that
       @that = that

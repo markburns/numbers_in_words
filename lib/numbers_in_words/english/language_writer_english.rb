@@ -1,11 +1,13 @@
 module NumbersInWords
   module English
     class LanguageWriterEnglish < LanguageWriter
-      delegate :to_i, to: :that
-
       def initialize that
         super that
         @language = "English"
+      end
+
+      def to_i
+        that.to_i
       end
 
       def negative

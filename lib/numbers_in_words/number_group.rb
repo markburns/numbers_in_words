@@ -16,7 +16,7 @@ module NumbersInWords
     #in stages
     def groups size
       #1234567   => %w(765 432 1)
-      @array = @number.to_s.reverse.split("").in_groups_of(size)
+      @array = in_groups_of(@number.to_s.reverse.split(""), size)
       #%w(765 432 1) => %w(1 432 765)
       @array.reverse!
 
@@ -46,6 +46,27 @@ module NumbersInWords
       googols   = @number.to_s[0  ..  (-LENGTH_OF_GOOGOL)].to_i
       remainder = @number.to_s[(1-LENGTH_OF_GOOGOL) .. -1].to_i
       return googols, remainder
+    end
+
+    private
+
+    def in_groups_of(array, number, fill_with = nil)
+      if number.to_i <= 0
+        raise ArgumentError,
+          "Group size must be a positive integer, was #{number.inspect}"
+      end
+
+      if fill_with == false
+        collection = array
+      else
+        # size % number gives how many extra we have;
+        # subtracting from number gives how many to add;
+        # modulo number ensures we don't add group of just fill.
+        padding = (number - array.size % number) % number
+        collection = array.dup.concat(Array.new(padding, fill_with))
+      end
+
+      collection.each_slice(number).to_a
     end
   end
 end

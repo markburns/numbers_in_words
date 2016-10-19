@@ -1,7 +1,13 @@
+require "forwardable"
+
 class NumbersInWords::ToNumber
-  delegate :to_s, to: :that
-  delegate :powers_of_ten_to_i, :exceptions_to_i, :canonize, \
-    :check_mixed, :check_one, :strip_minus, :check_decimal, to: :language
+  extend Forwardable
+  def_delegator :that, :to_s
+
+  def_delegators :language,
+   :powers_of_ten_to_i, :exceptions_to_i, :canonize,
+    :check_mixed, :check_one, :strip_minus, :check_decimal
+
   attr_reader :that, :language
 
   def initialize that, language=NumbersInWords.language

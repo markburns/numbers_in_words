@@ -1,5 +1,3 @@
-require 'active_support/core_ext/array'
-
 require "numbers_in_words/version"
 require 'numbers_in_words/language_writer'
 
