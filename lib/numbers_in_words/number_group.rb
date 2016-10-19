@@ -51,20 +51,11 @@ module NumbersInWords
     private
 
     def in_groups_of(array, number, fill_with = nil)
-      if number.to_i <= 0
-        raise ArgumentError,
-          "Group size must be a positive integer, was #{number.inspect}"
-      end
-
-      if fill_with == false
-        collection = array
-      else
-        # size % number gives how many extra we have;
-        # subtracting from number gives how many to add;
-        # modulo number ensures we don't add group of just fill.
-        padding = (number - array.size % number) % number
-        collection = array.dup.concat(Array.new(padding, fill_with))
-      end
+      # size % number gives how many extra we have;
+      # subtracting from number gives how many to add;
+      # modulo number ensures we don't add group of just fill.
+      padding = (number - array.size % number) % number
+      collection = array.dup.concat(Array.new(padding, fill_with))
 
       collection.each_slice(number).to_a
     end
