@@ -39,6 +39,22 @@ module NumbersInWords::NumberParser
   #3. add memory to answer,reset,  because power of ten>2    0      2000
   #4. add 1 to memory                                        1      2000
   #5. finish - add memory to answer                          0      2001
+  
+  SCALES_N = [10**2, 10**3, 10**6, 10**9, 10**12, 10**100].freeze
+
+  def parse(integers, only_compress = false)
+    if integers.length < 2
+      return integers if only_compress
+      return integers.empty? ? 0 : integers[0]
+    end
+
+    if (SCALES_N & integers).empty?
+      return pair_parse(integers, only_compress)
+    end
+
+    parse_ints(integers)
+  end
+
   def parse_ints(integers)
     memory = 0
     answer = 0
@@ -65,22 +81,8 @@ module NumbersInWords::NumberParser
         end
       end
     end
+
     answer += memory
-  end
-
-  SCALES_N = [10**2, 10**3, 10**6, 10**9, 10**12, 10**100].freeze
-
-  def parse(integers, only_compress = false)
-    if integers.length < 2
-      return integers if only_compress
-      return integers.empty? ? 0 : integers[0]
-    end
-
-    if (SCALES_N & integers).empty?
-      return pair_parse(integers, only_compress)
-    end
-
-    parse_ints(integers)
   end
 
   def power_of_ten(integer)
