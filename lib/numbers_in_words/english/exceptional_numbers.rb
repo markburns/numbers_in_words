@@ -103,9 +103,9 @@ module NumbersInWords
         f = details[:fraction]
         return unless f
 
-        (f[:singular] == text) ||
-          (f[:plural] == text) ||
-          (f[:singular] == singularize(text))
+        f[:singular] == text ||
+          f[:plural] == text ||
+          f[:singular] == singularize(text)
       end
 
       def singularize(text)
