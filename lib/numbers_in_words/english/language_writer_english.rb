@@ -55,7 +55,8 @@ module NumbersInWords
         digit = number - tens       #write the digits
 
         unless digit == 0
-          output << " " + NumbersInWords.in_words(digit)
+          join = number < 100 ? "-" : " "
+          output << join + NumbersInWords.in_words(digit)
         end
 
         output

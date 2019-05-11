@@ -11,9 +11,9 @@ describe NumbersInWords::English::ExceptionalNumbers do
       [1, 4]       => "quarter",
       [2, 17]      => "two seventeenths",
       [1, 1_000]   => "thousandth",
-      [74, 101]    => "seventy four one hundred firsts",
+      [74, 101]    => "seventy-four one hundred firsts",
       [13, 97]     => "thirteen ninety sevenths",
-      [131, 1_000] => "one hundred and thirty one thousandths"
+      [131, 1_000] => "one hundred and thirty-one thousandths"
     }
 
     FRACTIONS.each do  |(numerator, denominator), string|

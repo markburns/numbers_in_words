@@ -29,16 +29,16 @@ describe WordsInNumbers do
   end
 
   it "should handle two word numbers up to 100" do
-    expect("twenty one"   .in_numbers).to eq(21)
-    expect("twenty two"   .in_numbers).to eq(22)
-    expect("twenty three" .in_numbers).to eq(23)
-    expect("twenty four"  .in_numbers).to eq(24)
-    expect("twenty five"  .in_numbers).to eq(25)
-    expect("twenty six"   .in_numbers).to eq(26)
-    expect("twenty seven" .in_numbers).to eq(27)
-    expect("twenty eight" .in_numbers).to eq(28)
-    expect("seventy six"  .in_numbers).to eq(76)
-    expect("ninety nine"  .in_numbers).to eq(99)
+    expect("twenty-one"   .in_numbers).to eq(21)
+    expect("twenty-two"   .in_numbers).to eq(22)
+    expect("twenty-three" .in_numbers).to eq(23)
+    expect("twenty-four"  .in_numbers).to eq(24)
+    expect("twenty-five"  .in_numbers).to eq(25)
+    expect("twenty-six"   .in_numbers).to eq(26)
+    expect("twenty-seven" .in_numbers).to eq(27)
+    expect("twenty-eight" .in_numbers).to eq(28)
+    expect("seventy-six"  .in_numbers).to eq(76)
+    expect("ninety-nine"  .in_numbers).to eq(99)
   end
 
   it "should handle hundreds" do

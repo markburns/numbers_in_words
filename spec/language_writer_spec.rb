@@ -1,7 +1,8 @@
 require './spec/spec_helper'
 
 describe NumbersInWords::English::LanguageWriterEnglish do
-  let(:writer) { described_class.new(2111) }
+  let(:number) { 2_111 }
+  let(:writer) { described_class.new(number) }
 
   it "should display numbers grouped" do
     count = 0
@@ -21,6 +22,18 @@ describe NumbersInWords::English::LanguageWriterEnglish do
     end
 
     expect(count).to eq 2
+  end
+
+  describe "#in_words" do
+    let(:number) { 99 }
+
+    subject do
+      writer.in_words
+    end
+
+    it do
+      expect(subject).to eq 'ninety-nine'
+    end
   end
 end
 

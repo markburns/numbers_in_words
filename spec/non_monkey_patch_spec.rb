@@ -5,7 +5,7 @@ describe "NumbersInWords" do
     it do
       expect(NumbersInWords.in_words(100)).to eq "one hundred"
       expect(NumbersInWords.in_words(-100)).to eq "minus one hundred"
-      expect(NumbersInWords.in_words(24)).to eq "twenty four"
+      expect(NumbersInWords.in_words(24)).to eq "twenty-four"
       expect(NumbersInWords.in_words(1.2)).to eq "one point two"
       expect(NumbersInWords.in_words(100*10**100)).to eq "one hundred googol"
       expect(NumbersInWords.in_words(30 + 100*10**100)).to eq "one hundred googol and thirty"
@@ -41,7 +41,7 @@ describe "NumbersInWords" do
     [1, 32] => "one thirty second",
     [1, 101] => "one one hundred first",
     [3, 101] => "three one hundred firsts",
-    [73, 102] => "seventy three one hundred seconds",
+    [73, 102] => "seventy-three one hundred seconds",
     [13, 97] => "thirteen ninety sevenths",
   }
 

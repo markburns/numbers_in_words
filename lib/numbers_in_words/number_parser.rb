@@ -1,5 +1,4 @@
 module NumbersInWords::NumberParser
-  SCALES_N = [100, 10**3, 10**6, 10**9, 10**12, 10**100]
   # Example: 364,895,457,898
   #three hundred and sixty four billion eight hundred and ninety five million
   #four hundred and fifty seven thousand eight hundred and ninety eight
@@ -69,11 +68,14 @@ module NumbersInWords::NumberParser
     answer += memory
   end
 
+  SCALES_N = [10**2, 10**3, 10**6, 10**9, 10**12, 10**100].freeze
+
   def parse(integers, only_compress = false)
     if integers.length < 2
       return integers if only_compress
       return integers.empty? ? 0 : integers[0]
     end
+
     if (SCALES_N & integers).empty?
       return pair_parse(integers, only_compress)
     end
@@ -95,11 +97,14 @@ module NumbersInWords::NumberParser
     ints = compress(ints)
     return ints if only_compress
     return ints[0] if ints.length == 1
+
     sum = 0
+
     ints.each do |n|
       sum *= n >= 10 ? 100 : 10
       sum += n
     end
+
     sum
   end
 
