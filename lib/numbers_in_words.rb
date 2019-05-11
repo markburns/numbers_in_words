@@ -22,12 +22,16 @@ module NumbersInWords
       @language ||= "English"
     end
 
-    def in_words(i, language=NumbersInWords.language, only_compress=false)
-      NumbersInWords::ToWord.new(i, language).in_words(only_compress)
+    def in_words(i, language: NumbersInWords.language, only_compress: false, fraction: false)
+      ToWord.new(i, language: language).in_words(only_compress: only_compress, fraction: fraction)
     end
 
-    def in_numbers(s, language=NumbersInWords.language, only_compress=false)
-      NumbersInWords::ToNumber.new(s, language).in_numbers(only_compress)
+    def in_numbers(s, language: NumbersInWords.language, only_compress: false, fraction: false)
+      ToNumber.new(s, language: language).in_numbers(only_compress: only_compress, fraction: fraction)
+    end
+
+    def ordinal(s)
+      ToWord.new(s).ordinal
     end
   end
 end

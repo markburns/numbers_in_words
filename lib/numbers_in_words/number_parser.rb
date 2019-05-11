@@ -1,5 +1,5 @@
 module NumbersInWords::NumberParser
-  SCALES_N = [100, 1000, 1000000, 1000000000, 1000000000000, 10**100]
+  SCALES_N = [100, 10**3, 10**6, 10**9, 10**12, 10**100]
   # Example: 364,895,457,898
   #three hundred and sixty four billion eight hundred and ninety five million
   #four hundred and fifty seven thousand eight hundred and ninety eight
@@ -74,7 +74,7 @@ module NumbersInWords::NumberParser
       return integers if only_compress
       return integers.empty? ? 0 : integers[0]
     end
-    if [] == (SCALES_N & integers)
+    if (SCALES_N & integers).empty?
       return pair_parse(integers, only_compress)
     end
 

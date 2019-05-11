@@ -1,6 +1,7 @@
+require_relative 'exceptional_numbers'
+
 module NumbersInWords
   module English
-
     def self.canonize(w)
       aliases = {
         "oh" => "zero"
@@ -13,96 +14,52 @@ module NumbersInWords
       @exceptional_numbers ||= ExceptionalNumbers.new
     end
 
-    class ExceptionalNumbers
-      DEFINITIONS = {
-        0  => {number: "zero"     , ordinal: "zeroth", fraction: ->{DivideByZeroError} } ,
-        1  => {number: "one"      , ordinal: "first" } ,
-        2  => {number: "two"      , ordinal: "second", fraction: {singular: "half", plural: "halves"} } ,
-        3  => {number: "three"    , ordinal: "third"  } ,
-        4  => {number: "four"     , ordinal: "fourth", fraction: {singular: ["fourth" "quarter"] }} ,
-        5  => {number: "five"     , ordinal: "fifth",  } ,
-        6  => {number: "six"       } ,
-        7  => {number: "seven"      } ,
-        8  => {number: "eight"    , ordinal: "eighth", } ,
-        9  => {number: "nine"     , ordinal: "ninth", } ,
-        10 => {number: "ten"        } ,
-        11 => {number: "eleven"   } ,
-        12 => {number: "twelve"   , ordinal: "twelfth" } ,
-        13 => {number: "thirteen"  } ,
-        14 => {number: "fourteen"  } ,
-        15 => {number: "fifteen"  } ,
-        16 => {number: "sixteen"  } ,
-        17 => {number: "seventeen"} ,
-        18 => {number: "eighteen" } ,
-        19 => {number: "nineteen" } ,
-        20 => {number: "twenty"   , ordinal: "twentieth"} ,
-        30 => {number: "thirty"   , ordinal: "thirtieth" } ,
-        40 => {number: "forty"    , ordinal: "fortieth" } ,
-        50 => {number: "fifty"    , ordinal: "fiftieth"} ,
-        60 => {number: "sixty"    , ordinal: "sixtieth"} ,
-        70 => {number: "seventy"  , ordinal: "seventieth"} ,
-        80 => {number: "eighty"   , ordinal: "eightieth"} ,
-        90 => {number: "ninety"   , ordinal: "ninetieth"}
+    def self.powers_of_ten
+      {
+        0         => "one",
+        1         => "ten",
+        2         => "hundred",
+        3         => "thousand",
+        2 * 3     => "million",
+        3 * 3     => "billion",
+        4 * 3     => "trillion",
+        5 * 3     => "quadrillion",
+        6 * 3     => "quintillion",
+        7 * 3     => "sextillion",
+        8 * 3     => "septillion",
+        9 * 3     => "octillion",
+        10 * 3    => "nonillion",
+        11 * 3    => "decillion",
+        12 * 3    => "undecillion",
+        13 * 3    => "duodecillion",
+        14 * 3    => "tredecillion",
+        15 * 3    => "quattuordecillion",
+        16 * 3    => "quindecillion",
+        17 * 3    => "sexdecillion",
+        18 * 3    => "septendecillion",
+        19 * 3    => "octodecillion",
+        20 * 3    => "novemdecillion",
+        21 * 3    => "vigintillion",
+        22 * 3    => "unvigintillion",
+        23 * 3    => "duovigintillion",
+        24 * 3    => "trevigintillion",
+        25 * 3    => "quattuorvigintillion",
+        26 * 3    => "quinvigintillion",
+        27 * 3    => "sexvigintillion",
+        28 * 3    => "septenvigintillion",
+        29 * 3    => "octovigintillion",
+        30 * 3    => "novemvigintillion",
+        31 * 3    => "trigintillion",
+        32 * 3    => "untrigintillion",
+        33 * 3    => "duotrigintillion",
+        100       => "googol",
+        101 * 3   => "centillion",
+        10 ** 100 => "googolplex",
       }
-
-      def defines?(number)
-        to_h.key?(number)
-      end
-
-      def to_h
-        DEFINITIONS.each_with_object({}) do |(i,h), out|
-          out[i]=h[:number]
-        end
-      end
-      def fetch(number)
-        DEFINITIONS[number][:number]
-      end
     end
 
     def self.swap_keys(hash)
       hash.each_with_object({}) {|(k,v), h| h[v]=k }
-    end
-
-    def self.powers_of_ten
-      {
-        0   => "one",
-        1   => "ten",
-        2   => "hundred",
-        3   => "thousand",
-        6   => "million",
-        9   => "billion",
-        12  => "trillion",
-        15  => "quadrillion",
-        18  => "quintillion",
-        21  => "sextillion",
-        24  => "septillion",
-        27  => "octillion",
-        30  => "nonillion",
-        33  => "decillion",
-        36  => "undecillion",
-        39  => "duodecillion",
-        42  => "tredecillion",
-        45  => "quattuordecillion",
-        48  => "quindecillion",
-        51  => "sexdecillion",
-        54  => "septendecillion",
-        57  => "octodecillion",
-        60  => "novemdecillion",
-        63  => "vigintillion",
-        66  => "unvigintillion",
-        69  => "duovigintillion",
-        72  => "trevigintillion",
-        75  => "quattuorvigintillion",
-        78  => "quinvigintillion",
-        81  => "sexvigintillion",
-        84  => "septenvigintillion",
-        87  => "octovigintillion",
-        90  => "novemvigintillion",
-        93  => "trigintillion",
-        96  => "untrigintillion",
-        99  => "duotrigintillion",
-        100 => "googol"
-      }
     end
 
     def self.exceptional_numbers_to_i
@@ -124,7 +81,7 @@ module NumbersInWords
     end
 
     def self.check_one(txt)
-      one = txt.match /^one (#{POWERS_RX})$/
+      txt.match /^one (#{POWERS_RX})$/
     end
 
     def self.strip_minus(txt)

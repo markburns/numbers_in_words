@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
-gem "codeclimate-test-reporter", group: :test, require: nil
+gem "byebug"
 # Specify your gem's dependencies in numbers_in_words.gemspec
 gemspec

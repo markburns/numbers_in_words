@@ -1,4 +1,7 @@
 module NumbersInWords
+  # Arbitrarily small number for rationalizing fractions
+  EPSILON = 0.0000000001
+
   module English
     class LanguageWriterEnglish < LanguageWriter
       def initialize that
@@ -14,7 +17,15 @@ module NumbersInWords
         "minus " + NumbersInWords.in_words(-@that)
       end
 
-      def in_words
+      def ordinal
+        exceptional_numbers.ordinal(@that)
+      end
+
+      def in_words(fraction: false)
+        if fraction
+          return in_fractions(that)
+        end
+
         v = handle_exceptional_numbers
         return v if v
 
@@ -84,6 +95,15 @@ module NumbersInWords
       end
 
       private
+
+      def in_fractions(number)
+        r = that.rationalize(EPSILON)
+
+        denominator = r.denominator
+        numerator = r.numerator
+
+        exceptional_numbers.fraction(denominator: denominator, numerator: numerator)
+      end
 
       def write_googols
         googols, remainder = NumberGroup.new(@that).split_googols

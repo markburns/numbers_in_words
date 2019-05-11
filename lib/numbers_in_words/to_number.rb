@@ -10,7 +10,7 @@ class NumbersInWords::ToNumber
 
   attr_reader :that, :language
 
-  def initialize(that, language=NumbersInWords.language)
+  def initialize(that, language:NumbersInWords.language)
     @that = that
     @language = language
   end
@@ -26,12 +26,12 @@ class NumbersInWords::ToNumber
   def handle_negative(text, only_compress)
     stripped = strip_minus text
     if stripped
-      stripped_n = NumbersInWords.in_numbers(stripped, language, only_compress)
+      stripped_n = NumbersInWords.in_numbers(stripped, language: language, only_compress: only_compress)
       only_compress ? stripped_n.map{ |k| k * -1 } : -1 * stripped_n
     end
   end
 
-  def in_numbers(only_compress = false)
+  def in_numbers(only_compress: false, fraction: false)
     text = to_s.strip
     return text.to_f if text =~ /^-?\d+(.\d+)?$/
 
@@ -45,7 +45,7 @@ class NumbersInWords::ToNumber
 
     one = check_one text
     if one
-      res = NumbersInWords.in_numbers(one[1], language)
+      res = NumbersInWords.in_numbers(one[1], language: language)
       return only_compress ? [res] : res
     end
 

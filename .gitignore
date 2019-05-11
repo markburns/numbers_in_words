@@ -4,3 +4,4 @@
 tmp
 pkg/
 Gemfile.lock
+.byebug_history

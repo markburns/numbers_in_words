@@ -68,33 +68,33 @@ describe WordsInNumbers do
     expect("nine thousand two hundred"                  .in_numbers) .to eq(9200)
     expect("nine thousand two hundred and seven"        .in_numbers) .to eq(9207)
     expect("nine thousand two hundred and ninety seven" .in_numbers) .to eq(9297)
-    end
+  end
 
-    it "should handle larger numbers" do
+  it "should handle larger numbers" do
     expect("one million"                                .in_numbers) .to eq(1000000)
     expect("two googol five billion and seventy six"    .in_numbers) .to eq(2*10**100 + 5*10**9 + 76)
     expect("thirty seven million"                       .in_numbers) .to eq(37 * 10**6)
     expect("twenty six googol"                          .in_numbers) .to eq(26 * 10**100)
-    end
+  end
 
   it "should handle numbers in hundreds of thousands etc" do
     expect("nine hundred thousand"                                            .in_numbers) .to eq(900000)
     expect("three hundred and fifty seven thousand"                           .in_numbers) .to eq(357000)
     expect("five million three hundred and fifty seven thousand"              .in_numbers) .to eq(5357000)
     expect("nine hundred and ninety nine trillion"                            .in_numbers) .to eq(999 * 10**12)
-    end
-    it "should handle negative numbers" do
+  end
+  it "should handle negative numbers" do
     expect("minus one"                                                        .in_numbers) .to eq(-1)
     expect("minus two googol"                                                 .in_numbers) .to eq(-2 * 10**100)
     expect("minus nine hundred and ninety nine trillion"                      .in_numbers) .to eq(-999 * 10**12)
-    end
+  end
 
-    it "should ignore punctuation and capitalisation" do
+  it "should ignore punctuation and capitalisation" do
     expect("Minus one"                                                        .in_numbers) .to eq(-1)
     expect("FIVE Million, three hundred and fifty-seVen Thousand"             .in_numbers) .to eq(5357000)
     expect("FIVE,,./';';';[] Million, three hundred and fifty-seVen Thousand" .in_numbers) .to eq(5357000)
 
-    end
+  end
 
   it "should handle decimal points" do
     expect("one point one"                        .in_numbers) .to eq(1.1)
@@ -102,34 +102,35 @@ describe WordsInNumbers do
     expect("zero point seven six five three four" .in_numbers) .to eq(0.76534)
     expect("one trillion point six"               .in_numbers) .to eq(10**12 + 0.6)
 
-    long_number = <<-NUMBER
-    nine duotrigintillion seven hundred and seventy seven untrigintillion
-    fifty nine trigintillion one hundred and sixty novemvigintillion
-    eight hundred and six octovigintillion seven hundred and thirty six
-    septenvigintillion four hundred and seventy one sexvigintillion
-    nine hundred and seventy quinvigintillion six hundred and thirty two
-    quattuorvigintillion eight hundred and twenty seven trevigintillion
-    eight hundred and thirty six duovigintillion nine hundred and fifty
-    two unvigintillion seven hundred and ten vigintillion eight hundred and one
-    novemdecillion nine hundred and forty eight octodecillion seven hundred
-    and five septendecillion six hundred and eighty three sexdecillion
-    one hundred and six quindecillion seven hundred and seven quattuordecillion
-    seven hundred and fifty seven tredecillion four hundred and twenty six
-    duodecillion seven hundred and ninety five undecillion seven hundred
-    and forty six decillion eight hundred and thirteen nonillion one hundred
-    and twenty seven octillion four hundred and sixty five septillion two
-    hundred and thirty seven sextillion one hundred and thirty nine
-    quintillion one hundred and fifty three quadrillion forty six
-    trillion seven hundred and fifty two billion eight hundred and three
-    million ninety three thousand seven hundred and ninety one point
-    eight nine five six four three two one eight nine five six seven eight
+    long_number = <<~NUMBER
+      nine duotrigintillion seven hundred and seventy seven untrigintillion
+      fifty nine trigintillion one hundred and sixty novemvigintillion
+      eight hundred and six octovigintillion seven hundred and thirty six
+      septenvigintillion four hundred and seventy one sexvigintillion
+      nine hundred and seventy quinvigintillion six hundred and thirty two
+      quattuorvigintillion eight hundred and twenty seven trevigintillion
+      eight hundred and thirty six duovigintillion nine hundred and fifty
+      two unvigintillion seven hundred and ten vigintillion eight hundred and one
+      novemdecillion nine hundred and forty eight octodecillion seven hundred
+      and five septendecillion six hundred and eighty three sexdecillion
+      one hundred and six quindecillion seven hundred and seven quattuordecillion
+      seven hundred and fifty seven tredecillion four hundred and twenty six
+      duodecillion seven hundred and ninety five undecillion seven hundred
+      and forty six decillion eight hundred and thirteen nonillion one hundred
+      and twenty seven octillion four hundred and sixty five septillion two
+      hundred and thirty seven sextillion one hundred and thirty nine
+      quintillion one hundred and fifty three quadrillion forty six
+      trillion seven hundred and fifty two billion eight hundred and three
+      million ninety three thousand seven hundred and ninety one point
+      eight nine five six four three two one eight nine five six seven eight
     NUMBER
+
     expect(long_number.in_numbers).to eq(
       9777059160806736471970632827836952710801948705683106707757426795746813127465237139153046752803093791.89564321895678
     )
 
     expect("seventy five point eight four three two seven six nine four five one eight".
-      in_numbers).to eq(75.84327694518)
+           in_numbers).to eq(75.84327694518)
   end
 
   it "should handle years notation" do
