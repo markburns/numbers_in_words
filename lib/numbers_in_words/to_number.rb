@@ -31,7 +31,7 @@ class NumbersInWords::ToNumber
     end
   end
 
-  def in_numbers(only_compress: false, fraction: false)
+  def in_numbers(only_compress: false)
     text = to_s.strip
     return text.to_f if text =~ /^-?\d+(.\d+)?$/
 
@@ -52,9 +52,9 @@ class NumbersInWords::ToNumber
     h = handle_decimals text
     return h if h
 
-    integers = word_array_to_integers text.split(" ")
+    integers = word_array_to_nums text.split(" ")
 
-    NumbersInWords::NumberParser.parse integers, only_compress
+    NumbersInWords::NumberParser.parse integers, only_compress: only_compress
   end
 
   def strip_punctuation(text)
@@ -75,20 +75,41 @@ class NumbersInWords::ToNumber
     end
   end
 
+  def word_array_to_nums(words)
+    words.map { |i| word_to_num i }.compact
+  end
+
   #handles simple single word numbers
   #e.g. one, seven, twenty, eight, thousand etc
-  def word_to_integer(word)
+  def word_to_num(word)
     text = canonize(word.to_s.chomp.strip)
 
     exceptional_number = exceptional_numbers_to_i[text]
     return exceptional_number if exceptional_number
 
+    fraction = handle_fraction(text)
+    return fraction if fraction
+
     power = powers_of_ten_to_i[text]
     return 10 ** power if power
   end
 
-  def word_array_to_integers(words)
-    words.map { |i| word_to_integer i }.compact
+  def handle_fraction(text)
+    return unless likely_fraction?(text)
+
+    lookup_fraction(text)
+  end
+
+  def likely_fraction?(text)
+    text[/th$|rd$|ond$/] || defined_fractions.any? {|o| text[o] }
+  end
+
+  def lookup_fraction(text)
+    NumbersInWords::English.exceptional_numbers.lookup_fraction(text)
+  end
+
+  def defined_fractions
+    NumbersInWords::English.exceptional_numbers.fractions
   end
 end
 

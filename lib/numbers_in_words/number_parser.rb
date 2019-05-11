@@ -39,50 +39,72 @@ module NumbersInWords::NumberParser
   #3. add memory to answer,reset,  because power of ten>2    0      2000
   #4. add 1 to memory                                        1      2000
   #5. finish - add memory to answer                          0      2001
-  
+
   SCALES_N = [10**2, 10**3, 10**6, 10**9, 10**12, 10**100].freeze
 
-  def parse(integers, only_compress = false)
-    if integers.length < 2
-      return integers if only_compress
-      return integers.empty? ? 0 : integers[0]
+  def parse(nums, only_compress: false)
+    fraction = nums.any? {|n| n < 1.0  && n != 0.0 }
+
+    if fraction
+      fraction_indicators = nums.map{|n| n < 1.0}
+      last_is_fraction, *numbers_are_fractions = fraction_indicators.reverse
+      raise NumbersInWords::InvalidNumber if numbers_are_fractions.any? || !last_is_fraction
+
+      case nums.length
+      when 1, 2
+        return parse_fractions(nums)
+      else
+        return 10 * parse(nums[0..-3]) + parse_fractions(nums[-2..-1])
+      end
     end
 
-    if (SCALES_N & integers).empty?
-      return pair_parse(integers, only_compress)
+    if nums.length < 2
+      return nums if only_compress
+      return nums.empty? ? 0 : nums[0]
     end
 
-    parse_ints(integers)
+    if (SCALES_N & nums).empty?
+      return pair_parse(nums, only_compress)
+    end
+
+
+    parse_nums(nums)
   end
 
-  def parse_ints(integers)
+  def parse_fractions(fractions)
+    floats = fractions.map(&:to_r).map{|r| [r.numerator, r.denominator] }.flatten.map(&:to_f)
+
+    parse_nums(floats, addition_operator: :-, multiplication_operator: :/)
+  end
+
+  def parse_nums(nums, addition_operator: :+, multiplication_operator: :*)
     memory = 0
     answer = 0
     reset = true #reset each time memory is reset
-    integers.each do |integer|
+    nums.each do |num|
       if reset
         reset = false
-        memory += integer
+        memory = memory.send(addition_operator, num)
       else
         #x4. multiply memory by 10^9 because memory < power of ten
-        if power_of_ten?(integer)
-          if power_of_ten(integer)> 2
-            memory *= integer
+        if power_of_ten?(num)
+          if power_of_ten(num)> 2
+            memory = memory.send(multiplication_operator, num)
             #17. add memory to answer  (and reset) (memory pow of ten > 2)
-            answer += memory
+            answer = answer.send(addition_operator, memory)
             memory = 0
             reset = true
           end
         end
-        if memory < integer 
-          memory *= integer
+        if memory < num
+          memory = memory.send(multiplication_operator, num)
         else
-          memory += integer
+          memory = memory.send(addition_operator, num)
         end
       end
     end
 
-    answer += memory
+    answer.send(addition_operator, memory)
   end
 
   def power_of_ten(integer)

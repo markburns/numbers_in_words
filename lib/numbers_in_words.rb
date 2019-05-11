@@ -14,6 +14,7 @@ module NumbersInWords
   Error                 = ::Class.new(::StandardError)
   AmbiguousParsingError = ::Class.new(Error)
   DivideByZeroError     = ::Class.new(Error)
+  InvalidNumber         = ::Class.new(Error)
 
   class << self
     attr_writer :language
@@ -26,8 +27,8 @@ module NumbersInWords
       ToWord.new(i, language: language).in_words(only_compress: only_compress, fraction: fraction)
     end
 
-    def in_numbers(s, language: NumbersInWords.language, only_compress: false, fraction: false)
-      ToNumber.new(s, language: language).in_numbers(only_compress: only_compress, fraction: fraction)
+    def in_numbers(s, language: NumbersInWords.language, only_compress: false)
+      ToNumber.new(s, language: language).in_numbers(only_compress: only_compress)
     end
 
     def ordinal(s)

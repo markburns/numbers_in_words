@@ -42,6 +42,35 @@ module NumbersInWords
         end
       end
 
+      def lookup_fraction(text)
+        result = DEFINITIONS.find do |i, details|
+          (i != 0) &&
+          (details[:fraction]) &&
+            (
+              (details[:fraction][:singular] == text) ||
+              (details[:fraction][:plural] == text) ||
+              (details[:fraction][:singular] == singularize(text)))
+        end
+
+        if result
+          1/ result.first.to_f
+        end
+      end
+
+      def singularize(text)
+        text.gsub(/s$/, "")
+      end
+
+      def fractions
+        DEFINITIONS.map do |n, h|
+          s = h[:fraction] && h[:fraction].is_a?(Hash) && h[:fraction][:singular]
+          p = h[:fraction] && h[:fraction].is_a?(Hash) && (h[:fraction][:plural]  || h[:fraction][:singular] + "s")
+          o = h[:ordinal] || (h[:number] + "th")
+          op = o + "s"
+          [s, p, o, op].reject{|f| f == false}
+        end.flatten.compact
+      end
+
       def ordinal(number)
         row = DEFINITIONS[number]
         return row[:ordinal] || (row[:number] + 'th') if row
