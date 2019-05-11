@@ -1,10 +1,12 @@
 require './spec/spec_helper'
 
 describe NumbersInWords::English::LanguageWriterEnglish do
+  let(:writer) { described_class.new(2111) }
+
   it "should display numbers grouped" do
     count = 0
-    @writer = NumbersInWords::English::LanguageWriterEnglish.new(2111)
-    @writer.group_words(3) do |power, name, digits|
+
+    writer.group_words(3) do |power, name, digits|
       case count
       when 0
         expect(power).to eq(3)
@@ -17,6 +19,8 @@ describe NumbersInWords::English::LanguageWriterEnglish do
       end
       count += 1
     end
+
+    expect(count).to eq 2
   end
 end
 
