@@ -100,17 +100,17 @@ module NumbersInWords
       private
 
       def predefined?(details, text)
-        (details[:fraction]) &&
-          (
-            (details[:fraction][:singular] == text) ||
-            (details[:fraction][:plural] == text) ||
-            (details[:fraction][:singular] == singularize(text)))
+        f = details[:fraction]
+        return unless f
+
+        (f[:singular] == text) ||
+          (f[:plural] == text) ||
+          (f[:singular] == singularize(text))
       end
 
       def singularize(text)
         text.gsub(/s$/, "")
       end
-
 
       def fallback(numerator, denominator)
         remove_leading_one(numerator, NumbersInWords.ordinal(denominator))
