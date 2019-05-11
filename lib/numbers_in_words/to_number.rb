@@ -5,12 +5,12 @@ class NumbersInWords::ToNumber
   def_delegator :that, :to_s
 
   def_delegators :language,
-   :powers_of_ten_to_i, :exceptions_to_i, :canonize,
+   :powers_of_ten_to_i, :exceptional_numbers_to_i, :canonize,
     :check_mixed, :check_one, :strip_minus, :check_decimal
 
   attr_reader :that, :language
 
-  def initialize that, language=NumbersInWords.language
+  def initialize(that, language=NumbersInWords.language)
     @that = that
     @language = language
   end
@@ -57,7 +57,7 @@ class NumbersInWords::ToNumber
     NumbersInWords::NumberParser.parse integers, only_compress
   end
 
-  def strip_punctuation text
+  def strip_punctuation(text)
     text = text.downcase.gsub(/[^a-z 0-9]/, " ")
     to_remove = true
 
@@ -66,7 +66,7 @@ class NumbersInWords::ToNumber
     text
   end
 
-  def handle_decimals text
+  def handle_decimals(text)
     match = check_decimal text
     if match
       integer = NumbersInWords.in_numbers(match.pre_match)
@@ -77,11 +77,11 @@ class NumbersInWords::ToNumber
 
   #handles simple single word numbers
   #e.g. one, seven, twenty, eight, thousand etc
-  def word_to_integer word
+  def word_to_integer(word)
     text = canonize(word.to_s.chomp.strip)
 
-    exception = exceptions_to_i[text]
-    return exception if exception
+    exceptional_number = exceptional_numbers_to_i[text]
+    return exceptional_number if exceptional_number
 
     power = powers_of_ten_to_i[text]
     return 10 ** power if power

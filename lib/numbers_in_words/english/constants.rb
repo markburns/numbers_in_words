@@ -9,7 +9,7 @@ module NumbersInWords
       return canon ? canon : w
     end
 
-    def self.exceptions
+    def self.exceptional_numbers
       {
         0 => "zero",
         1 => "one",
@@ -91,8 +91,8 @@ module NumbersInWords
       }
     end
 
-    def self.exceptions_to_i
-      swap_keys exceptions
+    def self.exceptional_numbers_to_i
+      swap_keys exceptional_numbers
     end
 
     def self.powers_of_ten_to_i

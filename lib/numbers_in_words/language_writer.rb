@@ -5,7 +5,7 @@ module NumbersInWords
 
     attr_reader :that
 
-    def_delegators :language, :exceptions, :powers_of_ten
+    def_delegators :language, :exceptional_numbers, :powers_of_ten
 
     def initialize that
       @that = that

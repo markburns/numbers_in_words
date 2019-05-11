@@ -15,7 +15,7 @@ module NumbersInWords
       end
 
       def in_words
-        v = handle_exception
+        v = handle_exceptional_numbers
         return v if v
 
         in_decimals = decimals
@@ -39,7 +39,7 @@ module NumbersInWords
 
         tens = (number/10).round*10 #write the tens
 
-        output << exceptions[tens] # e.g. eighty
+        output << exceptional_numbers[tens] # e.g. eighty
 
         digit = number - tens       #write the digits
 
@@ -50,8 +50,8 @@ module NumbersInWords
         output
       end
 
-      def handle_exception
-        exceptions[@that] if @that.is_a?(Integer) and exceptions[@that]
+      def handle_exceptional_numbers
+        exceptional_numbers[@that] if @that.is_a?(Integer) and exceptional_numbers[@that]
       end
 
 
