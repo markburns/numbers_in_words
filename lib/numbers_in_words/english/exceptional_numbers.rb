@@ -44,15 +44,17 @@ module NumbersInWords
 
       def lookup_fraction(text)
         result = DEFINITIONS.find do |i, details|
-          (i != 0) && predefined?(details, text)
+          (i != 0) && predefined?(details, text) || ordinal_present?(details, text)
         end
+
+        result ||= infer_fraction(text)
 
         if result
           1/ result.first.to_f
         end
       end
 
-            def fractions
+      def fractions
         DEFINITIONS.map do |n, h|
           s = h[:fraction] && h[:fraction].is_a?(Hash) && h[:fraction][:singular]
           p = h[:fraction] && h[:fraction].is_a?(Hash) && (h[:fraction][:plural]  || h[:fraction][:singular] + "s")
@@ -106,6 +108,18 @@ module NumbersInWords
         f[:singular] == text ||
           f[:plural] == text ||
           f[:singular] == singularize(text)
+      end
+
+      def ordinal_present?(details, text)
+        o = details[:ordinal]
+        return unless o
+
+        o == text || o == singularize(text)
+      end
+
+      def infer_fraction(text)
+        denominator = text.gsub(/ths?$|rds?$|onds?$/, "")
+        return [NumbersInWords.in_numbers(denominator)] if denominator
       end
 
       def singularize(text)

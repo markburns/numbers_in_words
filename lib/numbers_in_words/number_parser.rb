@@ -51,10 +51,14 @@ module NumbersInWords::NumberParser
       raise NumbersInWords::InvalidNumber if numbers_are_fractions.any? || !last_is_fraction
 
       case nums.length
-      when 1, 2
-        return parse_fractions(nums)
+      when 1
+        return parse_nums(nums)
+      when 2
+        multiplier, fraction = nums
+        return Rational(multiplier, 1 / fraction.to_f).rationalize(NumbersInWords::EPSILON).to_f
       else
-        return 10 * parse(nums[0..-3]) + parse_fractions(nums[-2..-1])
+        byebug
+        return parse_nums(nums[0..-3] + [0]) + parse_nums(nums[-2..-1])
       end
     end
 
@@ -66,7 +70,6 @@ module NumbersInWords::NumberParser
     if (SCALES_N & nums).empty?
       return pair_parse(nums, only_compress)
     end
-
 
     parse_nums(nums)
   end
@@ -112,6 +115,7 @@ module NumbersInWords::NumberParser
   end
 
   def power_of_ten?(integer)
+    return true if integer.zero?
     power_of_ten(integer) == power_of_ten(integer).to_i
   end
 

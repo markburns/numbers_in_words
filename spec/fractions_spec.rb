@@ -7,6 +7,11 @@ describe NumbersInWords do
     "one half"     => 0.5,
     "two halves"   => 1.0,
     "three halves" => 1.5,
+    "three quarters" => 0.75,
+    "three fifths" => 3 / 5.0,
+    "three ninety-sevenths" => 3 / 97.0,
+    "seven fifteenths" => 7 / 15.0,
+    "twenty and three fifteenths" => 20 + 3 / 15.0
   }
 
   FRACTIONS.each do  |string, float|
