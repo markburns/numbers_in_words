@@ -39,7 +39,7 @@ module NumbersInWords
 
         tens = (number/10).round*10 #write the tens
 
-        output << exceptional_numbers[tens] # e.g. eighty
+        output << exceptional_numbers.fetch(tens) # e.g. eighty
 
         digit = number - tens       #write the digits
 
@@ -51,7 +51,7 @@ module NumbersInWords
       end
 
       def handle_exceptional_numbers
-        exceptional_numbers[@that] if @that.is_a?(Integer) and exceptional_numbers[@that]
+        exceptional_numbers.fetch(@that) if @that.is_a?(Integer) && exceptional_numbers.defines?(@that)
       end
 
 

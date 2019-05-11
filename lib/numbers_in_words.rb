@@ -10,9 +10,10 @@ require 'numbers_in_words/to_number'
 require 'numbers_in_words/to_word'
 
 module NumbersInWords
-  LENGTH_OF_GOOGOL = 101 #length of the string i.e. one with 100 zeros
-  Error = ::Class.new(::StandardError)
+  LENGTH_OF_GOOGOL      = 101 #length of the string i.e. one with 100 zeros
+  Error                 = ::Class.new(::StandardError)
   AmbiguousParsingError = ::Class.new(Error)
+  DivideByZeroError     = ::Class.new(Error)
 
   class << self
     attr_writer :language

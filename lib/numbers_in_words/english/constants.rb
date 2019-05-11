@@ -10,43 +10,57 @@ module NumbersInWords
     end
 
     def self.exceptional_numbers
-      {
-        0 => "zero",
-        1 => "one",
-        2 => "two",
-        3 => "three",
-        4 => "four",
-        5 => "five",
-        6 => "six",
-        7 => "seven",
-        8 => "eight",
-        9 => "nine",
-
-        10 => "ten",
-        11 => "eleven",
-        12 => "twelve",
-
-        13 => "thirteen",
-        14 => "fourteen",
-        15 => "fifteen",
-        16 => "sixteen" ,
-        17 => "seventeen",
-        18 => "eighteen",
-        19 => "nineteen",
-
-        20 => "twenty",
-        30 => "thirty",
-        40 => "forty",
-        50 => "fifty",
-        60 => "sixty",
-        70 => "seventy",
-        80 => "eighty",
-        90 => "ninety"
-      }
+      @exceptional_numbers ||= ExceptionalNumbers.new
     end
 
-    def self.swap_keys hsh
-      hsh.inject({}){|h,(k,v)| h[v]=k; h}
+    class ExceptionalNumbers
+      DEFINITIONS = {
+        0  => {number: "zero"     , ordinal: "zeroth", fraction: ->{DivideByZeroError} } ,
+        1  => {number: "one"      , ordinal: "first" } ,
+        2  => {number: "two"      , ordinal: "second", fraction: {singular: "half", plural: "halves"} } ,
+        3  => {number: "three"    , ordinal: "third"  } ,
+        4  => {number: "four"     , ordinal: "fourth", fraction: {singular: ["fourth" "quarter"] }} ,
+        5  => {number: "five"     , ordinal: "fifth",  } ,
+        6  => {number: "six"       } ,
+        7  => {number: "seven"      } ,
+        8  => {number: "eight"    , ordinal: "eighth", } ,
+        9  => {number: "nine"     , ordinal: "ninth", } ,
+        10 => {number: "ten"        } ,
+        11 => {number: "eleven"   } ,
+        12 => {number: "twelve"   , ordinal: "twelfth" } ,
+        13 => {number: "thirteen"  } ,
+        14 => {number: "fourteen"  } ,
+        15 => {number: "fifteen"  } ,
+        16 => {number: "sixteen"  } ,
+        17 => {number: "seventeen"} ,
+        18 => {number: "eighteen" } ,
+        19 => {number: "nineteen" } ,
+        20 => {number: "twenty"   , ordinal: "twentieth"} ,
+        30 => {number: "thirty"   , ordinal: "thirtieth" } ,
+        40 => {number: "forty"    , ordinal: "fortieth" } ,
+        50 => {number: "fifty"    , ordinal: "fiftieth"} ,
+        60 => {number: "sixty"    , ordinal: "sixtieth"} ,
+        70 => {number: "seventy"  , ordinal: "seventieth"} ,
+        80 => {number: "eighty"   , ordinal: "eightieth"} ,
+        90 => {number: "ninety"   , ordinal: "ninetieth"}
+      }
+
+      def defines?(number)
+        to_h.key?(number)
+      end
+
+      def to_h
+        DEFINITIONS.each_with_object({}) do |(i,h), out|
+          out[i]=h[:number]
+        end
+      end
+      def fetch(number)
+        DEFINITIONS[number][:number]
+      end
+    end
+
+    def self.swap_keys(hash)
+      hash.each_with_object({}) {|(k,v), h| h[v]=k }
     end
 
     def self.powers_of_ten
@@ -92,7 +106,7 @@ module NumbersInWords
     end
 
     def self.exceptional_numbers_to_i
-      swap_keys exceptional_numbers
+      swap_keys exceptional_numbers.to_h
     end
 
     def self.powers_of_ten_to_i
