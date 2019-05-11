@@ -52,19 +52,7 @@ module NumbersInWords
         end
       end
 
-      def predefined?(details, text)
-        (details[:fraction]) &&
-          (
-            (details[:fraction][:singular] == text) ||
-            (details[:fraction][:plural] == text) ||
-            (details[:fraction][:singular] == singularize(text)))
-      end
-
-      def singularize(text)
-        text.gsub(/s$/, "")
-      end
-
-      def fractions
+            def fractions
         DEFINITIONS.map do |n, h|
           s = h[:fraction] && h[:fraction].is_a?(Hash) && h[:fraction][:singular]
           p = h[:fraction] && h[:fraction].is_a?(Hash) && (h[:fraction][:plural]  || h[:fraction][:singular] + "s")
@@ -110,6 +98,19 @@ module NumbersInWords
       end
 
       private
+
+      def predefined?(details, text)
+        (details[:fraction]) &&
+          (
+            (details[:fraction][:singular] == text) ||
+            (details[:fraction][:plural] == text) ||
+            (details[:fraction][:singular] == singularize(text)))
+      end
+
+      def singularize(text)
+        text.gsub(/s$/, "")
+      end
+
 
       def fallback(numerator, denominator)
         remove_leading_one(numerator, NumbersInWords.ordinal(denominator))
