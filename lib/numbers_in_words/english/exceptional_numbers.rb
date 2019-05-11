@@ -44,17 +44,20 @@ module NumbersInWords
 
       def lookup_fraction(text)
         result = DEFINITIONS.find do |i, details|
-          (i != 0) &&
-          (details[:fraction]) &&
-            (
-              (details[:fraction][:singular] == text) ||
-              (details[:fraction][:plural] == text) ||
-              (details[:fraction][:singular] == singularize(text)))
+          (i != 0) && predefined?(details, text)
         end
 
         if result
           1/ result.first.to_f
         end
+      end
+
+      def predefined?(details, text)
+        (details[:fraction]) &&
+          (
+            (details[:fraction][:singular] == text) ||
+            (details[:fraction][:plural] == text) ||
+            (details[:fraction][:singular] == singularize(text)))
       end
 
       def singularize(text)
