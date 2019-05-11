@@ -99,7 +99,7 @@ module NumbersInWords
         output
       end
 
-      def write_groups group
+      def write_groups(group)
         #e.g. 113 splits into "one hundred" and "thirteen"
         output = ""
         group_words(group) do |power, name, digits|

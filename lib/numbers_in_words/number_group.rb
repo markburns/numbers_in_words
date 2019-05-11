@@ -3,18 +3,18 @@ module NumbersInWords
     include Enumerable
     attr_accessor :number
 
-    def self.groups_of number, size
+    def self.groups_of(number, size)
       new(number).groups(size)
     end
 
-    def initialize number
+    def initialize(number)
       @number = number
     end
 
     #split into groups this gives us 1234567 => 123 456 7
     #so we need to reverse first
     #in stages
-    def groups size
+    def groups(size)
       #1234567   => %w(765 432 1)
       @array = in_groups_of(@number.to_s.reverse.split(""), size)
       #%w(765 432 1) => %w(1 432 765)

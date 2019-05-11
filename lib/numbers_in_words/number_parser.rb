@@ -81,11 +81,11 @@ module NumbersInWords::NumberParser
     parse_ints(integers)
   end
 
-  def power_of_ten integer
+  def power_of_ten(integer)
     Math.log10(integer)
   end
 
-  def power_of_ten? integer
+  def power_of_ten?(integer)
     power_of_ten(integer) == power_of_ten(integer).to_i
   end
 

@@ -87,7 +87,7 @@ class NumbersInWords::ToNumber
     return 10 ** power if power
   end
 
-  def word_array_to_integers words
+  def word_array_to_integers(words)
     words.map { |i| word_to_integer i }.compact
   end
 end

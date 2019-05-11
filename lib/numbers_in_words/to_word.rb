@@ -1,10 +1,10 @@
 class NumbersInWords::ToWord
-  def initialize that, language=NumbersInWords.language
+  def initialize(that, language=NumbersInWords.language)
     @that = that
     @language = language
   end
 
-  def in_words language=nil
+  def in_words(language=nil)
     language ||= @language
 
     case language
