@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NumbersInWords::ToWord
   def initialize(that, language: NumbersInWords.language)
     @that = that
@@ -8,7 +10,7 @@ class NumbersInWords::ToWord
     language ||= @language
 
     case language
-    when "English" #allow for I18n
+    when 'English' # allow for I18n
       in_english(fraction: fraction)
     end
   end

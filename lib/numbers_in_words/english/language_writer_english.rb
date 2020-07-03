@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 module NumbersInWords
   # Arbitrarily small number for rationalizing fractions
   EPSILON = 0.0000000001
 
   module English
     class LanguageWriterEnglish < LanguageWriter
-      def initialize that
+      def initialize(that)
         super that
-        @language = "English"
+        @language = 'English'
       end
 
       def to_i
@@ -14,7 +16,7 @@ module NumbersInWords
       end
 
       def negative
-        "minus " + NumbersInWords.in_words(-@that)
+        'minus ' + NumbersInWords.in_words(-@that)
       end
 
       def ordinal
@@ -22,9 +24,7 @@ module NumbersInWords
       end
 
       def in_words(fraction: false)
-        if fraction
-          return in_fractions(that)
-        end
+        return in_fractions(that) if fraction
 
         v = handle_exceptional_numbers
         return v if v
@@ -34,28 +34,28 @@ module NumbersInWords
 
         number = to_i
 
-        return negative() if number < 0
+        return negative if number < 0
 
-        output = if number.to_s.length == 2 #20-99
+        output = if number.to_s.length == 2 # 20-99
                    handle_tens(number)
                  else
-                   write() #longer numbers
+                   write # longer numbers
                  end
 
         output.strip
       end
 
       def handle_tens(number)
-        output = ""
+        output = ''
 
-        tens = (number/10).round*10 #write the tens
+        tens = (number / 10).round * 10 # write the tens
 
         output << exceptional_numbers.fetch(tens) # e.g. eighty
 
-        digit = number - tens       #write the digits
+        digit = number - tens # write the digits
 
         unless digit == 0
-          join = number < 100 ? "-" : " "
+          join = number < 100 ? '-' : ' '
           output << join + NumbersInWords.in_words(digit)
         end
 
@@ -66,15 +66,14 @@ module NumbersInWords
         exceptional_numbers.fetch(@that) if @that.is_a?(Integer) && exceptional_numbers.defines?(@that)
       end
 
-
       def write
         length = @that.to_s.length
         output =
           if length == 3
-            #e.g. 113 splits into "one hundred" and "thirteen"
+            # e.g. 113 splits into "one hundred" and "thirteen"
             write_groups(2)
 
-            #more than one hundred less than one googol
+            # more than one hundred less than one googol
           elsif length < LENGTH_OF_GOOGOL
             write_groups(3)
 
@@ -87,9 +86,9 @@ module NumbersInWords
       def decimals
         int, decimals = NumberGroup.new(@that).split_decimals
         if int
-          out = NumbersInWords.in_words(int) + " point "
+          out = NumbersInWords.in_words(int) + ' point '
           decimals.each do |decimal|
-            out << NumbersInWords.in_words(decimal.to_i) + " "
+            out << NumbersInWords.in_words(decimal.to_i) + ' '
           end
           out.strip
         end
@@ -97,7 +96,7 @@ module NumbersInWords
 
       private
 
-      def in_fractions(number)
+      def in_fractions(_number)
         r = that.rationalize(EPSILON)
 
         denominator = r.denominator
@@ -108,12 +107,12 @@ module NumbersInWords
 
       def write_googols
         googols, remainder = NumberGroup.new(@that).split_googols
-        output = ""
+        output = ''
 
-        output << " " + NumbersInWords.in_words(googols) + " googol"
+        output << ' ' + NumbersInWords.in_words(googols) + ' googol'
         if remainder > 0
-          prefix = " "
-          prefix << "and " if remainder < 100
+          prefix = ' '
+          prefix << 'and ' if remainder < 100
           output << prefix + NumbersInWords.in_words(remainder)
         end
 
@@ -121,13 +120,13 @@ module NumbersInWords
       end
 
       def write_groups(group)
-        #e.g. 113 splits into "one hundred" and "thirteen"
-        output = ""
+        # e.g. 113 splits into "one hundred" and "thirteen"
+        output = ''
         group_words(group) do |power, name, digits|
           if digits > 0
-            prefix = " "
-            #no and between thousands and hundreds
-            prefix << "and " if power == 0  and digits < 100
+            prefix = ' '
+            # no and between thousands and hundreds
+            prefix << 'and ' if (power == 0) && (digits < 100)
             output << prefix + NumbersInWords.in_words(digits)
             output << prefix + name unless power == 0
           end

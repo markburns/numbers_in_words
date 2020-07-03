@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NumbersInWords
   def in_words(language: NumbersInWords.language, fraction: false)
     NumbersInWords.in_words(self, language: language, fraction: fraction)

@@ -1,21 +1,23 @@
+# frozen_string_literal: true
+
 require './spec/spec_helper'
 
 describe NumbersInWords::English::LanguageWriterEnglish do
   let(:number) { 2_111 }
   let(:writer) { described_class.new(number) }
 
-  it "should display numbers grouped" do
+  it 'should display numbers grouped' do
     count = 0
 
     writer.group_words(3) do |power, name, digits|
       case count
       when 0
         expect(power).to eq(3)
-        expect(name).to eq("thousand")
+        expect(name).to eq('thousand')
         expect(digits).to eq(2)
       when 1
         expect(power).to eq(0)
-        expect(name).to eq("one")
+        expect(name).to eq('one')
         expect(digits).to eq(111)
       end
       count += 1
@@ -24,7 +26,7 @@ describe NumbersInWords::English::LanguageWriterEnglish do
     expect(count).to eq 2
   end
 
-  describe "#in_words" do
+  describe '#in_words' do
     let(:number) { 99 }
 
     subject do
@@ -36,5 +38,3 @@ describe NumbersInWords::English::LanguageWriterEnglish do
     end
   end
 end
-
-

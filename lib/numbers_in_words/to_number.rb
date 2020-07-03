@@ -1,16 +1,18 @@
-require "forwardable"
+# frozen_string_literal: true
+
+require 'forwardable'
 
 class NumbersInWords::ToNumber
   extend Forwardable
   def_delegator :that, :to_s
 
   def_delegators :language,
-   :powers_of_ten_to_i, :exceptional_numbers_to_i, :canonize,
-    :check_mixed, :check_one, :strip_minus, :check_decimal
+                 :powers_of_ten_to_i, :exceptional_numbers_to_i, :canonize,
+                 :check_mixed, :check_one, :strip_minus, :check_decimal
 
   attr_reader :that, :language
 
-  def initialize(that, language:NumbersInWords.language)
+  def initialize(that, language: NumbersInWords.language)
     @that = that
     @language = language
   end
@@ -27,7 +29,7 @@ class NumbersInWords::ToNumber
     stripped = strip_minus text
     if stripped
       stripped_n = NumbersInWords.in_numbers(stripped, language: language, only_compress: only_compress)
-      only_compress ? stripped_n.map{ |k| k * -1 } : -1 * stripped_n
+      only_compress ? stripped_n.map { |k| k * -1 } : -1 * stripped_n
     end
   end
 
@@ -52,16 +54,16 @@ class NumbersInWords::ToNumber
     h = handle_decimals text
     return h if h
 
-    integers = word_array_to_nums text.split(" ")
+    integers = word_array_to_nums text.split(' ')
 
     NumbersInWords::NumberParser.parse integers, only_compress: only_compress
   end
 
   def strip_punctuation(text)
-    text = text.downcase.gsub(/[^a-z 0-9]/, " ")
+    text = text.downcase.gsub(/[^a-z 0-9]/, ' ')
     to_remove = true
 
-    to_remove = text.gsub! "  ", " " while to_remove
+    to_remove = text.gsub! '  ', ' ' while to_remove
 
     text
   end
@@ -71,7 +73,7 @@ class NumbersInWords::ToNumber
     if match
       integer = NumbersInWords.in_numbers(match.pre_match)
       decimal = NumbersInWords.in_numbers(match.post_match)
-      integer +=  "0.#{decimal}".to_f
+      integer += "0.#{decimal}".to_f
     end
   end
 
@@ -79,8 +81,8 @@ class NumbersInWords::ToNumber
     words.map { |i| word_to_num i }.compact
   end
 
-  #handles simple single word numbers
-  #e.g. one, seven, twenty, eight, thousand etc
+  # handles simple single word numbers
+  # e.g. one, seven, twenty, eight, thousand etc
   def word_to_num(word)
     text = canonize(word.to_s.chomp.strip)
 
@@ -91,7 +93,7 @@ class NumbersInWords::ToNumber
     return fraction if fraction
 
     power = powers_of_ten_to_i[text]
-    return 10 ** power if power
+    return 10**power if power
   end
 
   def handle_fraction(text)
@@ -101,7 +103,7 @@ class NumbersInWords::ToNumber
   end
 
   def likely_fraction?(text)
-    text[/th$|rd$|ond$/] || defined_fractions.any? {|o| text[o] }
+    text[/th$|rd$|ond$/] || defined_fractions.any? { |o| text[o] }
   end
 
   def lookup_fraction(text)
@@ -112,4 +114,3 @@ class NumbersInWords::ToNumber
     NumbersInWords::English.exceptional_numbers.fractions
   end
 end
-

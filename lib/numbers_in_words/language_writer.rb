@@ -1,4 +1,6 @@
-require "forwardable"
+# frozen_string_literal: true
+
+require 'forwardable'
 module NumbersInWords
   class LanguageWriter
     extend Forwardable
@@ -7,7 +9,7 @@ module NumbersInWords
 
     def_delegators :language, :exceptional_numbers, :powers_of_ten
 
-    def initialize that
+    def initialize(that)
       @that = that
     end
 
@@ -19,10 +21,10 @@ module NumbersInWords
       end
     end
 
-    def group_words size
-      #1000 and over Numbers are split into groups of three
+    def group_words(size)
+      # 1000 and over Numbers are split into groups of three
       groups = NumberGroup.groups_of @that, size
-      powers = groups.keys.sort.reverse #put in descending order
+      powers = groups.keys.sort.reverse # put in descending order
 
       powers.each do |power|
         name = powers_of_ten[power]

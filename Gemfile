@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-gem "byebug"
+gem 'byebug'
 # Specify your gem's dependencies in numbers_in_words.gemspec
 gemspec

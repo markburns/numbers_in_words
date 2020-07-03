@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 require './spec/spec_helper'
 
@@ -39,7 +40,7 @@ describe NumbersInWords::NumberParser do
 
     context 'with invalid number' do
       let(:number) { [2, 1, 0.5, 1] }
-      it { expect{subject}.to raise_error NumbersInWords::InvalidNumber }
+      it { expect { subject }.to raise_error NumbersInWords::InvalidNumber }
     end
 
     context 'with numerator and denominator' do
@@ -54,5 +55,3 @@ describe NumbersInWords::NumberParser do
     it { expect(subject).to eq 245 }
   end
 end
-
-

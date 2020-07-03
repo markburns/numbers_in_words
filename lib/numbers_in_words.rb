@@ -1,4 +1,6 @@
-require "numbers_in_words/version"
+# frozen_string_literal: true
+
+require 'numbers_in_words/version'
 require 'numbers_in_words/language_writer'
 
 require 'numbers_in_words/english/constants'
@@ -10,7 +12,7 @@ require 'numbers_in_words/to_number'
 require 'numbers_in_words/to_word'
 
 module NumbersInWords
-  LENGTH_OF_GOOGOL      = 101 #length of the string i.e. one with 100 zeros
+  LENGTH_OF_GOOGOL      = 101 # length of the string i.e. one with 100 zeros
   Error                 = ::Class.new(::StandardError)
   AmbiguousParsingError = ::Class.new(Error)
   DivideByZeroError     = ::Class.new(Error)
@@ -20,7 +22,7 @@ module NumbersInWords
     attr_writer :language
 
     def language
-      @language ||= "English"
+      @language ||= 'English'
     end
 
     def in_words(i, language: NumbersInWords.language, only_compress: false, fraction: false)
@@ -36,4 +38,3 @@ module NumbersInWords
     end
   end
 end
-
