@@ -6,7 +6,7 @@ module NumbersInWords
     extend Forwardable
     def_delegator :that, :to_s
 
-    def_delegators ToWord,
+    def_delegators NumbersInWords,
       :powers_of_ten_to_i, :exceptional_numbers_to_i, :canonize,
       :check_mixed, :check_one, :strip_minus, :check_decimal
 
