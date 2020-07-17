@@ -17,7 +17,7 @@ module NumbersInWords
       powers = groups.keys.sort.reverse # put in descending order
 
       powers.each do |power|
-        name = powers_of_ten[power]
+        name = NumbersInWords.powers_of_ten[power]
         digits = groups[power]
         yield power, name, digits
       end
@@ -32,7 +32,7 @@ module NumbersInWords
     end
 
     def ordinal
-      exceptional_numbers.ordinal(@that)
+      NumbersInWords.exceptional_numbers.ordinal(@that)
     end
 
     def in_words(fraction: false)
@@ -62,7 +62,7 @@ module NumbersInWords
 
       tens = (number / 10).round * 10 # write the tens
 
-      output << exceptional_numbers.fetch(tens) # e.g. eighty
+      output = output + NumbersInWords.exceptional_numbers.fetch(tens) # e.g. eighty
 
       digit = number - tens # write the digits
 
@@ -75,7 +75,7 @@ module NumbersInWords
     end
 
     def handle_exceptional_numbers
-      exceptional_numbers.fetch(@that) if @that.is_a?(Integer) && exceptional_numbers.defines?(@that)
+      NumbersInWords.exceptional_numbers.fetch(@that) if @that.is_a?(Integer) && NumbersInWords.exceptional_numbers.defines?(@that)
     end
 
     def write
@@ -114,18 +114,18 @@ module NumbersInWords
       denominator = r.denominator
       numerator = r.numerator
 
-      exceptional_numbers.fraction(denominator: denominator, numerator: numerator)
+      NumbersInWords.exceptional_numbers.fraction(denominator: denominator, numerator: numerator)
     end
 
     def write_googols
       googols, remainder = NumberGroup.new(@that).split_googols
       output = ''
 
-      output << ' ' + NumbersInWords.in_words(googols) + ' googol'
+      output = output + ' ' + NumbersInWords.in_words(googols) + ' googol'
       if remainder > 0
         prefix = ' '
-        prefix << 'and ' if remainder < 100
-        output << prefix + NumbersInWords.in_words(remainder)
+        prefix = prefix + 'and ' if remainder < 100
+        output = output + prefix + NumbersInWords.in_words(remainder)
       end
 
       output
@@ -138,9 +138,9 @@ module NumbersInWords
         if digits > 0
           prefix = ' '
           # no and between thousands and hundreds
-          prefix << 'and ' if (power == 0) && (digits < 100)
-          output << prefix + NumbersInWords.in_words(digits)
-          output << prefix + name unless power == 0
+          prefix = prefix + 'and ' if (power == 0) && (digits < 100)
+          output = output + prefix + NumbersInWords.in_words(digits)
+          output = output + prefix + name unless power == 0
         end
       end
       output

@@ -47,7 +47,7 @@ module NumbersInWords
 
       integers = word_array_to_nums text.split(' ')
 
-      NumbersInWords::NumberParser.parse integers, only_compress: only_compress
+      NumbersInWords::NumberParser.new.parse integers, only_compress: only_compress
     end
 
     def strip_punctuation(text)
