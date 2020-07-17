@@ -74,7 +74,7 @@ module NumbersInWords
       swap_keys powers_of_ten
     end
 
-    POWERS_RX = Regexp.union(powers_of_ten.values[1..-1])
+    POWERS_RX = Regexp.union(powers_of_ten.values[1..])
 
     def self.check_mixed(txt)
       mixed = txt.match(/^(-?\d+(.\d+)?) (#{POWERS_RX}s?)$/)

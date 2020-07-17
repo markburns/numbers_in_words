@@ -59,7 +59,7 @@ module NumbersInWords::NumberParser
         multiplier, fraction = nums
         return Rational(multiplier, 1 / fraction.to_f).rationalize(NumbersInWords::EPSILON).to_f
       else
-        return parse_nums(nums[0..-3] + [0]) + parse_nums(nums[-2..-1])
+        return parse_nums(nums[0..-3] + [0]) + parse_nums(nums[-2..])
       end
     end
 

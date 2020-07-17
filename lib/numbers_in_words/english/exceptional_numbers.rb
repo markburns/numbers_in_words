@@ -39,8 +39,8 @@ module NumbersInWords
       end
 
       def to_h
-        DEFINITIONS.each_with_object({}) do |(i, h), out|
-          out[i] = h[:number]
+        DEFINITIONS.transform_values do |h|
+          h[:number]
         end
       end
 
