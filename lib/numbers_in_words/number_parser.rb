@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'forwardable'
+
 module NumbersInWords
   class NumberParser
     # Example: 364,895,457,898
@@ -57,44 +59,93 @@ module NumbersInWords
       parse_nums(nums)
     end
 
-    def parse_nums(nums, addition_operator: :+, multiplication_operator: :*)
-      memory = 0
-      answer = 0
-      reset = true # reset each time memory is reset
+    def parse_nums(nums)
+      status = ParseStatus.new
+
       nums.each do |num|
+        ParseIndividualNumber.new(status, num).call
+      end
+
+      status.calculate
+    end
+
+    class ParseStatus
+      attr_accessor :reset, :memory, :answer
+
+      def initialize
+        @reset = true
+        @memory = 0
+        @answer = 0
+      end
+
+      def calculate
+        answer + memory
+      end
+    end
+
+    class ParseIndividualNumber
+      extend Forwardable
+      def_delegators :parse_status, :reset=, :memory=, :answer=, :reset, :memory, :answer
+
+      attr_reader :parse_status, :num
+
+      def initialize(parse_status, num)
+        @parse_status = parse_status
+        @num = num
+      end
+
+      def call
         if reset
-          reset = false
-          memory = memory.send(addition_operator, num)
+          clear
         else
-          # x4. multiply memory by 10^9 because memory < power of ten
-          if power_of_ten?(num)
-            if power_of_ten(num) > 2
-              memory = memory.send(multiplication_operator, num)
-              # 17. add memory to answer  (and reset) (memory pow of ten > 2)
-              answer = answer.send(addition_operator, memory)
-              memory = 0
-              reset = true
-            end
-          end
-          memory = if memory < num
-                     memory.send(multiplication_operator, num)
-                   else
-                     memory.send(addition_operator, num)
-                   end
+          handle_power_of_ten
+
+          update_memory
+        end
+
+        [reset, memory, answer]
+      end
+
+      private
+
+      def clear
+        self.reset = false
+        self.memory += num
+      end
+
+      def handle_power_of_ten
+        # x4. multiply memory by 10^9 because memory < power of ten
+        return unless power_of_ten?(num)
+        return unless power_of_ten(num) > 2
+
+        self.memory *= num
+        # 17. add memory to answer  (and reset) (memory pow of ten > 2)
+        self.answer += memory
+        self.memory = 0
+        self.reset = true
+      end
+
+      def update_memory
+        self.memory = new_memory
+      end
+
+      def new_memory
+        if memory < num
+          memory * num
+        else
+          memory + num
         end
       end
 
-      answer.send(addition_operator, memory)
-    end
+      def power_of_ten(integer)
+        Math.log10(integer)
+      end
 
-    def power_of_ten(integer)
-      Math.log10(integer)
-    end
+      def power_of_ten?(integer)
+        return true if integer.zero?
 
-    def power_of_ten?(integer)
-      return true if integer.zero?
-
-      power_of_ten(integer) == power_of_ten(integer).to_i
+        power_of_ten(integer) == power_of_ten(integer).to_i
+      end
     end
 
     # 15,16
@@ -116,20 +167,26 @@ module NumbersInWords
 
     # [40, 2] => [42]
     def compress(ints)
-      res = []
-      i = 0
       return [] if ints.empty?
 
-      while i < ints.length - 1
-        int, jump = compress_int(ints[i], ints[i + 1])
-        res << int
-        i += jump
+      result = []
+      index = 0
+
+      index, result = compress_numbers(ints, result, index)
+
+      result << ints[-1] if index < ints.length
+
+      result
+    end
+
+    def compress_numbers(ints, result, index)
+      while index < ints.length - 1
+        int, jump = compress_int(ints[index], ints[index + 1])
+        result << int
+        index += jump
       end
-      if i < ints.length
-        res << ints[-1]
-      else
-        res
-      end
+
+      [index, result]
     end
 
     def compress_int(int, sequel)
