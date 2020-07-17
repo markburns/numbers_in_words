@@ -62,7 +62,7 @@ module NumbersInWords
 
       tens = (number / 10).round * 10 # write the tens
 
-      output = output + NumbersInWords.exceptional_numbers.fetch(tens) # e.g. eighty
+      output += NumbersInWords.exceptional_numbers.fetch(tens) # e.g. eighty
 
       digit = number - tens # write the digits
 
@@ -75,7 +75,9 @@ module NumbersInWords
     end
 
     def handle_exceptional_numbers
-      NumbersInWords.exceptional_numbers.fetch(@that) if @that.is_a?(Integer) && NumbersInWords.exceptional_numbers.defines?(@that)
+      if @that.is_a?(Integer) && NumbersInWords.exceptional_numbers.defines?(@that)
+        NumbersInWords.exceptional_numbers.fetch(@that)
+      end
     end
 
     def write
@@ -124,7 +126,7 @@ module NumbersInWords
       output = output + ' ' + NumbersInWords.in_words(googols) + ' googol'
       if remainder > 0
         prefix = ' '
-        prefix = prefix + 'and ' if remainder < 100
+        prefix += 'and ' if remainder < 100
         output = output + prefix + NumbersInWords.in_words(remainder)
       end
 
@@ -138,7 +140,7 @@ module NumbersInWords
         if digits > 0
           prefix = ' '
           # no and between thousands and hundreds
-          prefix = prefix + 'and ' if (power == 0) && (digits < 100)
+          prefix += 'and ' if (power == 0) && (digits < 100)
           output = output + prefix + NumbersInWords.in_words(digits)
           output = output + prefix + name unless power == 0
         end
