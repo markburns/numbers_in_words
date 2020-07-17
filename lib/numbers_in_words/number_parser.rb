@@ -46,24 +46,6 @@ module NumbersInWords
     SCALES_N = [10**2, 10**3, 10**6, 10**9, 10**12, 10**100].freeze
 
     def parse(nums, only_compress: false)
-      fraction = nums.any? { |n| n < 1.0 && n != 0.0 }
-
-      if fraction
-        fraction_indicators = nums.map { |n| n < 1.0 }
-        last_is_fraction, *numbers_are_fractions = fraction_indicators.reverse
-        raise NumbersInWords::InvalidNumber if numbers_are_fractions.any? || !last_is_fraction
-
-        case nums.length
-        when 1
-          return parse_nums(nums)
-        when 2
-          multiplier, fraction = nums
-          return Rational(multiplier, 1 / fraction.to_f).rationalize(NumbersInWords::EPSILON).to_f
-        else
-          return parse_nums(nums[0..-3] + [0]) + parse_nums(nums[-2..])
-        end
-      end
-
       if nums.length < 2
         return nums if only_compress
 
@@ -73,12 +55,6 @@ module NumbersInWords
       return pair_parse(nums, only_compress) if (SCALES_N & nums).empty?
 
       parse_nums(nums)
-    end
-
-    def parse_fractions(fractions)
-      floats = fractions.map(&:to_r).map { |r| [r.numerator, r.denominator] }.flatten.map(&:to_f)
-
-      parse_nums(floats, addition_operator: :-, multiplication_operator: :/)
     end
 
     def parse_nums(nums, addition_operator: :+, multiplication_operator: :*)

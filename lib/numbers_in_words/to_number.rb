@@ -95,23 +95,5 @@ module NumbersInWords
       power = powers_of_ten_to_i[text]
       return 10**power if power
     end
-
-    def handle_fraction(text)
-      return unless likely_fraction?(text)
-
-      lookup_fraction(text)
-    end
-
-    def likely_fraction?(text)
-      text[/th$|rd$|ond$/] || defined_fractions.any? { |o| text[o] }
-    end
-
-    def lookup_fraction(text)
-      NumbersInWords.exceptional_numbers.lookup_fraction(text)
-    end
-
-    def defined_fractions
-      NumbersInWords.exceptional_numbers.fractions
-    end
   end
 end
