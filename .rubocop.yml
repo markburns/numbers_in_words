@@ -8,23 +8,21 @@
 # where the inspected file is and continue its way up to the root directory.
 #
 # See https://docs.rubocop.org/rubocop/configuration
-
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
-
-  Layout/SpaceAroundMethodCallOperator:
+Layout/SpaceAroundMethodCallOperator:
   Enabled: true
-  Lint/DeprecatedOpenSSLConstant:
+Lint/DeprecatedOpenSSLConstant:
   Enabled: true
-  Lint/MixedRegexpCaptureTypes:
+Lint/MixedRegexpCaptureTypes:
   Enabled: true
-  Lint/RaiseException:
+Lint/RaiseException:
   Enabled: true
-  Lint/StructNewOverride:
+Lint/StructNewOverride:
   Enabled: true
-  Style/ExponentialNotation:
+Style/ExponentialNotation:
   Enabled: true
-  Style/HashEachMethods:
+Style/HashEachMethods:
   Enabled: true
 Style/HashTransformKeys:
   Enabled: true
@@ -37,4 +35,24 @@ Style/RedundantRegexpCharacterClass:
 Style/RedundantRegexpEscape:
   Enabled: true
 Style/SlicingWithRange:
+  Enabled: true
+Lint/DuplicateElsifCondition:
+  Enabled: true
+Style/AccessorGrouping:
+  Enabled: true
+Style/ArrayCoercion:
+  Enabled: true
+Style/BisectedAttrAccessor:
+  Enabled: true
+Style/CaseLikeIf:
+  Enabled: true
+Style/Documentation:
+  Enabled: false
+Style/HashAsLastArrayItem:
+  Enabled: true
+Style/HashLikeCase:
+  Enabled: true
+Style/RedundantAssignment:
+  Enabled: true
+Style/RedundantFileExtensionInRequire:
   Enabled: true
