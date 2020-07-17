@@ -16,8 +16,8 @@ module NumbersInWords
   DivideByZeroError     = ::Class.new(Error)
   InvalidNumber         = ::Class.new(Error)
 
-  def self.in_words(num, fraction: false)
-    ToWord.new(num).in_words(fraction: fraction)
+  def self.in_words(num)
+    ToWord.new(num).in_words
   end
 
   def self.in_numbers(words, only_compress: false)

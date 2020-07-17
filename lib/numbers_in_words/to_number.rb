@@ -89,9 +89,6 @@ module NumbersInWords
       exceptional_number = exceptional_numbers_to_i[text]
       return exceptional_number if exceptional_number
 
-      fraction = handle_fraction(text)
-      return fraction if fraction
-
       power = powers_of_ten_to_i[text]
       return 10**power if power
     end
