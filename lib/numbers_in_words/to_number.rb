@@ -6,29 +6,20 @@ class NumbersInWords::ToNumber
   extend Forwardable
   def_delegator :that, :to_s
 
-  def_delegators :language,
+  def_delegators ToWord,
                  :powers_of_ten_to_i, :exceptional_numbers_to_i, :canonize,
                  :check_mixed, :check_one, :strip_minus, :check_decimal
 
-  attr_reader :that, :language
+  attr_reader :that
 
-  def initialize(that, language: NumbersInWords.language)
+  def initialize(that)
     @that = that
-    @language = language
-  end
-
-  def language
-    if @language.is_a? Module
-      @language
-    else
-      @language = NumbersInWords.const_get(@language)
-    end
   end
 
   def handle_negative(text, only_compress)
     stripped = strip_minus text
     if stripped
-      stripped_n = NumbersInWords.in_numbers(stripped, language: language, only_compress: only_compress)
+      stripped_n = NumbersInWords.in_numbers(stripped, only_compress: only_compress)
       only_compress ? stripped_n.map { |k| k * -1 } : -1 * stripped_n
     end
   end
@@ -47,7 +38,7 @@ class NumbersInWords::ToNumber
 
     one = check_one text
     if one
-      res = NumbersInWords.in_numbers(one[1], language: language)
+      res = NumbersInWords.in_numbers(one[1])
       return only_compress ? [res] : res
     end
 
@@ -107,10 +98,10 @@ class NumbersInWords::ToNumber
   end
 
   def lookup_fraction(text)
-    NumbersInWords::English.exceptional_numbers.lookup_fraction(text)
+    NumbersInWords.exceptional_numbers.lookup_fraction(text)
   end
 
   def defined_fractions
-    NumbersInWords::English.exceptional_numbers.fractions
+    NumbersInWords.exceptional_numbers.fractions
   end
 end

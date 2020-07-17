@@ -2,7 +2,7 @@
 
 require './spec/spec_helper'
 
-describe NumbersInWords::English::ExceptionalNumbers do
+describe NumbersInWords::ExceptionalNumbers do
   describe '#fraction' do
     FRACTIONS = {
       [1, 2] => 'half',
