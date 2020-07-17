@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'writer'
+
 module NumbersInWords
   # Arbitrarily small number for rationalizing fractions
   EPSILON = 0.0000000001
@@ -11,23 +13,13 @@ module NumbersInWords
       @that = that
     end
 
-    def group_words(size)
-      # 1000 and over Numbers are split into groups of three
-      groups = NumberGroup.groups_of @that, size
-      powers = groups.keys.sort.reverse # put in descending order
-
-      powers.each do |power|
-        name = NumbersInWords.powers_of_ten[power]
-        digits = groups[power]
-        yield power, name, digits
-      end
-    end
-
     def to_i
       that.to_i
-    end
+end
 
     def negative
+      return unless to_i.negative?
+
       'minus ' + NumbersInWords.in_words(-@that)
     end
 
@@ -38,20 +30,34 @@ module NumbersInWords
     def in_words(fraction: false)
       return in_fractions(that) if fraction
 
-      v = handle_exceptional_numbers
-      return v if v
+      handle_exceptional_numbers || decimals || negative || output
+    end
 
-      in_decimals = decimals
-      return in_decimals if in_decimals
+    def in_fractions(_number)
+      r = that.rationalize(EPSILON)
 
-      number = to_i
+      denominator = r.denominator
+      numerator = r.numerator
 
-      return negative if number.negative?
+      NumbersInWords.exceptional_numbers.fraction(denominator: denominator, numerator: numerator)
+    end
 
-      output = if number.to_s.length == 2 # 20-99
-                 handle_tens(number)
+    def decimals
+      int, decimals = NumberGroup.new(@that).split_decimals
+      return unless int
+
+      out = NumbersInWords.in_words(int) + ' point '
+      decimals.each do |decimal|
+        out << NumbersInWords.in_words(decimal.to_i) + ' '
+      end
+      out.strip
+    end
+
+    def output
+      output = if to_i.to_s.length == 2 # 20-99
+                 handle_tens(to_i)
                else
-                 write # longer numbers
+                 Writer.new(that).call # longer numbers
                end
 
       output.strip
@@ -78,74 +84,6 @@ module NumbersInWords
       return unless @that.is_a?(Integer) && NumbersInWords.exceptional_numbers.defines?(@that)
 
       NumbersInWords.exceptional_numbers.fetch(@that)
-    end
-
-    def write
-      length = @that.to_s.length
-      output =
-        if length == 3
-          # e.g. 113 splits into "one hundred" and "thirteen"
-          write_groups(2)
-
-          # more than one hundred less than one googol
-        elsif length < LENGTH_OF_GOOGOL
-          write_groups(3)
-
-        elsif length >= LENGTH_OF_GOOGOL
-          write_googols
-        end
-      output.strip
-    end
-
-    def decimals
-      int, decimals = NumberGroup.new(@that).split_decimals
-      return unless int
-
-      out = NumbersInWords.in_words(int) + ' point '
-      decimals.each do |decimal|
-        out << NumbersInWords.in_words(decimal.to_i) + ' '
-      end
-      out.strip
-    end
-
-    private
-
-    def in_fractions(_number)
-      r = that.rationalize(EPSILON)
-
-      denominator = r.denominator
-      numerator = r.numerator
-
-      NumbersInWords.exceptional_numbers.fraction(denominator: denominator, numerator: numerator)
-    end
-
-    def write_googols
-      googols, remainder = NumberGroup.new(@that).split_googols
-      output = ''
-
-      output = output + ' ' + NumbersInWords.in_words(googols) + ' googol'
-      if remainder.positive?
-        prefix = ' '
-        prefix += 'and ' if remainder < 100
-        output = output + prefix + NumbersInWords.in_words(remainder)
-      end
-
-      output
-    end
-
-    def write_groups(group)
-      # e.g. 113 splits into "one hundred" and "thirteen"
-      output = ''
-      group_words(group) do |power, name, digits|
-        if digits.positive?
-          prefix = ' '
-          # no and between thousands and hundreds
-          prefix += 'and ' if power.zero? && (digits < 100)
-          output = output + prefix + NumbersInWords.in_words(digits)
-          output = output + prefix + name unless power.zero?
-        end
-      end
-      output
     end
   end
 end
