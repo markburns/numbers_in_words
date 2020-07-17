@@ -18,7 +18,7 @@ describe 'NumbersInWords' do
     end
   end
 
-  it do
+  pending do
     expect(NumbersInWords.ordinal(1)).to eq 'first'
     expect(NumbersInWords.ordinal(2)).to eq 'second'
     expect(NumbersInWords.ordinal(3)).to eq 'third'
@@ -48,7 +48,7 @@ describe 'NumbersInWords' do
   }.freeze
 
   FRACTIONS.each do |(numerator, denominator), string|
-    it "#{numerator}/#{denominator} == #{string}" do
+    pending "#{numerator}/#{denominator} == #{string}" do
       expect(NumbersInWords.in_words(numerator.to_f / denominator.to_f, fraction: true)).to eql(string)
     end
   end

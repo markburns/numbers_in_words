@@ -18,7 +18,7 @@ describe NumbersInWords::ExceptionalNumbers do
     }.freeze
 
     FRACTIONS.each do |(numerator, denominator), string|
-      it "#{numerator}/#{denominator} == #{string}" do
+      pending "#{numerator}/#{denominator} == #{string}" do
         expect(subject.fraction(numerator: numerator, denominator: denominator)).to eql(string)
       end
     end
@@ -35,7 +35,7 @@ describe NumbersInWords::ExceptionalNumbers do
   }.freeze
 
   ORDINALS.each do |number, string|
-    it "#{number} == #{string}" do
+    pending "#{number} == #{string}" do
       expect(subject.ordinal(number)).to eql(string)
     end
   end
