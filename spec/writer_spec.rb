@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe NumbersInWords::Writer do
   let(:number) { 2_111 }
   let(:writer) { described_class.new(number) }

@@ -15,7 +15,7 @@ module NumbersInWords
 
     def to_i
       that.to_i
-end
+    end
 
     def negative
       return unless to_i.negative?
