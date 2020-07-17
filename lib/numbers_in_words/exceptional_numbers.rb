@@ -1,50 +1,21 @@
 # frozen_string_literal: true
 
+require_relative 'definitions'
+
 module NumbersInWords
   class ExceptionalNumbers
-    DEFINITIONS = {
-      0 => { number: 'zero', ordinal: 'zeroth', fraction: -> { DivideByZeroError } },
-      1 => { number: 'one', ordinal: 'first' },
-      2 => { number: 'two', ordinal: 'second', fraction: { singular: 'half', plural: 'halves' } },
-      3 => { number: 'three', ordinal: 'third' },
-      4 => { number: 'four', ordinal: 'fourth', fraction: { singular: 'quarter' } },
-      5 => { number: 'five', ordinal: 'fifth' },
-      6 => { number: 'six' },
-      7 => { number: 'seven' },
-      8 => { number: 'eight', ordinal: 'eighth' },
-      9 => { number: 'nine', ordinal: 'ninth' },
-      10 => { number: 'ten' },
-      11 => { number: 'eleven' },
-      12 => { number: 'twelve', ordinal: 'twelfth' },
-      13 => { number: 'thirteen'  },
-      14 => { number: 'fourteen'  },
-      15 => { number: 'fifteen'  },
-      16 => { number: 'sixteen'  },
-      17 => { number: 'seventeen' },
-      18 => { number: 'eighteen' },
-      19 => { number: 'nineteen' },
-      20 => { number: 'twenty', ordinal: 'twentieth' },
-      30 => { number: 'thirty', ordinal: 'thirtieth' },
-      40 => { number: 'forty', ordinal: 'fortieth' },
-      50 => { number: 'fifty', ordinal: 'fiftieth' },
-      60 => { number: 'sixty', ordinal: 'sixtieth' },
-      70 => { number: 'seventy', ordinal: 'seventieth' },
-      80 => { number: 'eighty', ordinal: 'eightieth' },
-      90 => { number: 'ninety', ordinal: 'ninetieth' }
-    }.freeze
-
     def defines?(number)
       to_h.key?(number)
     end
 
     def to_h
-      DEFINITIONS.transform_values do |h|
+      Definitions::DEFINITIONS.transform_values do |h|
         h[:number]
       end
     end
 
     def lookup_fraction(text)
-      result = DEFINITIONS.find do |i, details|
+      result = Definitions::DEFINITIONS.find do |i, details|
         (i != 0) && predefined?(details, text) || ordinal_present?(details, text)
       end
 
@@ -54,17 +25,59 @@ module NumbersInWords
     end
 
     def fractions
-      DEFINITIONS.map do |_n, h|
-        s = h[:fraction] && h[:fraction].is_a?(Hash) && h[:fraction][:singular]
-        p = h[:fraction] && h[:fraction].is_a?(Hash) && (h[:fraction][:plural] || h[:fraction][:singular] + 's')
-        o = h[:ordinal] || (h[:number] + 'th')
-        op = o + 's'
-        [s, p, o, op].reject { |f| f == false }
-      end.flatten.compact
+      @fractions ||= Fractions.new.call
+    end
+
+    class Fractions
+      def call
+        Definitions::DEFINITIONS.map do |_n, attrs|
+          Fraction.new(attrs).call
+        end.flatten.compact
+      end
+    end
+
+    class Fraction
+      attr_reader :attributes
+
+      def initialize(attributes)
+        @attributes = attributes
+      end
+
+      def call
+        [singular, plural, ordinal, ordinal_plural].reject { |f| f == false }
+      end
+
+      def ordinal_plural
+        ordinal + 's'
+      end
+
+      def ordinal
+        attributes[:ordinal] || (attributes[:number] + 'th')
+      end
+
+      def plural
+        fraction? && (fraction_plural || singular + 's')
+      end
+
+      def fraction_plural
+        fraction? && fraction[:plural]
+      end
+
+      def singular
+        fraction? && fraction[:singular]
+      end
+
+      def fraction?
+        fraction&.is_a?(Hash)
+      end
+
+      def fraction
+        attributes[:fraction]
+      end
     end
 
     def ordinal(number)
-      row = DEFINITIONS[number]
+      row = Definitions::DEFINITIONS[number]
       return row[:ordinal] || (row[:number] + 'th') if row
 
       last_digit = number.digits.first
@@ -78,7 +91,7 @@ module NumbersInWords
     end
 
     def fraction(numerator: 1, denominator: 1)
-      row = DEFINITIONS[denominator]
+      row = Definitions::DEFINITIONS[denominator]
 
       r = if row
             row[:fraction] || row[:ordinal] || (row[:number] + 'th')
@@ -95,7 +108,7 @@ module NumbersInWords
     end
 
     def fetch(number)
-      DEFINITIONS[number][:number]
+      Definitions::DEFINITIONS[number][:number]
     end
 
     private
