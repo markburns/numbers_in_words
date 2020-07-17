@@ -1,107 +1,108 @@
 # frozen_string_literal: true
 
 require 'forwardable'
+module NumbersInWords
+  class ToNumber
+    extend Forwardable
+    def_delegator :that, :to_s
 
-class NumbersInWords::ToNumber
-  extend Forwardable
-  def_delegator :that, :to_s
+    def_delegators ToWord,
+      :powers_of_ten_to_i, :exceptional_numbers_to_i, :canonize,
+      :check_mixed, :check_one, :strip_minus, :check_decimal
 
-  def_delegators ToWord,
-                 :powers_of_ten_to_i, :exceptional_numbers_to_i, :canonize,
-                 :check_mixed, :check_one, :strip_minus, :check_decimal
+    attr_reader :that
 
-  attr_reader :that
-
-  def initialize(that)
-    @that = that
-  end
-
-  def handle_negative(text, only_compress)
-    stripped = strip_minus text
-    if stripped
-      stripped_n = NumbersInWords.in_numbers(stripped, only_compress: only_compress)
-      only_compress ? stripped_n.map { |k| k * -1 } : -1 * stripped_n
-    end
-  end
-
-  def in_numbers(only_compress: false)
-    text = to_s.strip
-    return text.to_f if text =~ /^-?\d+(.\d+)?$/
-
-    text = strip_punctuation text
-
-    i = handle_negative(text, only_compress)
-    return i if i
-
-    mixed = check_mixed text
-    return mixed if mixed
-
-    one = check_one text
-    if one
-      res = NumbersInWords.in_numbers(one[1])
-      return only_compress ? [res] : res
+    def initialize(that)
+      @that = that
     end
 
-    h = handle_decimals text
-    return h if h
-
-    integers = word_array_to_nums text.split(' ')
-
-    NumbersInWords::NumberParser.parse integers, only_compress: only_compress
-  end
-
-  def strip_punctuation(text)
-    text = text.downcase.gsub(/[^a-z 0-9]/, ' ')
-    to_remove = true
-
-    to_remove = text.gsub! '  ', ' ' while to_remove
-
-    text
-  end
-
-  def handle_decimals(text)
-    match = check_decimal text
-    if match
-      integer = NumbersInWords.in_numbers(match.pre_match)
-      decimal = NumbersInWords.in_numbers(match.post_match)
-      integer += "0.#{decimal}".to_f
+    def handle_negative(text, only_compress)
+      stripped = strip_minus text
+      if stripped
+        stripped_n = NumbersInWords.in_numbers(stripped, only_compress: only_compress)
+        only_compress ? stripped_n.map { |k| k * -1 } : -1 * stripped_n
+      end
     end
-  end
 
-  def word_array_to_nums(words)
-    words.map { |i| word_to_num i }.compact
-  end
+    def in_numbers(only_compress: false)
+      text = to_s.strip
+      return text.to_f if text =~ /^-?\d+(.\d+)?$/
 
-  # handles simple single word numbers
-  # e.g. one, seven, twenty, eight, thousand etc
-  def word_to_num(word)
-    text = canonize(word.to_s.chomp.strip)
+      text = strip_punctuation text
 
-    exceptional_number = exceptional_numbers_to_i[text]
-    return exceptional_number if exceptional_number
+      i = handle_negative(text, only_compress)
+      return i if i
 
-    fraction = handle_fraction(text)
-    return fraction if fraction
+      mixed = check_mixed text
+      return mixed if mixed
 
-    power = powers_of_ten_to_i[text]
-    return 10**power if power
-  end
+      one = check_one text
+      if one
+        res = NumbersInWords.in_numbers(one[1])
+        return only_compress ? [res] : res
+      end
 
-  def handle_fraction(text)
-    return unless likely_fraction?(text)
+      h = handle_decimals text
+      return h if h
 
-    lookup_fraction(text)
-  end
+      integers = word_array_to_nums text.split(' ')
 
-  def likely_fraction?(text)
-    text[/th$|rd$|ond$/] || defined_fractions.any? { |o| text[o] }
-  end
+      NumbersInWords::NumberParser.parse integers, only_compress: only_compress
+    end
 
-  def lookup_fraction(text)
-    NumbersInWords.exceptional_numbers.lookup_fraction(text)
-  end
+    def strip_punctuation(text)
+      text = text.downcase.gsub(/[^a-z 0-9]/, ' ')
+      to_remove = true
 
-  def defined_fractions
-    NumbersInWords.exceptional_numbers.fractions
+      to_remove = text.gsub! '  ', ' ' while to_remove
+
+      text
+    end
+
+    def handle_decimals(text)
+      match = check_decimal text
+      if match
+        integer = NumbersInWords.in_numbers(match.pre_match)
+        decimal = NumbersInWords.in_numbers(match.post_match)
+        integer += "0.#{decimal}".to_f
+      end
+    end
+
+    def word_array_to_nums(words)
+      words.map { |i| word_to_num i }.compact
+    end
+
+    # handles simple single word numbers
+    # e.g. one, seven, twenty, eight, thousand etc
+    def word_to_num(word)
+      text = canonize(word.to_s.chomp.strip)
+
+      exceptional_number = exceptional_numbers_to_i[text]
+      return exceptional_number if exceptional_number
+
+      fraction = handle_fraction(text)
+      return fraction if fraction
+
+      power = powers_of_ten_to_i[text]
+      return 10**power if power
+    end
+
+    def handle_fraction(text)
+      return unless likely_fraction?(text)
+
+      lookup_fraction(text)
+    end
+
+    def likely_fraction?(text)
+      text[/th$|rd$|ond$/] || defined_fractions.any? { |o| text[o] }
+    end
+
+    def lookup_fraction(text)
+      NumbersInWords.exceptional_numbers.lookup_fraction(text)
+    end
+
+    def defined_fractions
+      NumbersInWords.exceptional_numbers.fractions
+    end
   end
 end

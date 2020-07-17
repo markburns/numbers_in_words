@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'numbers_in_words/version'
-require 'numbers_in_words/to_words'
+require 'numbers_in_words/to_word'
 
 require 'numbers_in_words/number_group'
 require 'numbers_in_words/number_parser'
@@ -15,19 +15,16 @@ module NumbersInWords
   DivideByZeroError     = ::Class.new(Error)
   InvalidNumber         = ::Class.new(Error)
 
-  class << self
-    def in_words(num, only_compress: false, fraction: false)
-      ToWord.new(num).in_words(only_compress: only_compress, fraction: fraction)
-    end
+  def self.in_words(num, only_compress: false, fraction: false)
+    ToWord.new(num).in_words(only_compress: only_compress, fraction: fraction)
+  end
 
-    def in_numbers(words, only_compress: false)
-      ToNumber.new(words).in_numbers(only_compress: only_compress)
-    end
+  def self.in_numbers(words, only_compress: false)
+    ToNumber.new(words).in_numbers(only_compress: only_compress)
+  end
 
-    def ordinal(words)
-      ToWord.new(words).ordinal
-    end
-
+  def self.ordinal(words)
+    ToWord.new(words).ordinal
   end
 
   def self.canonize(w)
@@ -121,5 +118,4 @@ module NumbersInWords
   def self.check_decimal(txt)
     txt.match(/\spoint\s/)
   end
-
 end
