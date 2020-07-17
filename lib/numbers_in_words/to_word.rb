@@ -46,7 +46,7 @@ module NumbersInWords
 
       number = to_i
 
-      return negative if number < 0
+      return negative if number.negative?
 
       output = if number.to_s.length == 2 # 20-99
                  handle_tens(number)
@@ -66,7 +66,7 @@ module NumbersInWords
 
       digit = number - tens # write the digits
 
-      unless digit == 0
+      unless digit.zero?
         join = number < 100 ? '-' : ' '
         output << join + NumbersInWords.in_words(digit)
       end
@@ -75,9 +75,9 @@ module NumbersInWords
     end
 
     def handle_exceptional_numbers
-      if @that.is_a?(Integer) && NumbersInWords.exceptional_numbers.defines?(@that)
-        NumbersInWords.exceptional_numbers.fetch(@that)
-      end
+      return unless @that.is_a?(Integer) && NumbersInWords.exceptional_numbers.defines?(@that)
+
+      NumbersInWords.exceptional_numbers.fetch(@that)
     end
 
     def write
@@ -99,13 +99,13 @@ module NumbersInWords
 
     def decimals
       int, decimals = NumberGroup.new(@that).split_decimals
-      if int
-        out = NumbersInWords.in_words(int) + ' point '
-        decimals.each do |decimal|
-          out << NumbersInWords.in_words(decimal.to_i) + ' '
-        end
-        out.strip
+      return unless int
+
+      out = NumbersInWords.in_words(int) + ' point '
+      decimals.each do |decimal|
+        out << NumbersInWords.in_words(decimal.to_i) + ' '
       end
+      out.strip
     end
 
     private
@@ -124,7 +124,7 @@ module NumbersInWords
       output = ''
 
       output = output + ' ' + NumbersInWords.in_words(googols) + ' googol'
-      if remainder > 0
+      if remainder.positive?
         prefix = ' '
         prefix += 'and ' if remainder < 100
         output = output + prefix + NumbersInWords.in_words(remainder)
@@ -137,12 +137,12 @@ module NumbersInWords
       # e.g. 113 splits into "one hundred" and "thirteen"
       output = ''
       group_words(group) do |power, name, digits|
-        if digits > 0
+        if digits.positive?
           prefix = ' '
           # no and between thousands and hundreds
-          prefix += 'and ' if (power == 0) && (digits < 100)
+          prefix += 'and ' if power.zero? && (digits < 100)
           output = output + prefix + NumbersInWords.in_words(digits)
-          output = output + prefix + name unless power == 0
+          output = output + prefix + name unless power.zero?
         end
       end
       output

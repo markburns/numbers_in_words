@@ -28,12 +28,14 @@ module NumbersInWords
     ToWord.new(words).ordinal
   end
 
-  def self.canonize(w)
-    aliases = {
+  def self.aliases
+    {
       'oh' => 'zero'
     }
-    canon = aliases[w]
-    canon || w
+  end
+
+  def self.canonize(word)
+    aliases[word] || word
   end
 
   def self.exceptional_numbers
@@ -102,10 +104,10 @@ module NumbersInWords
 
   def self.check_mixed(txt)
     mixed = txt.match(/^(-?\d+(.\d+)?) (#{POWERS_RX}s?)$/)
-    if mixed && mixed[1] && mixed[3]
-      matches = [mixed[1], mixed[3]].map { |m| NumbersInWords.in_numbers m }
-      matches.reduce(&:*)
-    end
+    return unless mixed && mixed[1] && mixed[3]
+
+    matches = [mixed[1], mixed[3]].map { |m| NumbersInWords.in_numbers m }
+    matches.reduce(&:*)
   end
 
   def self.check_one(txt)
@@ -113,7 +115,7 @@ module NumbersInWords
   end
 
   def self.strip_minus(txt)
-    stripped = txt.gsub(/^minus/, '') if txt =~ /^minus/
+    txt.gsub(/^minus/, '') if txt =~ /^minus/
   end
 
   def self.check_decimal(txt)

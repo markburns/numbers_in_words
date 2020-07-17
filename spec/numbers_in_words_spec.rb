@@ -64,10 +64,10 @@ describe NumbersInWords do
   end
 
   it 'should handle a googol and larger' do
-    n = 10**100
-    expect((10**100 + 1).in_words).to eq('one googol and one')
-    expect((42 * 10**100 + 16_777_216).in_words).to eq('forty-two googol sixteen million seven hundred and seventy-seven thousand two hundred and sixteen')
-    expect((42 * 10**100 * 10**100).in_words).to eq('forty-two googol googol')
+    googol = 10**100
+    expect((googol + 1).in_words).to eq('one googol and one')
+    expect((42 * googol + 16_777_216).in_words).to eq('forty-two googol sixteen million seven hundred and seventy-seven thousand two hundred and sixteen')
+    expect((42 * googol * googol).in_words).to eq('forty-two googol googol')
   end
 
   it 'should handle negative numbers' do

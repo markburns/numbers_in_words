@@ -158,13 +158,9 @@ module NumbersInWords
 
     def compress_int(int, sequel)
       tens = int % 10 == 0 && int > 10
-      if tens && sequel < 10
-        return [int + sequel, 2]
-      else
-        return [int, 1]
-      end
+      return [int + sequel, 2] if tens && sequel < 10
 
-      [res, jump]
+      [int, 1]
     end
   end
 end

@@ -18,10 +18,10 @@ module NumbersInWords
 
     def handle_negative(text, only_compress)
       stripped = strip_minus text
-      if stripped
-        stripped_n = NumbersInWords.in_numbers(stripped, only_compress: only_compress)
-        only_compress ? stripped_n.map { |k| k * -1 } : -1 * stripped_n
-      end
+      return unless stripped
+
+      stripped_n = NumbersInWords.in_numbers(stripped, only_compress: only_compress)
+      only_compress ? stripped_n.map { |k| k * -1 } : -1 * stripped_n
     end
 
     def in_numbers(only_compress: false)
@@ -61,11 +61,11 @@ module NumbersInWords
 
     def handle_decimals(text)
       match = check_decimal text
-      if match
-        integer = NumbersInWords.in_numbers(match.pre_match)
-        decimal = NumbersInWords.in_numbers(match.post_match)
-        integer += "0.#{decimal}".to_f
-      end
+      return unless match
+
+      integer = NumbersInWords.in_numbers(match.pre_match)
+      decimal = NumbersInWords.in_numbers(match.post_match)
+      integer + "0.#{decimal}".to_f
     end
 
     def word_array_to_nums(words)

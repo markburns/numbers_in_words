@@ -36,11 +36,11 @@ module NumbersInWords
     end
 
     def split_decimals
-      if @number.is_a? Float
-        int, decimal = @number.to_s.split '.'
+      return unless @number.is_a? Float
 
-        [int.to_i, decimal.split(//).map(&:to_i)]
-      end
+      int, decimal = @number.to_s.split '.'
+
+      [int.to_i, decimal.split(//).map(&:to_i)]
     end
 
     def split_googols
