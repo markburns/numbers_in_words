@@ -16,32 +16,6 @@ module NumbersInWords
   DivideByZeroError     = ::Class.new(Error)
   InvalidNumber         = ::Class.new(Error)
 
-  def self.in_words(num)
-    ToWord.new(num).in_words
-  end
-
-  def self.in_numbers(words, only_compress: false)
-    ToNumber.new(words).in_numbers(only_compress: only_compress)
-  end
-
-  def self.ordinal(words)
-    ToWord.new(words).ordinal
-  end
-
-  def self.aliases
-    {
-      'oh' => 'zero'
-    }
-  end
-
-  def self.canonize(word)
-    aliases[word] || word
-  end
-
-  def self.exceptional_numbers
-    @exceptional_numbers ||= ExceptionalNumbers.new
-  end
-
   POWERS_OF_TEN = {
     0 => 'one',
     1 => 'ten',
@@ -84,41 +58,53 @@ module NumbersInWords
     10**100 => 'googolplex'
   }.freeze
 
-  def self.powers_of_ten
-    POWERS_OF_TEN
-  end
+  POWERS_RX = Regexp.union(POWERS_OF_TEN.values[1..]).freeze
 
-  def self.swap_keys(hash)
-    hash.each_with_object({}) { |(k, v), h| h[v] = k }
-  end
+  class << self
+    def in_words(num, fraction: false)
+      ToWord.new(num).in_words(fraction: fraction)
+    end
 
-  def self.exceptional_numbers_to_i
-    swap_keys exceptional_numbers.to_h
-  end
+    def in_numbers(words, only_compress: false)
+      ToNumber.new(words).in_numbers(only_compress: only_compress)
+    end
 
-  def self.powers_of_ten_to_i
-    swap_keys powers_of_ten
-  end
+    def ordinal(words)
+      ToWord.new(words).ordinal
+    end
 
-  POWERS_RX = Regexp.union(powers_of_ten.values[1..])
+    def exceptional_numbers
+      @exceptional_numbers ||= ExceptionalNumbers.new
+    end
 
-  def self.check_mixed(txt)
-    mixed = txt.match(/^(-?\d+(.\d+)?) (#{POWERS_RX}s?)$/)
-    return unless mixed && mixed[1] && mixed[3]
+    def fraction(number: nil, word: nil)
+      exceptional_numbers.fraction(number: number, word: word)
+    end
 
-    matches = [mixed[1], mixed[3]].map { |m| NumbersInWords.in_numbers m }
-    matches.reduce(&:*)
-  end
+    def lookup(number)
+      exceptional_numbers.lookup(number)
+    end
 
-  def self.check_one(txt)
-    txt.match(/^one (#{POWERS_RX})$/)
-  end
+    def exceptional_number(text)
+      exceptional_numbers_to_i[text]
+    end
 
-  def self.strip_minus(txt)
-    txt.gsub(/^minus/, '') if txt =~ /^minus/
-  end
+    def power_of_ten(text)
+      powers_of_ten_to_i[text]
+    end
 
-  def self.check_decimal(txt)
-    txt.match(/\spoint\s/)
+    private
+
+    def exceptional_numbers_to_i
+      @exceptional_numbers_to_i ||= swap_keys exceptional_numbers.to_h
+    end
+
+    def powers_of_ten_to_i
+      @powers_of_ten_to_i ||= swap_keys POWERS_OF_TEN
+    end
+
+    def swap_keys(hash)
+      hash.each_with_object({}) { |(k, v), h| h[v] = k }
+    end
   end
 end

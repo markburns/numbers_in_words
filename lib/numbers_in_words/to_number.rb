@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
 require 'forwardable'
+
 module NumbersInWords
   class ToNumber
     extend Forwardable
     def_delegator :that, :to_s
-
-    def_delegators NumbersInWords,
-                   :powers_of_ten_to_i, :exceptional_numbers_to_i, :canonize,
-                   :check_mixed, :check_one, :strip_minus, :check_decimal
 
     attr_reader :that
 
@@ -19,6 +16,8 @@ module NumbersInWords
     def in_numbers(only_compress: false)
       float || negative(only_compress) || one(only_compress) || mixed || decimal || integers(only_compress)
     end
+
+    private
 
     def float
       return text_including_punctuation.to_f if text =~ /^-?\d+(.\d+)?$/
@@ -86,11 +85,48 @@ module NumbersInWords
     def word_to_num(word)
       text = canonize(word.to_s.chomp.strip)
 
-      exceptional_number = exceptional_numbers_to_i[text]
-      return exceptional_number if exceptional_number
+      NumbersInWords.exceptional_number(text) || power(text)
 
-      power = powers_of_ten_to_i[text]
-      return 10**power if power
+      # fraction = handle_fraction(text)
+      # return fraction if fraction
+
+
+    end
+
+    def power(text)
+      power = NumbersInWords.power_of_ten(text)
+
+      10 ** power if power
+    end
+
+    def canonize(word)
+      aliases[word] || word
+    end
+
+    def aliases
+      {
+        'oh' => 'zero'
+      }
+    end
+
+    def check_mixed(txt)
+      mixed = txt.match(/^(-?\d+(.\d+)?) (#{POWERS_RX}s?)$/)
+      return unless mixed && mixed[1] && mixed[3]
+
+      matches = [mixed[1], mixed[3]].map { |m| NumbersInWords.in_numbers m }
+      matches.reduce(&:*)
+    end
+
+    def check_one(txt)
+      txt.match(/^one (#{POWERS_RX})$/)
+    end
+
+    def strip_minus(txt)
+      txt.gsub(/^minus/, '') if txt =~ /^minus/
+    end
+
+    def check_decimal(txt)
+      txt.match(/\spoint\s/)
     end
   end
 end

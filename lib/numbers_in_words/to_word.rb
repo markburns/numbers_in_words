@@ -68,7 +68,7 @@ module NumbersInWords
 
       tens = (number / 10).round * 10 # write the tens
 
-      output += NumbersInWords.exceptional_numbers.fetch(tens) # e.g. eighty
+      output += NumbersInWords.lookup(tens) # e.g. eighty
 
       digit = number - tens # write the digits
 
@@ -81,9 +81,9 @@ module NumbersInWords
     end
 
     def handle_exceptional_numbers
-      return unless @that.is_a?(Integer) && NumbersInWords.exceptional_numbers.defines?(@that)
+      return unless @that.is_a?(Integer)
 
-      NumbersInWords.exceptional_numbers.fetch(@that)
+      NumbersInWords.exceptional_numbers.lookup(@that)
     end
   end
 end
