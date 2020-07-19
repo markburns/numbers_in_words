@@ -61,12 +61,14 @@ module NumbersInWords
     end
 
     def denominator_ordinal_in_words
-      # one hundred and second
       if denominator > 100
+        # one hundred and second
         with_remainder(100, ' and ')
       elsif denominator > 19
+        # two thirty-fifths
         with_remainder(10, '-')
       else
+        # one seventh
         singular = NumbersInWords.in_words(denominator) + 'th'
         pluralize? ? singular + 's' : singular
       end
@@ -79,17 +81,23 @@ module NumbersInWords
 
       main = main.gsub(/^one /, '') if pluralize?
 
-      if rest.zero?
-        if pluralize?
-          return main + 'ths'
-        else
-          return main + 'th'
-        end
-      end
+      rest_zero(rest, main) || joined(main, rest, join_word)
+    end
 
+    def joined(main, rest, join_word)
       main +
         join_word +
         self.class.new(numerator: numerator, denominator: rest).ordinal
+    end
+
+    def rest_zero?(rest, main)
+      return unless rest.zero?
+
+      if pluralize?
+        main + 'ths'
+      else
+        main + 'th'
+      end
     end
 
     def exception?
