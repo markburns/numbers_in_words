@@ -3,6 +3,9 @@
 require_relative 'writer'
 
 module NumbersInWords
+  # Arbitrarily small number for rationalizing fractions
+  EPSILON = 0.0000000001
+
   class ToWord
     attr_reader :that
 
@@ -24,8 +27,19 @@ module NumbersInWords
       NumbersInWords.exceptional_numbers.ordinal(@that)
     end
 
-    def in_words
+    def in_words(fraction: false)
+      return in_fractions(that) if fraction
+
       handle_exceptional_numbers || decimals || negative || output
+    end
+
+    def in_fractions(_number)
+      r = that.rationalize(EPSILON)
+
+      denominator = r.denominator
+      numerator = r.numerator
+
+      NumbersInWords.exceptional_numbers.fraction(denominator: denominator, numerator: numerator)
     end
 
     def decimals
