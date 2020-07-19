@@ -51,18 +51,23 @@ module NumbersInWords
     SCALES_N = [10**2, 10**3, 10**6, 10**9, 10**12, 10**100].freeze
 
     def parse(nums, only_compress: false)
-      if nums.length < 2
-        return nums if only_compress
-
-        return nums.empty? ? 0 : nums[0]
-      end
-
-      return pair_parse(nums, only_compress) if (SCALES_N & nums).empty?
-
-      parse_nums(nums)
+      small_numbers(nums, only_compress) ||
+        pair_parsing(nums, only_compress) ||
+        parse_each(nums)
     end
 
-    def parse_nums(nums)
+    def small_numbers(nums, only_compress)
+      return unless nums.length < 2
+      return nums if only_compress
+
+      return nums.empty? ? 0 : nums[0]
+    end
+
+    def pair_parsing(nums, only_compress)
+      return pair_parse(nums, only_compress) if (SCALES_N & nums).empty?
+    end
+
+    def parse_each(nums)
       status = ParseStatus.new
 
       nums.each do |num|

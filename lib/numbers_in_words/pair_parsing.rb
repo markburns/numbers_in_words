@@ -27,12 +27,8 @@ module NumbersInWords
 
     private
 
-    def compressed
-      compress(ints)
-    end
-
     # [40, 2] => [42]
-    def compress(ints)
+    def compressed
       return [] if ints.empty?
 
       result = []
@@ -55,9 +51,9 @@ module NumbersInWords
       [index, result]
     end
 
-    def compress_int(int, sequel)
+    def compress_int(int, next_int)
       tens = (int % 10).zero? && int > 10
-      return [int + sequel, 2] if tens && sequel < 10
+      return [int + next_int, 2] if tens && next_int < 10
 
       [int, 1]
     end
