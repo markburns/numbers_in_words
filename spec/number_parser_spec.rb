@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './spec/spec_helper'
+require 'numbers_in_words/parsing/number_parser'
 
 describe NumbersInWords::NumberParser do
   subject do

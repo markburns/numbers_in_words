@@ -29,7 +29,7 @@ module NumbersInWords
       powers = groups.keys.sort.reverse # put in descending order
 
       powers.each do |power|
-        name = NumbersInWords::POWERS_OF_TEN[power]
+        name = NumbersInWords::ExceptionalNumbers::POWERS_OF_TEN[power]
         digits = groups[power]
         yield power, name, digits
       end

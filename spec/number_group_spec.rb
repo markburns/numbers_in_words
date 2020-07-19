@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './spec/spec_helper'
+require 'numbers_in_words/number_group'
 
 describe NumbersInWords::NumberGroup do
   it 'should split into group of three digit numbers' do

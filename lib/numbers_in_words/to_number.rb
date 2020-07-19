@@ -110,7 +110,7 @@ module NumbersInWords
     end
 
     def check_mixed(txt)
-      mixed = txt.match(/^(-?\d+(.\d+)?) (#{POWERS_RX}s?)$/)
+      mixed = txt.match(/^(-?\d+(.\d+)?) (#{ExceptionalNumbers::POWERS_RX}s?)$/)
       return unless mixed && mixed[1] && mixed[3]
 
       matches = [mixed[1], mixed[3]].map { |m| NumbersInWords.in_numbers m }
@@ -118,7 +118,7 @@ module NumbersInWords
     end
 
     def check_one(txt)
-      txt.match(/^one (#{POWERS_RX})$/)
+      txt.match(/^one (#{ExceptionalNumbers::POWERS_RX})$/)
     end
 
     def strip_minus(txt)
