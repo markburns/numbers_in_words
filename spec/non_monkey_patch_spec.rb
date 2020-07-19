@@ -32,29 +32,30 @@ describe 'NumbersInWords' do
   end
 
   FRACTIONS = {
-    [1, 2] => 'half',
+    [1, 2] => 'one half',
     [3, 2] => 'three halves',
-    [1, 3] => 'third',
-    [1, 4] => 'quarter',
-    [1, 5] => 'fifth',
-    [1, 19] => 'nineteenth',
+    [1, 3] => 'one third',
+    [1, 4] => 'one quarter',
+    [1, 5] => 'one fifth',
+    [1, 19] => 'one nineteenth',
     [2, 17] => 'two seventeenths',
-    [1, 21] => 'one twenty first',
-    [1, 32] => 'one thirty second',
-    [1, 101] => 'one one hundred first',
-    [3, 101] => 'three one hundred firsts',
-    [73, 102] => 'seventy-three one hundred seconds',
-    [13, 97] => 'thirteen ninety sevenths'
+    [1, 21] => 'one twenty-first',
+    [1, 32] => 'one thirty-second',
+    [1, 101] => 'one one hundred and first',
+    [3, 101] => 'three one hundred and firsts',
+    [73, 102] => 'seventy-three one hundred and seconds',
+    [13, 97] => 'thirteen ninety-sevenths'
   }.freeze
 
   FRACTIONS.each do |(numerator, denominator), string|
-    pending "#{numerator}/#{denominator} == #{string}" do
+    it "#{numerator}/#{denominator} == #{string}" do
       expect(NumbersInWords.in_words(numerator.to_f / denominator.to_f, fraction: true)).to eql(string)
     end
   end
 
   describe '.in_numbers' do
     it do
+      expect(NumbersInWords.in_numbers('hundred')).to eq 100
       expect(NumbersInWords.in_numbers('one hundred')).to eq 100
 
       expect(NumbersInWords.in_numbers('minus one hundred')).to eq(-100)

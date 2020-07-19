@@ -1,80 +1,59 @@
 # frozen_string_literal: true
-
 require 'forwardable'
-require_relative 'definitions'
+
+require_relative 'fraction'
 
 module NumbersInWords
   class ExceptionalNumbers
     extend Forwardable
-    def_delegators :to_h, :fetch
 
-    def defines?(number)
-      to_h.key?(number)
+    DEFINITIONS = {
+      0 => { number: 'zero', ordinal: 'zeroth', fraction: -> { DivideByZeroError } },
+      1 => { number: 'one', ordinal: 'first' },
+      2 => { number: 'two', ordinal: 'second', fraction: { singular: 'half', plural: 'halves' } },
+      3 => { number: 'three', ordinal: 'third' },
+      4 => { number: 'four', ordinal: 'fourth', fraction: { singular: 'quarter' } },
+      5 => { number: 'five', ordinal: 'fifth' },
+      6 => { number: 'six' },
+      7 => { number: 'seven' },
+      8 => { number: 'eight', ordinal: 'eighth' },
+      9 => { number: 'nine', ordinal: 'ninth' },
+      10 => { number: 'ten' },
+      11 => { number: 'eleven' },
+      12 => { number: 'twelve', ordinal: 'twelfth' },
+      13 => { number: 'thirteen'  },
+      14 => { number: 'fourteen'  },
+      15 => { number: 'fifteen'  },
+      16 => { number: 'sixteen'  },
+      17 => { number: 'seventeen' },
+      18 => { number: 'eighteen' },
+      19 => { number: 'nineteen' },
+      20 => { number: 'twenty', ordinal: 'twentieth' },
+      30 => { number: 'thirty', ordinal: 'thirtieth' },
+      40 => { number: 'forty', ordinal: 'fortieth' },
+      50 => { number: 'fifty', ordinal: 'fiftieth' },
+      60 => { number: 'sixty', ordinal: 'sixtieth' },
+      70 => { number: 'seventy', ordinal: 'seventieth' },
+      80 => { number: 'eighty', ordinal: 'eightieth' },
+      90 => { number: 'ninety', ordinal: 'ninetieth' }
+    }.freeze
+
+    def lookup(number)
+      to_h[number]
+    end
+
+    def fraction(number: nil, word: nil)
+      raise unless number || word
+
+      number ||= NumbersInWords.in_numbers(word)
+
+      Fraction.new(number, DEFINITIONS[number])
     end
 
     def to_h
-      Definitions::DEFINITIONS.transform_values do |h|
+      @to_h ||= DEFINITIONS.transform_values do |h|
         h[:number]
       end
-    end
-
-    def lookup_fraction(text)
-      result = Definitions::DEFINITIONS.find do |i, details|
-        (i != 0) && predefined?(details, text) || ordinal_present?(details, text)
-      end
-
-      result ||= infer_fraction(text)
-
-      1 / result.first.to_f if result
-    end
-
-    private
-
-    def predefined?(details, text)
-      f = details[:fraction]
-      return unless f
-
-      f[:singular] == text ||
-        f[:plural] == text ||
-        f[:singular] == singularize(text)
-    end
-
-    def ordinal_present?(details, text)
-      o = details[:ordinal]
-      return unless o
-
-      o == text || o == singularize(text)
-    end
-
-    def infer_fraction(text)
-      denominator = text.gsub(/ths?$|rds?$|onds?$/, '')
-      return [NumbersInWords.in_numbers(denominator)] if denominator
-    end
-
-    def singularize(text)
-      text.gsub(/s$/, '')
-    end
-
-    def fallback(numerator, denominator)
-      remove_leading_one(numerator, NumbersInWords.ordinal(denominator))
-    end
-
-    def remove_leading_one(_numerator, string)
-      parts = string.split(' ')
-
-      if parts.first == 'one' && parts.length == 2
-        parts.last
-      else
-        string
-      end
-    end
-
-    def pluralize(row, num)
-      if row.is_a?(String)
-        return num == 1 ? row : row + 's'
-      end
-
-      num == 1 ? row[:singular] : (row[:plural] || pluralize(row[:singular], num))
     end
   end
 end

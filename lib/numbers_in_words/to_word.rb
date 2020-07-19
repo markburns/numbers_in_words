@@ -28,18 +28,15 @@ module NumbersInWords
     end
 
     def in_words(fraction: false)
-      return in_fractions(that) if fraction
-
-      handle_exceptional_numbers || decimals || negative || output
+      as_fraction(fraction) ||
+        handle_exceptional_numbers ||
+        decimals ||
+        negative ||
+        output
     end
 
-    def in_fractions(_number)
-      r = that.rationalize(EPSILON)
-
-      denominator = r.denominator
-      numerator = r.numerator
-
-      NumbersInWords.exceptional_numbers.fraction(denominator: denominator, numerator: numerator)
+    def as_fraction(fraction)
+      return Fraction.in_words(that) if fraction
     end
 
     def decimals

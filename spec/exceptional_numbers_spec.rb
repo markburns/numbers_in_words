@@ -23,20 +23,4 @@ describe NumbersInWords::ExceptionalNumbers do
       end
     end
   end
-
-  ORDINALS = {
-    2 => 'second',
-    3 => 'third',
-    4 => 'fourth',
-    17 => 'seventeenth',
-    1_000 => 'thousandth',
-    101 => 'one hundred first',
-    97 => 'ninety seventh'
-  }.freeze
-
-  ORDINALS.each do |number, string|
-    pending "#{number} == #{string}" do
-      expect(subject.ordinal(number)).to eql(string)
-    end
-  end
 end

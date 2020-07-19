@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module NumbersInWords
-  def in_words
-    NumbersInWords.in_words(self)
+  def in_words(fraction: false)
+    NumbersInWords.in_words(self, fraction: fraction)
   end
 end
 

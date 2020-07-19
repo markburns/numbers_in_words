@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require 'forwardable'
+require_relative 'parse_status'
+require_relative 'parse_individual_number'
+require_relative 'pair_parsing'
 
 module NumbersInWords
   class NumberParser
@@ -69,131 +72,8 @@ module NumbersInWords
       status.calculate
     end
 
-    class ParseStatus
-      attr_accessor :reset, :memory, :answer
-
-      def initialize
-        @reset = true
-        @memory = 0
-        @answer = 0
-      end
-
-      def calculate
-        answer + memory
-      end
-    end
-
-    class ParseIndividualNumber
-      extend Forwardable
-      def_delegators :parse_status, :reset=, :memory=, :answer=, :reset, :memory, :answer
-
-      attr_reader :parse_status, :num
-
-      def initialize(parse_status, num)
-        @parse_status = parse_status
-        @num = num
-      end
-
-      def call
-        if reset
-          clear
-        else
-          handle_power_of_ten
-
-          update_memory
-        end
-
-        [reset, memory, answer]
-      end
-
-      private
-
-      def clear
-        self.reset = false
-        self.memory += num
-      end
-
-      def handle_power_of_ten
-        # x4. multiply memory by 10^9 because memory < power of ten
-        return unless power_of_ten?(num)
-        return unless power_of_ten(num) > 2
-
-        self.memory *= num
-        # 17. add memory to answer  (and reset) (memory pow of ten > 2)
-        self.answer += memory
-        self.memory = 0
-        self.reset = true
-      end
-
-      def update_memory
-        self.memory = new_memory
-      end
-
-      def new_memory
-        if memory < num
-          memory * num
-        else
-          memory + num
-        end
-      end
-
-      def power_of_ten(integer)
-        Math.log10(integer)
-      end
-
-      def power_of_ten?(integer)
-        return true if integer.zero?
-
-        power_of_ten(integer) == power_of_ten(integer).to_i
-      end
-    end
-
-    # 15,16
-    # 85,16
-    def pair_parse(ints, only_compress = false)
-      ints = compress(ints)
-      return ints if only_compress
-      return ints[0] if ints.length == 1
-
-      sum = 0
-
-      ints.each do |n|
-        sum *= n >= 10 ? 100 : 10
-        sum += n
-      end
-
-      sum
-    end
-
-    # [40, 2] => [42]
-    def compress(ints)
-      return [] if ints.empty?
-
-      result = []
-      index = 0
-
-      index, result = compress_numbers(ints, result, index)
-
-      result << ints[-1] if index < ints.length
-
-      result
-    end
-
-    def compress_numbers(ints, result, index)
-      while index < ints.length - 1
-        int, jump = compress_int(ints[index], ints[index + 1])
-        result << int
-        index += jump
-      end
-
-      [index, result]
-    end
-
-    def compress_int(int, sequel)
-      tens = (int % 10).zero? && int > 10
-      return [int + sequel, 2] if tens && sequel < 10
-
-      [int, 1]
+    def pair_parse(nums, only_compress)
+      PairParsing.new(nums, only_compress).pair_parse
     end
   end
 end
