@@ -18,6 +18,12 @@ describe NumbersInWords do
   }.freeze
 
   FRACTIONS.each do |string, float|
+    it "#{string} == #{float}" do
+      expect(string.in_numbers).to eql(float)
+    end
+  end
+
+  PENDING.each do |string, float|
     pending "#{string} == #{float}" do
       expect(string.in_numbers).to eql(float)
     end

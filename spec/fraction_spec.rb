@@ -47,7 +47,7 @@ module NumbersInWords
     context 'fifths' do
       let(:denominator) { 5 }
       let(:attributes) do
-          { number: 'five', ordinal: 'fifth' }
+        { number: 'five', ordinal: 'fifth' }
       end
 
       it do
@@ -82,7 +82,7 @@ module NumbersInWords
       end
     end
 
-    context 'one hundred and seconds' do 
+    context 'one hundred and seconds' do
       let(:denominator) { 102 }
       let(:attributes) { {} }
 
@@ -91,7 +91,7 @@ module NumbersInWords
       end
     end
 
-    context 'one hundred and sixth' do 
+    context 'one hundred and sixth' do
       let(:denominator) { 106 }
       let(:attributes) { {} }
 
@@ -100,7 +100,7 @@ module NumbersInWords
       end
     end
 
-    context 'one hundred and nineteenth' do 
+    context 'one hundred and nineteenth' do
       let(:denominator) { 119 }
       let(:attributes) { {} }
 
@@ -110,7 +110,7 @@ module NumbersInWords
       end
     end
 
-    context 'one thousandth' do 
+    context 'one thousandth' do
       let(:denominator) { 1000 }
       let(:attributes) { {} }
 

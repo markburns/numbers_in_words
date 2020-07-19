@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'forwardable'
 
 require_relative 'fraction'
@@ -18,16 +19,16 @@ module NumbersInWords
       7 => { number: 'seven' },
       8 => { number: 'eight', ordinal: 'eighth' },
       9 => { number: 'nine', ordinal: 'ninth' },
-      10 => { number: 'ten'},
-      11 => { number: 'eleven'},
+      10 => { number: 'ten' },
+      11 => { number: 'eleven' },
       12 => { number: 'twelve', ordinal: 'twelfth' },
-      13 => { number: 'thirteen'},
-      14 => { number: 'fourteen'},
-      15 => { number: 'fifteen'},
-      16 => { number: 'sixteen'},
-      17 => { number: 'seventeen'},
-      18 => { number: 'eighteen'},
-      19 => { number: 'nineteen'},
+      13 => { number: 'thirteen' },
+      14 => { number: 'fourteen' },
+      15 => { number: 'fifteen' },
+      16 => { number: 'sixteen' },
+      17 => { number: 'seventeen' },
+      18 => { number: 'eighteen' },
+      19 => { number: 'nineteen' },
       20 => { number: 'twenty', ordinal: 'twentieth' },
       30 => { number: 'thirty', ordinal: 'thirtieth' },
       40 => { number: 'forty', ordinal: 'fortieth' },
@@ -88,6 +89,7 @@ module NumbersInWords
 
     def fraction(denominator: nil, numerator: nil, word: nil)
       raise unless denominator || word
+
       numerator ||= 1
 
       denominator ||= NumbersInWords.in_numbers(word)

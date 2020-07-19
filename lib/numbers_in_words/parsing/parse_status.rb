@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NumbersInWords
   class ParseStatus
     attr_accessor :reset, :memory, :answer

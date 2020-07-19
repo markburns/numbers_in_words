@@ -12,7 +12,6 @@ module NumbersInWords
   DivideByZeroError     = ::Class.new(Error)
   InvalidNumber         = ::Class.new(Error)
 
-
   class << self
     extend Forwardable
     def_delegators :exceptional_numbers, :fraction

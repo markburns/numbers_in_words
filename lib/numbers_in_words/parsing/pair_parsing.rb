@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module NumbersInWords
   class PairParsing
     attr_accessor :ints
     attr_reader :only_compress
+
     def initialize(ints, only_compress)
       @ints = ints
       @only_compress = only_compress

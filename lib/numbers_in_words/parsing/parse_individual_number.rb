@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NumbersInWords
   class ParseIndividualNumber
     extend Forwardable

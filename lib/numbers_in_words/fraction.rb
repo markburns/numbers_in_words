@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NumbersInWords
   class Fraction
     attr_reader :denominator, :numerator, :attributes
@@ -5,9 +7,9 @@ module NumbersInWords
     def self.in_words(that)
       r = that.rationalize(EPSILON)
 
-      NumbersInWords.
-        fraction(denominator: r.denominator, numerator: r.numerator).
-        in_words
+      NumbersInWords
+        .fraction(denominator: r.denominator, numerator: r.numerator)
+        .in_words
     end
 
     def initialize(denominator:, numerator: 1, attributes: nil)

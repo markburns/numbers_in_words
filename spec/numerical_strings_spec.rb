@@ -14,7 +14,7 @@ describe NumbersInWords do
     '100 million' => 100_000_000,
     '7 billion' => 7_000_000_000,
     '42 trillion' => 42_000_000_000_000,
-    '20 thousand and 4' => 20_004,
+    '20 thousand and 4' => 20_004
   }.freeze
 
   MIXED.each do |k, v|

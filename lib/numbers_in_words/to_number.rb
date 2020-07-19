@@ -49,12 +49,12 @@ module NumbersInWords
     def mixed_words_and_digits(only_compress)
       return unless numeric?(that)
 
-      in_words = that.split(" ").map {|word| numeric?(word) ? NumbersInWords.in_words(word) : word }.join(" ")
+      in_words = that.split(' ').map { |word| numeric?(word) ? NumbersInWords.in_words(word) : word }.join(' ')
       self.class.new(in_words).in_numbers(only_compress: only_compress)
     end
 
     def numeric?(word)
-      word.match /\d+/
+      word.match(/\d+/)
     end
 
     def strip_punctuation(text)
@@ -107,14 +107,12 @@ module NumbersInWords
 
       # fraction = handle_fraction(text)
       # return fraction if fraction
-
-
     end
 
     def power(text)
       power = NumbersInWords.power_of_ten(text)
 
-      10 ** power if power
+      10**power if power
     end
 
     def canonize(word)

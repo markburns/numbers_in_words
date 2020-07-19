@@ -4,7 +4,6 @@ require_relative 'writer'
 require_relative 'number_group'
 require_relative 'fraction'
 
-
 module NumbersInWords
   # Arbitrarily small number for rationalizing fractions
   EPSILON = 0.0000000001
