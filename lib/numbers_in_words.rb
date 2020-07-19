@@ -14,6 +14,9 @@ module NumbersInWords
 
 
   class << self
+    extend Forwardable
+    def_delegators :exceptional_numbers, :fraction
+
     def in_words(num, fraction: false)
       ToWord.new(num).in_words(fraction: fraction)
     end
@@ -22,16 +25,8 @@ module NumbersInWords
       ToNumber.new(words).in_numbers(only_compress: only_compress)
     end
 
-    def ordinal(words)
-      ToWord.new(words).ordinal
-    end
-
     def exceptional_numbers
       @exceptional_numbers ||= ExceptionalNumbers.new
-    end
-
-    def fraction(number: nil, word: nil)
-      exceptional_numbers.fraction(number: number, word: word)
     end
 
     def lookup(number)

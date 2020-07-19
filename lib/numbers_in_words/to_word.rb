@@ -26,10 +26,6 @@ module NumbersInWords
       'minus ' + NumbersInWords.in_words(-@that)
     end
 
-    def ordinal
-      NumbersInWords.exceptional_numbers.ordinal(@that)
-    end
-
     def in_words(fraction: false)
       as_fraction(fraction) ||
         handle_exceptional_numbers ||

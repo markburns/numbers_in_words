@@ -12,23 +12,6 @@ describe 'NumbersInWords' do
       expect(NumbersInWords.in_words(100 * 10**100)).to eq 'one hundred googol'
       expect(NumbersInWords.in_words(30 + 100 * 10**100)).to eq 'one hundred googol and thirty'
     end
-
-    pending 'This should be implemented' do
-      expect(NumbersInWords.in_words(100 * 10**100)).to eq 'one hundred googols'
-    end
-  end
-
-  pending do
-    expect(NumbersInWords.ordinal(1)).to eq 'first'
-    expect(NumbersInWords.ordinal(2)).to eq 'second'
-    expect(NumbersInWords.ordinal(3)).to eq 'third'
-    expect(NumbersInWords.ordinal(9)).to eq 'ninth'
-    expect(NumbersInWords.ordinal(12)).to eq 'twelfth'
-    expect(NumbersInWords.ordinal(21)).to eq 'twenty first'
-    expect(NumbersInWords.ordinal(29)).to eq 'twenty ninth'
-    expect(NumbersInWords.ordinal(32)).to eq 'thirty second'
-    expect(NumbersInWords.ordinal(101)).to eq 'one hundred first'
-    expect(NumbersInWords.ordinal(1001)).to eq 'one thousand first'
   end
 
   FRACTIONS = {
@@ -42,8 +25,8 @@ describe 'NumbersInWords' do
     [1, 21] => 'one twenty-first',
     [1, 32] => 'one thirty-second',
     [1, 101] => 'one one hundred and first',
-    [3, 101] => 'three one hundred and firsts',
-    [73, 102] => 'seventy-three one hundred and seconds',
+    [3, 101] => 'three hundred and firsts',
+    [73, 102] => 'seventy-three hundred and seconds',
     [13, 97] => 'thirteen ninety-sevenths'
   }.freeze
 

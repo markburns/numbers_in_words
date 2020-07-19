@@ -1,33 +1,39 @@
 module NumbersInWords
   class Fraction
-    attr_reader :number, :attributes
+    attr_reader :denominator, :numerator, :attributes
 
     def self.in_words(that)
       r = that.rationalize(EPSILON)
 
-      numerator = r.numerator
-      numerator_in_words = ToWord.new(numerator).in_words
-
-      meth = numerator == 1 ? :singular : :plural
-
-      denominator = r.denominator
-      denominator_in_words = NumbersInWords.fraction(number: denominator).public_send(meth)
-
-
-      numerator_in_words + ' ' + denominator_in_words
+      NumbersInWords.
+        fraction(denominator: r.denominator, numerator: r.numerator).
+        in_words
     end
 
-    def initialize(number, attributes)
-      @number = number
-      @attributes = attributes || {}
+    def initialize(denominator:, numerator: 1, attributes: nil)
+      @denominator = denominator
+      @numerator = numerator
+      @attributes = attributes || NumbersInWords::ExceptionalNumbers::DEFINITIONS[denominator] || {}
     end
 
-    def ordinal_plural
-      ordinal + 's'
+    def in_words
+      NumbersInWords.in_words(numerator) + ' ' + fraction
     end
 
     def ordinal
-      attributes[:ordinal] || number_in_words
+      if pluralize?
+        pluralized_ordinal || denominator_ordinal_in_words
+      else
+        singular_ordinal || denominator_ordinal_in_words
+      end
+    end
+
+    def fraction
+      if pluralize?
+        fraction_plural || pluralized_ordinal || denominator_ordinal_in_words
+      else
+        fraction_singular || singular_ordinal || denominator_ordinal_in_words
+      end
     end
 
     def plural
@@ -40,26 +46,48 @@ module NumbersInWords
 
     private
 
-    def number_in_words
-      (attributes[:number] && attributes[:number] + 'th') || ordinal_in_words
+    def singular_ordinal
+      attributes[:ordinal]
     end
 
-    def ordinal_in_words
-      if number > 100
-        rest = number % 100
-        main = number - rest
-        NumbersInWords.in_words(main) +
-          ' and ' +
-          NumbersInWords.fraction(number: rest).ordinal
-      elsif number > 10
-        rest = number % 10
-        main = number - rest
-        NumbersInWords.in_words(main) +
-          '-' +
-          NumbersInWords.fraction(number: rest).ordinal
+    def pluralized_ordinal
+      singular_ordinal && singular_ordinal + 's'
+    end
+
+    def pluralize?
+      numerator > 1
+    end
+
+    def denominator_ordinal_in_words
+      # one hundred and second
+      if denominator > 100
+        with_remainder(100, ' and ')
+      elsif denominator > 19
+        with_remainder(10, '-')
       else
-        NumbersInWords.in_words(number) + 'th'
+        singular = NumbersInWords.in_words(denominator) + 'th'
+        pluralize? ? singular + 's' : singular
       end
+    end
+
+    def with_remainder(mod, join_word)
+      rest = denominator % mod
+      main = denominator - rest
+      main = NumbersInWords.in_words(main)
+
+      main = main.gsub(/^one /, '') if pluralize?
+
+      if rest.zero?
+        if pluralize?
+          return main + 'ths'
+        else
+          return main + 'th'
+        end
+      end
+
+      main +
+        join_word +
+        self.class.new(numerator: numerator, denominator: rest).ordinal
     end
 
     def exception?
@@ -68,6 +96,10 @@ module NumbersInWords
 
     def exception
       attributes[:fraction]
+    end
+
+    def fraction_singular
+      exception? && exception[:singular]
     end
 
     def fraction_plural
