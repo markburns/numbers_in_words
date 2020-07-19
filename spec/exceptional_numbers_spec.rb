@@ -19,7 +19,9 @@ describe NumbersInWords::ExceptionalNumbers do
 
     FRACTIONS.each do |(numerator, denominator), string|
       pending "#{numerator}/#{denominator} == #{string}" do
-        expect(subject.fraction(numerator: numerator, denominator: denominator)).to eql(string)
+
+        number = numerator.to_f / denominator.to_f
+        expect(subject.fraction(number: number)).to eql(string)
       end
     end
   end

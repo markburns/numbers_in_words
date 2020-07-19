@@ -20,10 +20,6 @@ module NumbersInWords
         expect(subject.ordinal).to eq 'second'
         expect(subject.ordinal_plural).to eq 'seconds'
       end
-
-      it do
-        expect(subject.call).to eq ['half', 'halves', 'second', 'seconds']
-      end
     end
 
     context 'quarters' do
@@ -42,10 +38,6 @@ module NumbersInWords
         expect(subject.ordinal).to eq 'fourth'
         expect(subject.ordinal_plural).to eq 'fourths'
       end
-
-      it do
-        expect(subject.call).to eq ['quarter', 'quarters', 'fourth', 'fourths']
-      end
     end
 
     context 'fifths' do
@@ -60,9 +52,17 @@ module NumbersInWords
         expect(subject.ordinal).to eq 'fifth'
         expect(subject.ordinal_plural).to eq 'fifths'
       end
+    end
+
+    context 'sixths' do
+      let(:number) { 6 }
+      let(:attributes) { {} }
 
       it do
-        expect(subject.call).to eq ['fifth', 'fifths', 'fifth', 'fifths']
+        expect(subject.singular).to eq 'sixth'
+        expect(subject.plural).to eq 'sixths'
+        expect(subject.ordinal).to eq 'sixth'
+        expect(subject.ordinal_plural).to eq 'sixths'
       end
     end
 
@@ -76,10 +76,6 @@ module NumbersInWords
         expect(subject.ordinal).to eq 'sixth'
         expect(subject.ordinal_plural).to eq 'sixths'
       end
-
-      it do
-        expect(subject.call).to eq ['sixth', 'sixths', 'sixth', 'sixths']
-      end
     end
 
     context 'sixths' do
@@ -92,25 +88,17 @@ module NumbersInWords
         expect(subject.ordinal).to eq 'sixth'
         expect(subject.ordinal_plural).to eq 'sixths'
       end
-
-      it do
-        expect(subject.call).to eq ['sixth', 'sixths', 'sixth', 'sixths']
-      end
     end
 
-    context 'sixths' do
-      let(:number) { 6 }
+    context 'one hundred and seconds' do 
+      let(:number) { 102 }
       let(:attributes) { {} }
 
       it do
-        expect(subject.singular).to eq 'sixth'
-        expect(subject.plural).to eq 'sixths'
-        expect(subject.ordinal).to eq 'sixth'
-        expect(subject.ordinal_plural).to eq 'sixths'
-      end
-
-      it do
-        expect(subject.call).to eq ['sixth', 'sixths', 'sixth', 'sixths']
+        expect(subject.singular).to eq 'one hundred and second'
+        expect(subject.plural).to eq 'one hundred and seconds'
+        expect(subject.ordinal).to eq 'one hundred and second'
+        expect(subject.ordinal_plural).to eq 'one hundred and seconds'
       end
     end
   end

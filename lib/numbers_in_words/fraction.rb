@@ -17,14 +17,9 @@ module NumbersInWords
       numerator_in_words + ' ' + denominator_in_words
     end
 
-
     def initialize(number, attributes)
       @number = number
       @attributes = attributes || {}
-    end
-
-    def call
-      [singular, plural, ordinal, ordinal_plural].reject { |f| f == false }
     end
 
     def ordinal_plural
@@ -32,7 +27,7 @@ module NumbersInWords
     end
 
     def ordinal
-      attributes[:ordinal] || (number_in_words + 'th')
+      attributes[:ordinal] || number_in_words
     end
 
     def plural
@@ -46,7 +41,25 @@ module NumbersInWords
     private
 
     def number_in_words
-      attributes[:number] || NumbersInWords.in_words(number)
+      (attributes[:number] && attributes[:number] + 'th') || ordinal_in_words
+    end
+
+    def ordinal_in_words
+      if number > 100
+        rest = number % 100
+        main = number - rest
+        NumbersInWords.in_words(main) +
+          ' and ' +
+          NumbersInWords.fraction(number: rest).ordinal
+      elsif number > 10
+        rest = number % 10
+        main = number - rest
+        NumbersInWords.in_words(main) +
+          '-' +
+          NumbersInWords.fraction(number: rest).ordinal
+      else
+        NumbersInWords.in_words(number) + 'th'
+      end
     end
 
     def exception?

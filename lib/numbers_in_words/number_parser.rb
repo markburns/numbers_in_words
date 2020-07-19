@@ -56,6 +56,8 @@ module NumbersInWords
         parse_each(nums)
     end
 
+    private
+
     def small_numbers(nums, only_compress)
       return unless nums.length < 2
       return nums if only_compress
