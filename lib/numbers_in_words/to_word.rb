@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require_relative 'writer'
+require_relative 'number_group'
+require_relative 'fraction'
+
 
 module NumbersInWords
   # Arbitrarily small number for rationalizing fractions

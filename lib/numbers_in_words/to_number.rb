@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'forwardable'
+require_relative 'parsing/number_parser'
 
 module NumbersInWords
   class ToNumber
@@ -14,7 +15,13 @@ module NumbersInWords
     end
 
     def in_numbers(only_compress: false)
-      float || negative(only_compress) || one(only_compress) || mixed || decimal || integers(only_compress)
+      float ||
+        negative(only_compress) ||
+        mixed_words_and_digits(only_compress) ||
+        one(only_compress) ||
+        mixed ||
+        decimal ||
+        integers(only_compress)
     end
 
     private
@@ -37,6 +44,17 @@ module NumbersInWords
 
       stripped_n = NumbersInWords.in_numbers(stripped, only_compress: only_compress)
       only_compress ? stripped_n.map { |k| k * -1 } : -1 * stripped_n
+    end
+
+    def mixed_words_and_digits(only_compress)
+      return unless numeric?(that)
+
+      in_words = that.split(" ").map {|word| numeric?(word) ? NumbersInWords.in_words(word) : word }.join(" ")
+      self.class.new(in_words).in_numbers(only_compress: only_compress)
+    end
+
+    def numeric?(word)
+      word.match /\d+/
     end
 
     def strip_punctuation(text)

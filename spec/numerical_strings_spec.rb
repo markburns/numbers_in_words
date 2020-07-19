@@ -9,11 +9,12 @@ describe NumbersInWords do
   end
 
   MIXED = {
-    '19 hundred' => 1_900.0,
-    '20 thousand' => 20_000.0,
-    '100 million' => 100_000_000.0,
-    '7 billion' => 7_000_000_000.0,
-    '42 trillion' => 42_000_000_000_000.0
+    '19 hundred' => 1_900,
+    '20 thousand' => 20_000,
+    '100 million' => 100_000_000,
+    '7 billion' => 7_000_000_000,
+    '42 trillion' => 42_000_000_000_000,
+    '20 thousand and 4' => 20_004,
   }.freeze
 
   MIXED.each do |k, v|
@@ -23,8 +24,7 @@ describe NumbersInWords do
   end
 
   PENDING = {
-    '20 thousand and 4' => 20_004.0,
-    '19 zero five' => 1_905.0
+    '19 zero five' => 1_905
   }.freeze
 
   PENDING.each do |k, v|
