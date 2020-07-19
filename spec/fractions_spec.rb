@@ -18,7 +18,7 @@ describe NumbersInWords do
     'twenty and three fifteenths' => 20 + 3 / 15.0,
     'three ninety-sevenths' => 3 / 97.0
   }.freeze
-  FRACTIONS.each do  |string, float|
+  FRACTIONS.each do |string, float|
     pending "#{string} == #{float}" do
       expect(string.in_numbers).to eql(float)
     end
