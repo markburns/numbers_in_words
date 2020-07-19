@@ -60,11 +60,13 @@ module NumbersInWords
       return unless nums.length < 2
       return nums if only_compress
 
-      return nums.empty? ? 0 : nums[0]
+      nums.empty? ? 0 : nums[0]
     end
 
     def pair_parsing(nums, only_compress)
-      return pair_parse(nums, only_compress) if (SCALES_N & nums).empty?
+      return if (SCALES_N & nums).any?
+
+      pair_parse(nums, only_compress)
     end
 
     def parse_each(nums)
