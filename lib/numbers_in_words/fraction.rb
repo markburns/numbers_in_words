@@ -21,18 +21,18 @@ module NumbersInWords
     def to_r
       return 0.0 if denominator == Float::INFINITY
 
-      (numerator.to_f / denominator.to_f).rationalize(EPSILON)
+      (numerator / denominator.to_f).rationalize(EPSILON)
     end
 
     def lookup_keys
       key = in_words
-      key_2 = strip_punctuation(key.split(' ')).join(' ')
+      key2 = strip_punctuation(key.split(' ')).join(' ')
 
-      key_3 = "a #{key}"
-      key_4 = "an #{key}"
-      key_5 = "a #{key_2}"
-      key_6 = "an #{key_2}"
-      [key, key_2, key_3, key_4, key_5, key_6].uniq
+      key3 = "a #{key}"
+      key4 = "an #{key}"
+      key5 = "a #{key2}"
+      key6 = "an #{key2}"
+      [key, key2, key3, key4, key5, key6].uniq
     end
 
     def in_words

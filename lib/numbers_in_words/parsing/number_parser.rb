@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'forwardable'
+require_relative 'parse_fractions'
 require_relative 'parse_status'
 require_relative 'parse_individual_number'
 require_relative 'pair_parsing'
@@ -59,19 +60,11 @@ module NumbersInWords
 
     private
 
-    # 7 0.066666666666667 => 0.46666666666666
     def fractions(nums)
-      nums = nums.map(&:to_f)
-      return if nums.all? { |n| n.zero? || n >= 1.0 }
-
-      index_of_fraction = nums.index { |n| n < 1.0 }
-      return nums.first if index_of_fraction.zero?
-
-      numbers = nums[0..index_of_fraction - 1]
-      fractions = nums[index_of_fraction..]
-
-      (parse(numbers) * parse(fractions)).rationalize(EPSILON).to_f
+      ParseFractions.new(nums).call
     end
+
+    # 7 0.066666666666667 => 0.46666666666666
 
     # 15 => 15
     def small_numbers(nums, only_compress)
