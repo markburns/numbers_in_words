@@ -8,7 +8,7 @@ module NumbersInWords
   class ExceptionalNumbers
     extend Forwardable
 
-    GOOGOL = 10 ** 100
+    GOOGOL = 10**100
     POWERS_OF_TEN = {
       0 => 'one',
       1 => 'ten',
@@ -54,9 +54,9 @@ module NumbersInWords
     POWERS_RX = Regexp.union(POWERS_OF_TEN.values[1..]).freeze
 
     DEFINITIONS = {
-      0 => { number: 'zero', ordinal: 'zeroth'},
+      0 => { number: 'zero', ordinal: 'zeroth' },
       1 => { number: 'one', ordinal: 'first' },
-      2 => { number: 'two', ordinal: 'second', fraction:  { singular: 'half', plural: 'halves' } },
+      2 => { number: 'two', ordinal: 'second', fraction: { singular: 'half', plural: 'halves' } },
       3 => { number: 'three', ordinal: 'third' },
       4 => { number: 'four', ordinal: 'fourth', fraction: { singular: 'quarter', plural: 'quarters' } },
       5 => { number: 'five', ordinal: 'fifth' },
@@ -132,16 +132,16 @@ module NumbersInWords
     end
 
     def named_fractions
-      @named_fractions ||= numbers.flat_map{|n|
+      @named_fractions ||= numbers.flat_map do |n|
         [
           Fraction.new(denominator: n, numerator: 1),
-          Fraction.new(denominator: n, numerator: 2),
+          Fraction.new(denominator: n, numerator: 2)
         ]
-      }
+      end
     end
 
     def numbers
-      (2..100).to_a + powers_of_ten_skipping_googolplex.map { |p| 10 ** p }
+      (2..100).to_a + powers_of_ten_skipping_googolplex.map { |p| 10**p }
     end
 
     def powers_of_ten_skipping_googolplex
@@ -152,14 +152,12 @@ module NumbersInWords
       names = named_fractions.map(&:in_words)
 
       words = names.map(&:split).map(&:last)
-      words = words + strip_punctuation(words)
+      words += strip_punctuation(words)
       words.uniq
     end
 
     def strip_punctuation(words)
-      words.map {|w| w.gsub(/^a-z/, ' ')}
+      words.map { |w| w.gsub(/^a-z/, ' ') }
     end
-
-
   end
 end

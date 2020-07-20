@@ -52,7 +52,7 @@ module NumbersInWords
 
     def parse(nums, only_compress: false)
       fractions(nums) ||
-      small_numbers(nums, only_compress) ||
+        small_numbers(nums, only_compress) ||
         pair_parsing(nums, only_compress) ||
         parse_each(nums)
     end
@@ -62,13 +62,13 @@ module NumbersInWords
     # 7 0.066666666666667 => 0.46666666666666
     def fractions(nums)
       nums = nums.map(&:to_f)
-      return if nums.all?{|n| n.zero? || n >= 1.0}
+      return if nums.all? { |n| n.zero? || n >= 1.0 }
 
-      index_of_fraction = nums.index{|n| n < 1.0 }
+      index_of_fraction = nums.index { |n| n < 1.0 }
       return nums.first if index_of_fraction.zero?
 
       numbers = nums[0..index_of_fraction - 1]
-      fractions = nums[index_of_fraction .. -1]
+      fractions = nums[index_of_fraction..]
 
       (parse(numbers) * parse(fractions)).rationalize(EPSILON).to_f
     end

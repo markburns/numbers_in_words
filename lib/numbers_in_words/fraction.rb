@@ -21,12 +21,12 @@ module NumbersInWords
     def to_r
       return 0.0 if denominator == Float::INFINITY
 
-      (numerator.to_f / denominator.to_f ).rationalize(EPSILON)
+      (numerator.to_f / denominator.to_f).rationalize(EPSILON)
     end
 
     def lookup_keys
       key = in_words
-      key_2 = strip_punctuation(key.split(" ")).join(" ")
+      key_2 = strip_punctuation(key.split(' ')).join(' ')
 
       key_3 = "a #{key}"
       key_4 = "an #{key}"
@@ -51,13 +51,13 @@ module NumbersInWords
     end
 
     def fraction
-      pluralize? ?  pluralized_fraction : singular_fraction
+      pluralize? ? pluralized_fraction : singular_fraction
     end
 
     private
 
     def strip_punctuation(words)
-      words.map {|w| w.gsub(/^a-z/, ' ')}
+      words.map { |w| w.gsub(/^a-z/, ' ') }
     end
 
     def pluralized_fraction
