@@ -17,11 +17,12 @@ module NumbersInWords
     def in_numbers(only_compress: false)
       float ||
         negative(only_compress) ||
+        fraction(text) ||
         mixed_words_and_digits(only_compress) ||
         one(only_compress) ||
         mixed ||
         decimal ||
-        integers(only_compress)
+        as_numbers(only_compress)
     end
 
     private
@@ -88,14 +89,14 @@ module NumbersInWords
       integer + "0.#{decimal}".to_f
     end
 
-    def integers(only_compress)
-      integers = word_array_to_nums text.split(' ')
+    def as_numbers(only_compress)
+      numbers = word_array_to_nums text.split(' ')
 
-      NumbersInWords::NumberParser.new.parse integers, only_compress: only_compress
+      NumbersInWords::NumberParser.new.parse numbers, only_compress: only_compress
     end
 
     def word_array_to_nums(words)
-      words.map { |i| word_to_num i }.compact
+      words.map { |i| word_to_num(i) }.compact
     end
 
     # handles simple single word numbers
@@ -103,10 +104,19 @@ module NumbersInWords
     def word_to_num(word)
       text = canonize(word.to_s.chomp.strip)
 
-      NumbersInWords.exceptional_number(text) || power(text)
+      NumbersInWords.exceptional_number(text) || fraction(text) || power(text)
+    end
 
-      # fraction = handle_fraction(text)
-      # return fraction if fraction
+    def fraction(text)
+      return unless possible_fraction?(text)
+
+      NumbersInWords.exceptional_numbers.lookup_fraction(text)
+    end
+
+    def possible_fraction?(text)
+      words = text.split(' ')
+      result = words & NumbersInWords.exceptional_numbers.fraction_names
+      result.length.positive?
     end
 
     def power(text)

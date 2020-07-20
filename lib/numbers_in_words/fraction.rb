@@ -18,35 +18,63 @@ module NumbersInWords
       @attributes = attributes || NumbersInWords::ExceptionalNumbers::DEFINITIONS[denominator] || {}
     end
 
+    def to_r
+      return 0.0 if denominator == Float::INFINITY
+
+      (numerator.to_f / denominator.to_f ).rationalize(EPSILON)
+    end
+
+    def lookup_keys
+      key = in_words
+      key_2 = strip_punctuation(key.split(" ")).join(" ")
+
+      key_3 = "a #{key}"
+      key_4 = "an #{key}"
+      key_5 = "a #{key_2}"
+      key_6 = "an #{key_2}"
+      [key, key_2, key_3, key_4, key_5, key_6].uniq
+    end
+
     def in_words
+      if denominator == Float::INFINITY
+        # We've reached the limits of ruby's number system
+        # by the time we get to a googolplex (10 ** (10 ** 100))
+        # I suppose we could also call this an 'infinitieth'
+        return pluralize? ? 'googolplexths' : 'googolplexth'
+      end
+
       NumbersInWords.in_words(numerator) + ' ' + fraction
     end
 
     def ordinal
-      if pluralize?
-        pluralized_ordinal || denominator_ordinal_in_words
-      else
-        singular_ordinal || denominator_ordinal_in_words
-      end
+      pluralize? ? pluralized_ordinal_in_words : singular_ordinal_in_words
     end
 
     def fraction
-      if pluralize?
-        fraction_plural || pluralized_ordinal || denominator_ordinal_in_words
-      else
-        fraction_singular || singular_ordinal || denominator_ordinal_in_words
-      end
-    end
-
-    def plural
-      exception? && (fraction_plural || singular + 's') || ordinal_plural
-    end
-
-    def singular
-      (exception? && exception[:singular]) || ordinal
+      pluralize? ?  pluralized_fraction : singular_fraction
     end
 
     private
+
+    def strip_punctuation(words)
+      words.map {|w| w.gsub(/^a-z/, ' ')}
+    end
+
+    def pluralized_fraction
+      fraction_plural || pluralized_ordinal_in_words
+    end
+
+    def singular_fraction
+      fraction_singular || singular_ordinal_in_words
+    end
+
+    def pluralized_ordinal_in_words
+      pluralized_ordinal || denominator_ordinal_in_words
+    end
+
+    def singular_ordinal_in_words
+      singular_ordinal || denominator_ordinal_in_words
+    end
 
     def singular_ordinal
       attributes[:ordinal]
@@ -74,6 +102,14 @@ module NumbersInWords
       end
     end
 
+    def plural
+      exception? && (fraction_plural || singular + 's') || ordinal_plural
+    end
+
+    def singular
+      (exception? && exception[:singular]) || ordinal
+    end
+
     def with_remainder(mod, join_word)
       rest = denominator % mod
       main = denominator - rest
@@ -90,7 +126,7 @@ module NumbersInWords
         self.class.new(numerator: numerator, denominator: rest).ordinal
     end
 
-    def rest_zero?(rest, main)
+    def rest_zero(rest, main)
       return unless rest.zero?
 
       if pluralize?

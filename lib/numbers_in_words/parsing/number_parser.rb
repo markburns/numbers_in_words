@@ -51,6 +51,7 @@ module NumbersInWords
     SCALES_N = [10**2, 10**3, 10**6, 10**9, 10**12, 10**100].freeze
 
     def parse(nums, only_compress: false)
+      fractions(nums) ||
       small_numbers(nums, only_compress) ||
         pair_parsing(nums, only_compress) ||
         parse_each(nums)
@@ -58,6 +59,21 @@ module NumbersInWords
 
     private
 
+    # 7 0.066666666666667 => 0.46666666666666
+    def fractions(nums)
+      nums = nums.map(&:to_f)
+      return if nums.all?{|n| n.zero? || n >= 1.0}
+
+      index_of_fraction = nums.index{|n| n < 1.0 }
+      return nums.first if index_of_fraction.zero?
+
+      numbers = nums[0..index_of_fraction - 1]
+      fractions = nums[index_of_fraction .. -1]
+
+      (parse(numbers) * parse(fractions)).rationalize(EPSILON).to_f
+    end
+
+    # 15 => 15
     def small_numbers(nums, only_compress)
       return unless nums.length < 2
       return nums if only_compress
@@ -65,6 +81,7 @@ module NumbersInWords
       nums.empty? ? 0 : nums[0]
     end
 
+    # 15 75 => 1,575
     def pair_parsing(nums, only_compress)
       return if (SCALES_N & nums).any?
 
