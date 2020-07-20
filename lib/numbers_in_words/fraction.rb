@@ -103,11 +103,11 @@ module NumbersInWords
     end
 
     def plural
-      exception? && (fraction_plural || singular + 's') || ordinal_plural
+      exception && (fraction_plural || singular + 's') || ordinal_plural
     end
 
     def singular
-      (exception? && exception[:singular]) || ordinal
+      (exception && exception[:singular]) || ordinal
     end
 
     def with_remainder(mod, join_word)
@@ -136,20 +136,16 @@ module NumbersInWords
       end
     end
 
-    def exception?
-      exception&.is_a?(Hash)
-    end
-
     def exception
       attributes[:fraction]
     end
 
     def fraction_singular
-      exception? && exception[:singular]
+      exception && exception[:singular]
     end
 
     def fraction_plural
-      exception? && exception[:plural]
+      exception && exception[:plural]
     end
   end
 end

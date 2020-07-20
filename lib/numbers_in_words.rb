@@ -47,7 +47,7 @@ module NumbersInWords
     end
 
     def powers_of_ten_to_i
-      @powers_of_ten_to_i ||= swap_keys ExceptionalNumbers::POWERS_OF_TEN
+      @powers_of_ten_to_i ||= swap_keys POWERS_OF_TEN
     end
 
     def swap_keys(hash)
