@@ -69,6 +69,10 @@ describe WordsInNumbers do
     expect('nine thousand two hundred'.in_numbers).to eq(9200)
     expect('nine thousand two hundred and seven'.in_numbers).to eq(9207)
     expect('nine thousand two hundred and ninety seven'.in_numbers).to eq(9297)
+  end
+
+  it 'handles numbers that begin with a instead of one', :aggregate_failures do
+    expect('a thousand six hundred'.in_numbers).to eq(1600)
     expect('a thousand six hundred and fifty-five'.in_numbers).to eq(1655)
   end
 

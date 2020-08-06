@@ -18,6 +18,16 @@ describe NumbersInWords::NumberParser do
     it { expect(subject).to eq 20_000 }
   end
 
+  context 'with thousands with a leading one' do
+    let(:number) { [1, 1000, 6, 100] }
+    it { expect(subject).to eq 1600 }
+  end
+
+  context 'with thousands with no leading one' do
+    let(:number) { [1000, 6, 100] }
+    it { expect(subject).to eq 1600 }
+  end
+
   pending 'with fractions' do
     context 'with only denominator' do
       let(:number) { [0.5] }
