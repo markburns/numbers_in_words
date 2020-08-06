@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'numbers_in_words/version'
-require 'numbers_in_words/to_word'
 require 'numbers_in_words/exceptional_numbers'
-require 'numbers_in_words/parsing/in_numbers'
+require 'numbers_in_words/to_word'
+require 'numbers_in_words/parsing/to_number'
 
 module NumbersInWords
   LENGTH_OF_GOOGOL      = 101 # length of the string i.e. one with 100 zeros
@@ -21,7 +21,7 @@ module NumbersInWords
     end
 
     def in_numbers(words, only_compress: false)
-      InNumbers.new(words, only_compress).call
+      ToNumber.new(words, only_compress).call
     end
 
     def exceptional_numbers

@@ -9,7 +9,7 @@ module NumbersInWords
 
   module StringExtension
     def in_numbers(only_compress: false)
-      NumbersInWords::InNumbers.new(self, only_compress).call
+      NumbersInWords::ToNumber.new(self, only_compress).call
     end
   end
 end

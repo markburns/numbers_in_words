@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module NumbersInWords
-  class InNumbers
+  class ToNumber
     extend Forwardable
     def_delegator :that, :to_s
 
