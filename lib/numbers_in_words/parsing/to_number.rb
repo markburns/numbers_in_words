@@ -131,6 +131,7 @@ module NumbersInWords
 
     def aliases
       {
+        'a' => 'one',
         'oh' => 'zero'
       }
     end
