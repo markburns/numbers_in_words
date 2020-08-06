@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'NumbersInWords' do
+describe 'NumbersInWords' do # rubocop: disable Metrics/BlockLength
   describe '.in_words' do
     it do
       expect(NumbersInWords.in_words(100)).to eq 'one hundred'
@@ -32,7 +32,7 @@ describe 'NumbersInWords' do
 
   FRACTION_TO_WORDS.each do |(numerator, denominator), string|
     it "#{numerator}/#{denominator} == #{string}" do
-      expect(NumbersInWords.in_words(numerator.to_f / denominator.to_f, fraction: true)).to eql(string)
+      expect(NumbersInWords.in_words(numerator.to_f / denominator, fraction: true)).to eql(string)
     end
   end
 

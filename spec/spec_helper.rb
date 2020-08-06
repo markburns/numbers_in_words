@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 if ENV['CC_TEST_REPORTER_ID']
   require 'simplecov'
   SimpleCov.start
@@ -11,7 +12,8 @@ unless Kernel.method_defined?(:silence_warnings)
     end
 
     def with_warnings(flag)
-      old_verbose, $VERBOSE = $VERBOSE, flag
+      old_verbose = $VERBOSE
+      $VERBOSE = flag
       yield
     ensure
       $VERBOSE = old_verbose

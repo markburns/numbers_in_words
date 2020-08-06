@@ -2,7 +2,7 @@
 
 require './spec/spec_helper'
 
-describe NumbersInWords do
+describe NumbersInWords do # rubocop: disable Metrics/BlockLength
   describe '.in_words' do
     it do
       expect(NumbersInWords.in_words(100)).to eq 'one hundred'
@@ -66,7 +66,8 @@ describe NumbersInWords do
   it 'should handle a googol and larger' do
     googol = 10**100
     expect((googol + 1).in_words).to eq('one googol and one')
-    expect((42 * googol + 16_777_216).in_words).to eq('forty-two googol sixteen million seven hundred and seventy-seven thousand two hundred and sixteen')
+    expect((42 * googol + 16_777_216).in_words)
+      .to eq('forty-two googol sixteen million seven hundred and seventy-seven thousand two hundred and sixteen')
     expect((42 * googol * googol).in_words).to eq('forty-two googol googol')
   end
 
@@ -77,7 +78,10 @@ describe NumbersInWords do
     expect(-15.in_words).to eq('minus fifteen')
     expect(-100.in_words).to eq('minus one hundred')
     expect((-1 * (10**100)).in_words).to eq('minus one googol')
-    expect(-123_456_789.in_words).to eq('minus one hundred and twenty-three million four hundred and fifty-six thousand seven hundred and eighty-nine')
+
+    expect(-123_456_789.in_words)
+      .to eq('minus one hundred and twenty-three million four hundred and ' \
+             'fifty-six thousand seven hundred and eighty-nine')
   end
 
   it 'should handle decimals' do
@@ -87,7 +91,9 @@ describe NumbersInWords do
     expect(1.1.in_words).to match(/one point one/)
     expect(1.2345678.in_words).to match(/one point two three four five six seven eight/)
     expect(1000.2345678.in_words).to match(/one thousand point two three four five six seven eight/)
-    expect(12_345.2345678.in_words).to match(/twelve thousand three hundred and forty-five point two three four five six seven eight/)
+    expect(12_345.2345678.in_words)
+      .to match(/twelve thousand three hundred and forty-five point two three four five six seven eight/)
+
     expect((10**9 + 0.1).in_words).to match(/one billion point one/)
   end
 end

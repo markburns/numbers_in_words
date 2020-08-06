@@ -2,7 +2,7 @@
 
 require './spec/spec_helper'
 
-describe NumbersInWords::StringExtension do
+describe NumbersInWords::StringExtension do # rubocop: disable Metrics/BlockLength
   it 'should do the digits 0-10' do
     expect('zero'.in_numbers).to eq(0)
     expect('one'.in_numbers).to eq(1)
@@ -101,7 +101,7 @@ describe NumbersInWords::StringExtension do
     expect("FIVE,,./';';';[] Million, three hundred and fifty-seVen Thousand".in_numbers).to eq(5_357_000)
   end
 
-  it 'should handle decimal points' do
+  it 'should handle decimal points' do # rubocop: disable Metrics/BlockLength
     expect('one point one'.in_numbers).to eq(1.1)
 
     expect('zero point seven six five three four'.in_numbers).to eq(0.76534)
@@ -130,9 +130,11 @@ describe NumbersInWords::StringExtension do
       eight nine five six four three two one eight nine five six seven eight
     NUMBER
 
+    # rubocop: disable Metrics/LineLength
     expect(long_number.in_numbers).to eq(
       9_777_059_160_806_736_471_970_632_827_836_952_710_801_948_705_683_106_707_757_426_795_746_813_127_465_237_139_153_046_752_803_093_791.89564321895678
     )
+    # rubocop: enable Metrics/LineLength
 
     expect('seventy five point eight four three two seven six nine four five one eight'
            .in_numbers).to eq(75.84327694518)
