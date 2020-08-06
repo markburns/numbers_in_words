@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency      'rspec', '~> 3.4.0'
   gem.add_development_dependency      'rubocop'
+  gem.add_development_dependency      'simplecov', '< 0.18.0'
 
   gem.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   gem.executables   = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }

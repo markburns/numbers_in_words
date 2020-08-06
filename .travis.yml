@@ -1,3 +1,6 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=9a548b48c1c0804d8fb9083ae8e9693a5d5197eb86e8cf1b63a89d18f33e0464
 sudo: false
 language: ruby
 rvm:
