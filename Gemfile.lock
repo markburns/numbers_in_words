@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    numbers_in_words (0.4.1)
+    numbers_in_words (0.5.0)
 
 GEM
   remote: https://rubygems.org/
