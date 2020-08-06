@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-if ENV['CI']
+if ENV['CC_TEST_REPORTER_ID']
   require 'simplecov'
   SimpleCov.start
 end
