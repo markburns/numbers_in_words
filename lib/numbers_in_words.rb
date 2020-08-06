@@ -2,6 +2,7 @@
 
 require 'numbers_in_words/version'
 require 'numbers_in_words/exceptional_numbers'
+require 'numbers_in_words/parsing/number_parser'
 require 'numbers_in_words/to_word'
 require 'numbers_in_words/parsing/to_number'
 
