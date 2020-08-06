@@ -8,6 +8,7 @@ module NumbersInWords
 
     let(:numerator) { 1 }
 
+
     context 'halves' do
       let(:denominator) { 2 }
       let(:attributes) do
@@ -125,6 +126,27 @@ module NumbersInWords
 
         it do
           expect(subject.in_words).to eq 'two thousandths'
+        end
+      end
+    end
+
+    context 'googolplexths' do
+      let(:denominator) { 10 ** (10 ** 100) }
+      let(:attributes) do
+        { number: 'googolplex',
+          ordinal: 'googolplexth',
+          fraction: { singular: 'googolplexth', plural: 'googolplexths' } }
+      end
+
+      it do
+        expect(subject.in_words).to eq 'one infinitieth'
+      end
+
+      context 'with plural' do
+        let(:numerator) { 2 }
+
+        it do
+          expect(subject.in_words).to eq 'two infinitieths'
         end
       end
     end

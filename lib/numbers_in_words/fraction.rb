@@ -18,12 +18,6 @@ module NumbersInWords
       @attributes = attributes || NumbersInWords::ExceptionalNumbers::DEFINITIONS[denominator] || {}
     end
 
-    def to_r
-      return 0.0 if denominator == Float::INFINITY
-
-      (numerator / denominator.to_f).rationalize(EPSILON)
-    end
-
     def lookup_keys
       key = in_words
       key2 = strip_punctuation(key.split(' ')).join(' ')
@@ -36,13 +30,6 @@ module NumbersInWords
     end
 
     def in_words
-      if denominator == Float::INFINITY
-        # We've reached the limits of ruby's number system
-        # by the time we get to a googolplex (10 ** (10 ** 100))
-        # I suppose we could also call this an 'infinitieth'
-        return pluralize? ? 'googolplexths' : 'googolplexth'
-      end
-
       NumbersInWords.in_words(numerator) + ' ' + fraction
     end
 
@@ -51,6 +38,12 @@ module NumbersInWords
     end
 
     def fraction
+      if denominator == Float::INFINITY
+        # We've reached the limits of ruby's number system
+        # by the time we get to a googolplex (10 ** (10 ** 100))
+        return pluralize? ? 'infinitieths' : 'infinitieth'
+      end
+
       pluralize? ? pluralized_fraction : singular_fraction
     end
 
