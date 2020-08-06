@@ -7,7 +7,8 @@ require 'numbers_in_words/version'
 Gem::Specification.new do |gem|
   gem.name          = 'numbers_in_words'
   gem.description   = 'convert written numbers into Integers and vice-versa'
-  gem.summary       = 'Example: NumbersInWords.in_words(123) # => "one hundred and twenty three", NumbersInWords.in_numbers("seventy-five point eight") # = > 75.8'
+  gem.summary       = 'Example: NumbersInWords.in_words(123) # => ' \
+    '"one hundred and twenty three", NumbersInWords.in_numbers("seventy-five point eight") # = > 75.8'
 
   gem.version       = NumbersInWords::VERSION
   gem.authors       = ['Mark Burns', 'Dimid Duchovny']
