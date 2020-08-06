@@ -3,11 +3,10 @@
 module NumbersInWords
   RSpec.describe Fraction do
     subject do
-      described_class.new(numerator: numerator, denominator: denominator, numerator: numerator, attributes: attributes)
+      described_class.new(numerator: numerator, denominator: denominator, attributes: attributes)
     end
 
     let(:numerator) { 1 }
-
 
     context 'halves' do
       let(:denominator) { 2 }
@@ -131,7 +130,8 @@ module NumbersInWords
     end
 
     context 'googolplexths' do
-      let(:denominator) { 10 ** (10 ** 100) }
+      let(:denominator) { Kernel.silence_warnings { 10 ** (10 ** 100) } }
+
       let(:attributes) do
         { number: 'googolplex',
           ordinal: 'googolplexth',

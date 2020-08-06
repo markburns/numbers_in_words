@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe NumbersInWords do
-  FRACTIONS = {
+  FRACTION_EXAMPLES = {
     'half' => 0.5,
     'a half' => 0.5,
     'one half' => 0.5,
@@ -17,7 +17,7 @@ describe NumbersInWords do
     'three ninety-sevenths' => 3 / 97.0
   }.freeze
 
-  FRACTIONS.each do |string, float|
+  FRACTION_EXAMPLES.each do |string, float|
     it "#{string} == #{float}" do
       expect(string.in_numbers).to eql(float)
     end

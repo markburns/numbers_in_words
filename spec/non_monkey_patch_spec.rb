@@ -14,7 +14,7 @@ describe 'NumbersInWords' do
     end
   end
 
-  FRACTIONS = {
+  FRACTION_TO_WORDS = {
     [1, 2] => 'one half',
     [3, 2] => 'three halves',
     [1, 3] => 'one third',
@@ -30,7 +30,7 @@ describe 'NumbersInWords' do
     [13, 97] => 'thirteen ninety-sevenths'
   }.freeze
 
-  FRACTIONS.each do |(numerator, denominator), string|
+  FRACTION_TO_WORDS.each do |(numerator, denominator), string|
     it "#{numerator}/#{denominator} == #{string}" do
       expect(NumbersInWords.in_words(numerator.to_f / denominator.to_f, fraction: true)).to eql(string)
     end

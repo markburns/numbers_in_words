@@ -95,14 +95,6 @@ module NumbersInWords
       end
     end
 
-    def plural
-      exception && (fraction_plural || singular + 's') || ordinal_plural
-    end
-
-    def singular
-      (exception && exception[:singular]) || ordinal
-    end
-
     def with_remainder(mod, join_word)
       rest = denominator % mod
       main = denominator - rest

@@ -23,11 +23,11 @@ describe NumbersInWords do
     end
   end
 
-  PENDING = {
+  PENDING_MIXED = {
     '19 zero five' => 1_905
   }.freeze
 
-  PENDING.each do |k, v|
+  PENDING_MIXED.each do |k, v|
     pending do
       expect(k.in_numbers).to eql(v)
     end
