@@ -23,12 +23,11 @@ module NumbersInWords
         negative ||
         fraction(that) ||
         mixed_words_and_digits ||
-        one ||
-        mixed
+        one
     end
 
     def float
-      return text_including_punctuation.to_f if text =~ /^-?\d+(.\d+)?$/
+      text_including_punctuation.to_f if text =~ /^-?\d+(.\d+)?$/
     end
 
     def text_including_punctuation
@@ -74,10 +73,6 @@ module NumbersInWords
 
       res = NumbersInWords.in_numbers(one[1])
       only_compress ? [res] : res
-    end
-
-    def mixed
-      check_mixed text
     end
 
     def decimal
@@ -134,14 +129,6 @@ module NumbersInWords
         'a' => 'one',
         'oh' => 'zero'
       }
-    end
-
-    def check_mixed(txt)
-      mixed = txt.match(/^(-?\d+(.\d+)?) (#{POWERS_RX}s?)$/)
-      return unless mixed && mixed[1] && mixed[3]
-
-      matches = [mixed[1], mixed[3]].map { |m| NumbersInWords.in_numbers m }
-      matches.reduce(&:*)
     end
 
     def check_one(txt)

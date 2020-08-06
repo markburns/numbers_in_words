@@ -56,10 +56,6 @@ module NumbersInWords
       to_h[number]
     end
 
-    def fractions
-      DEFINITIONS
-    end
-
     def fraction(denominator: nil, numerator: nil, word: nil)
       raise unless denominator || word
 
