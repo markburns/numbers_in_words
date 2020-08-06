@@ -2,7 +2,7 @@
 
 require './spec/spec_helper'
 
-describe WordsInNumbers do
+describe NumbersInWords::StringExtension do
   it 'should do the digits 0-10' do
     expect('zero'.in_numbers).to eq(0)
     expect('one'.in_numbers).to eq(1)

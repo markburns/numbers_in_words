@@ -1,21 +1,23 @@
 # frozen_string_literal: true
 
 module NumbersInWords
-  def in_words(fraction: false)
-    NumbersInWords.in_words(self, fraction: fraction)
+  module NumericExtension
+    def in_words(fraction: false)
+      NumbersInWords::ToWord.new(self).in_words(fraction: fraction)
+    end
   end
-end
 
-module WordsInNumbers
-  def in_numbers(only_compress: false)
-    NumbersInWords::ToNumber.new(self).in_numbers(only_compress: only_compress)
+  module StringExtension
+    def in_numbers(only_compress: false)
+      NumbersInWords::InNumbers.new(self, only_compress).call
+    end
   end
 end
 
 class String
-  include WordsInNumbers
+  include NumbersInWords::StringExtension
 end
 
 class Numeric
-  include NumbersInWords
+  include NumbersInWords::NumericExtension
 end

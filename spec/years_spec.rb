@@ -2,7 +2,7 @@
 
 require './spec/spec_helper'
 
-describe WordsInNumbers do
+describe NumbersInWords::NumericExtension do
   YEARS = {
     'thirteen hundred' => 13_00,
     'twenty-two hundred' => 22_00,

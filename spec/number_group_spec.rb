@@ -5,8 +5,7 @@ require 'numbers_in_words/number_group'
 
 describe NumbersInWords::NumberGroup do
   it 'should split into group of three digit numbers' do
-    g = Numeric::NumberGroup
-
+    g = described_class
     expect(g.groups_of(1, 3)).to eq({ 0 => 1 })
     expect(g.groups_of(12, 3)).to eq({ 0 => 12 })
     expect(g.groups_of(123, 3)).to eq({ 0 => 123 })

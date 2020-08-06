@@ -3,7 +3,7 @@
 require 'numbers_in_words/version'
 require 'numbers_in_words/to_word'
 require 'numbers_in_words/exceptional_numbers'
-require 'numbers_in_words/to_number'
+require 'numbers_in_words/parsing/in_numbers'
 
 module NumbersInWords
   LENGTH_OF_GOOGOL      = 101 # length of the string i.e. one with 100 zeros
@@ -21,7 +21,7 @@ module NumbersInWords
     end
 
     def in_numbers(words, only_compress: false)
-      ToNumber.new(words).in_numbers(only_compress: only_compress)
+      InNumbers.new(words, only_compress).call
     end
 
     def exceptional_numbers
