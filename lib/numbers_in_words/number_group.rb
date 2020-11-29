@@ -45,7 +45,7 @@ module NumbersInWords
 
     def split_googols
       googols   = @number.to_s[0..-LENGTH_OF_GOOGOL].to_i
-      remainder = @number.to_s[(1 - LENGTH_OF_GOOGOL)..-1].to_i
+      remainder = @number.to_s[(1 - LENGTH_OF_GOOGOL)..].to_i
       [googols, remainder]
     end
 

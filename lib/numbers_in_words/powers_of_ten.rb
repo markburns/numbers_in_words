@@ -45,5 +45,5 @@ module NumbersInWords
     GOOGOL => 'googolplex'
   }.freeze
 
-  POWERS_RX = Regexp.union(POWERS_OF_TEN.values[1..-1]).freeze
+  POWERS_RX = Regexp.union(POWERS_OF_TEN.values[1..]).freeze
 end
