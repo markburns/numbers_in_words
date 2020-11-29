@@ -15,8 +15,8 @@ Gem::Specification.new do |gem|
   gem.email         = ['markthedeveloper@gmail.com', 'dimidd@gmail.com']
   gem.homepage      = 'http://github.com/markburns/numbers_in_words'
 
-  gem.add_development_dependency      'rspec', '~> 3.4.0'
-  gem.add_development_dependency      'rubocop'
+  gem.add_development_dependency 'rspec', '~> 3.4.0'
+  gem.add_development_dependency 'rubocop'
 
   gem.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
