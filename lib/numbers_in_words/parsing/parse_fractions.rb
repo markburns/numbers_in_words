@@ -27,7 +27,7 @@ module NumbersInWords
     end
 
     def fractions
-      nums[index_of_fraction..]
+      nums[index_of_fraction..-1]
     end
 
     def just_fraction
