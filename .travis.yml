@@ -4,14 +4,10 @@ env:
 sudo: false
 language: ruby
 rvm:
- - "2.3.8"
  - "2.4.10"
  - "2.5.8"
  - "2.6.6"
  - "2.7.1"
-before_install:
-  - gem install bundler
-  - bundle update --bundler
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
