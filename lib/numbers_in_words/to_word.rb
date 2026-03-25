@@ -11,10 +11,11 @@ module NumbersInWords
   class ToWord
     attr_reader :that
 
-    def initialize(that, connector: nil, format: nil)
+    def initialize(that, connector: nil, format: nil, units: [])
       @that = that
       @connector = connector || ' point '
       @format = format
+      @units = units || [:Dollars, :Cents]
     end
 
     def to_i
@@ -44,7 +45,7 @@ module NumbersInWords
       return unless @format&.to_sym == :currency
 
       dollars, cents = @that.to_s.split('.').map(&:to_i)
-      "%s%s%s cents" % [NumbersInWords.in_words(dollars), @connector, NumbersInWords.in_words(cents.presence)]
+      "#{NumbersInWords.in_words(dollars)} #{@units[0]} and #{NumbersInWords.in_words(cents || 0)} #{@units[1]}"
     end
 
     def decimals

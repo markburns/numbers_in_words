@@ -17,8 +17,8 @@ module NumbersInWords
     extend Forwardable
     def_delegators :exceptional_numbers, :fraction
 
-    def in_words(num, fraction: false, connector: nil, format: nil)
-      ToWord.new(num, connector: connector, format: format).in_words(fraction: fraction)
+    def in_words(num, fraction: false, connector: nil, format: nil, units: [])
+      ToWord.new(num, connector: connector, format: format, units: units).in_words(fraction: fraction)
     end
 
     def in_numbers(words, only_compress: false)
