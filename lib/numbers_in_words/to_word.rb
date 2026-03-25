@@ -44,7 +44,7 @@ module NumbersInWords
       return unless @format&.to_sym == :currency
 
       dollars, cents = @that.to_s.split('.').map(&:to_i)
-      "%s and %s cents" % [NumbersInWords.in_words(dollars), NumbersInWords.in_words(cents.presence)]
+      "%s%s%s cents" % [NumbersInWords.in_words(dollars), @connector, NumbersInWords.in_words(cents.presence)]
     end
 
     def decimals
